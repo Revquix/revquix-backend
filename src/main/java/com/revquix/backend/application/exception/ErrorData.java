@@ -25,22 +25,31 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend;
+package com.revquix.backend.application.exception;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.retry.annotation.EnableRetry;
-import org.springframework.scheduling.annotation.EnableAsync;
+/*
+  Developer: Rohit Parihar
+  Project: revquix-backend
+  GitHub: github.com/rohit-zip
+  File: ErrorData
+ */
 
-@SpringBootApplication
-@EnableJpaAuditing
-@EnableRetry
-@EnableAsync
-public class RevquixBackendApplication {
+import lombok.Getter;
 
-    public static void main(String[] args) {
-        SpringApplication.run(RevquixBackendApplication.class, args);
+@Getter
+public enum ErrorData {
+
+    INTERNAL_SERVER_ERROR("IE-1", "Something went wrong at server side, please try again later or contact support team."),
+    ACCESS_DENIED_ERROR_CODE("DE-2", "You don't have permission to access this resource."),;
+
+    ;
+    private static final String ERROR_PREFIX = "RQ-ERR-";
+
+    private final String code;
+    private final String message;
+
+    ErrorData(String code, String message) {
+        this.code = code;
+        this.message = message;
     }
-
 }

@@ -25,22 +25,30 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend;
+package com.revquix.backend.application.exception.payload;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.retry.annotation.EnableRetry;
-import org.springframework.scheduling.annotation.EnableAsync;
+/*
+  Developer: Rohit Parihar
+  Project: revquix-backend
+  GitHub: github.com/rohit-zip
+  File: BadRequestException
+ */
 
-@SpringBootApplication
-@EnableJpaAuditing
-@EnableRetry
-@EnableAsync
-public class RevquixBackendApplication {
+import com.revquix.backend.application.exception.BaseException;
+import com.revquix.backend.application.exception.ErrorData;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.http.HttpStatus;
 
-    public static void main(String[] args) {
-        SpringApplication.run(RevquixBackendApplication.class, args);
+@Getter
+@Setter
+public class BadRequestException extends BaseException {
+
+    public BadRequestException(ErrorData errorData) {
+        this.setMessage(errorData.getMessage());
+        this.setCode(errorData.getCode());
+        this.setCause(super.getCause());
+        this.setHttpStatus(HttpStatus.BAD_REQUEST);
     }
-
 }
+

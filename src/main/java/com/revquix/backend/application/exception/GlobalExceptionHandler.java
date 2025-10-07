@@ -25,22 +25,35 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend;
+package com.revquix.backend.application.exception;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.retry.annotation.EnableRetry;
-import org.springframework.scheduling.annotation.EnableAsync;
+/*
+  Developer: Rohit Parihar
+  Project: revquix-backend
+  GitHub: github.com/rohit-zip
+  File: GlobalExceptionHandler
+ */
 
-@SpringBootApplication
-@EnableJpaAuditing
-@EnableRetry
-@EnableAsync
-public class RevquixBackendApplication {
+import com.revquix.backend.application.exception.payload.BadRequestException;
+import com.revquix.backend.application.payload.ExceptionResponse;
+import com.revquix.backend.application.utils.ErrorResponseGeneratorUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-    public static void main(String[] args) {
-        SpringApplication.run(RevquixBackendApplication.class, args);
+@RestControllerAdvice
+@Slf4j
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ExceptionResponse> badRequestException(BadRequestException exception) {
+        log.error("BadRequestException Occurred >> {}", exception.toJson());
+        ExceptionResponse exceptionResponse = ErrorResponseGeneratorUtil.generate(exception);
+        return new ResponseEntity<>(
+                exceptionResponse,
+                exception.getHttpStatus()
+        );
     }
 
 }

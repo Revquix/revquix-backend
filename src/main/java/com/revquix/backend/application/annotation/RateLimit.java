@@ -25,22 +25,53 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend;
+package com.revquix.backend.application.annotation;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.retry.annotation.EnableRetry;
-import org.springframework.scheduling.annotation.EnableAsync;
+/*
+  Developer: Rohit Parihar
+  Project: revquix-sm
+  GitHub: github.com/rohit-zip
+  File: RateLimit
+ */
 
-@SpringBootApplication
-@EnableJpaAuditing
-@EnableRetry
-@EnableAsync
-public class RevquixBackendApplication {
+import com.revquix.backend.application.enums.RateLimitType;
 
-    public static void main(String[] args) {
-        SpringApplication.run(RevquixBackendApplication.class, args);
-    }
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+@Target({ElementType.METHOD, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RateLimit {
+
+    /**
+     * Rate limit type (only IP_BASED supported)
+     */
+    RateLimitType type() default RateLimitType.IP_BASED;
+
+    /**
+     * Number of requests allowed per minute
+     */
+    int requestsPerMinute() default 60;
+
+    /**
+     * Number of requests allowed per hour
+     */
+    int requestsPerHour() default 1000;
+
+    /**
+     * Custom identifier (SpEL expression)
+     */
+    String identifier() default "";
+
+    /**
+     * Error message when rate limit exceeded
+     */
+    String message() default "Rate limit exceeded";
+
+    /**
+     * Skip rate limiting if condition is true (SpEL expression)
+     */
+    String skipCondition() default "";
 }

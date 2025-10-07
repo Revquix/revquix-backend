@@ -25,22 +25,35 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend;
+package com.revquix.backend.application.utils;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.retry.annotation.EnableRetry;
-import org.springframework.scheduling.annotation.EnableAsync;
+/*
+  Developer: Rohit Parihar
+  Project: sana-health-backend
+  GitHub: github.com/rohit-zip
+  File: SanaPayload
+ */
 
-@SpringBootApplication
-@EnableJpaAuditing
-@EnableRetry
-@EnableAsync
-public class RevquixBackendApplication {
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
+import lombok.SneakyThrows;
 
-    public static void main(String[] args) {
-        SpringApplication.run(RevquixBackendApplication.class, args);
+/**
+ * SanaPayload is an abstract class that provides a method to convert its subclasses to JSON format.
+ * It uses the Jackson library for JSON serialization.
+ *
+ * @param <A> the type of the subclass extending SanaPayload
+ */
+@Data
+public abstract class ModelPayload<A> {
+
+    static final ObjectMapper objectMapper = new ObjectMapper();
+
+    @SneakyThrows(
+            value = {JsonProcessingException.class}
+    )
+    public String toJson() {
+        return objectMapper.writeValueAsString(this);
     }
-
 }

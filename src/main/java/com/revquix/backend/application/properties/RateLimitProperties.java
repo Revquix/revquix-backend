@@ -25,22 +25,35 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend;
+package com.revquix.backend.application.properties;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.retry.annotation.EnableRetry;
-import org.springframework.scheduling.annotation.EnableAsync;
+/*
+  Developer: Rohit Parihar
+  Project: revquix-sm
+  GitHub: github.com/rohit-zip
+  File: RateLimitProperties
+ */
 
-@SpringBootApplication
-@EnableJpaAuditing
-@EnableRetry
-@EnableAsync
-public class RevquixBackendApplication {
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
-    public static void main(String[] args) {
-        SpringApplication.run(RevquixBackendApplication.class, args);
+@Configuration
+@ConfigurationProperties(prefix = "rate-limiting")
+@Getter
+@Setter
+public class RateLimitProperties {
+
+    private boolean enabled = true;
+    private IpRateLimit ipRateLimit = new IpRateLimit();
+
+    @Getter
+    @Setter
+    public static class IpRateLimit {
+        private boolean enabled;
+        private int requestPerMinute = 100;
+        private int requestPerHour = 2000;
+        private int blockedDurationMinutes = 15;
     }
-
 }

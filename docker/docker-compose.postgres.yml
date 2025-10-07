@@ -9,7 +9,7 @@ services:
     hostname: postgres-master
     restart: unless-stopped
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "${POSTGRES_PORT:-5437}:5432"
     environment:
       - POSTGRES_DB=${POSTGRES_DB:-revquix}
       - POSTGRES_USER=${POSTGRES_USER:-revquix}
@@ -28,6 +28,27 @@ services:
       timeout: ${POSTGRES_HEALTH_CHECK_TIMEOUT:-5s}
       retries: ${POSTGRES_HEALTH_CHECK_RETRIES:-3}
       start_period: ${POSTGRES_HEALTH_CHECK_START_PERIOD:-10s}
+    env_file:
+      - .env
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: revquix-pgadmin
+    hostname: pgadmin
+    restart: unless-stopped
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL:-admin@revquix.com}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+      - PGADMIN_CONFIG_SERVER_MODE=False
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - revquix-network
+    depends_on:
+      postgres-master:
+        condition: service_healthy
     env_file:
       - .env
 

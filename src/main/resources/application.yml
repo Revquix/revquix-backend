@@ -26,9 +26,9 @@ spring:
     multipart:
       max-file-size: 100MB
   application:
-    name: revquix-sm
+    name: revquix-backend
   datasource:
-    url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/${POSTGRES_DB:revquix}
+    url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5437}/${POSTGRES_DB:revquix}
     hikari:
       username: ${PG_USER:revquix}
       password: ${PG_PASSWORD:revquix123!}
@@ -50,12 +50,15 @@ spring:
         format_sql: false
         show_sql: true
     hibernate:
-      ddl-auto: update
-#  sql:
-#    init:
-#      mode: always
-#      schema-locations:
-#        - classpath:scripts/*.sql
+      ddl-auto: validate
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    baseline-version: 0
+    validate-on-migrate: true
+    out-of-order: false
+    placeholder-replacement: true
   data:
     redis:
       host: ${REDIS_HOST:localhost}
@@ -71,3 +74,11 @@ spring:
           max-idle: 10
           min-idle: 5
           max-wait: 2000ms
+
+rate-limiting:
+  enabled: true
+  ip-rate-limit:
+    enabled: true
+    requests-per-minute: 60
+    request-per-hour: 2000
+    blocked-duration-minutes: 15

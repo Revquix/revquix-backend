@@ -1,0 +1,52 @@
+version: '3.8'
+
+name: revquix-backend
+
+services:
+  revquix-backend:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    container_name: revquix-backend
+    hostname: revquix-backend
+    restart: unless-stopped
+    ports:
+      - "${SERVER_PORT:-7001}:7001"
+    environment:
+      - SERVER_PORT=7001
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-docker}
+      - PGHOST=postgres-master
+      - PGPORT=${POSTGRES_PORT:-5437}
+      - POSTGRES_DB=${POSTGRES_DB:-revquix}
+      - PG_USER=${POSTGRES_USER:-revquix}
+      - PG_PASSWORD=${POSTGRES_PASSWORD}
+      - REDIS_HOST=${REDIS_MASTER_HOST:-redis-master}
+      - REDIS_PORT=${REDIS_MASTER_EXTERNAL_PORT:-6379}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_USERNAME=default
+    networks:
+      - revquix-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7001/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    env_file:
+      - .env
+
+networks:
+  revquix-network:
+    external: true
+
+volumes:
+  app_logs:
+    driver: local

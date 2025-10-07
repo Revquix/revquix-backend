@@ -25,16 +25,20 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend;
+package com.revquix.backend.application.constants;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+/*
+  Developer: Rohit Parihar
+  Project: revquix-backend
+  GitHub: github.com/rohit-zip
+  File: ServiceConstants
+ */
 
-@SpringBootTest
-class RevquixBackendApplicationTests {
+import lombok.experimental.UtilityClass;
 
-    @Test
-    void contextLoads() {
-    }
+@UtilityClass
+public class ServiceConstants {
 
+    public static final String BREADCRUMB_ID = "breadcrumbId";
+    public static final String INTERNAL_ERROR = "Internal Error";
 }

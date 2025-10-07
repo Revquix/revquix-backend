@@ -25,22 +25,33 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend;
+package com.revquix.backend.application.payload;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.retry.annotation.EnableRetry;
-import org.springframework.scheduling.annotation.EnableAsync;
+/*
+  Developer: Rohit Parihar
+  Project: revquix-sm
+  GitHub: github.com/rohit-zip
+  File: RateLimitResult
+ */
 
-@SpringBootApplication
-@EnableJpaAuditing
-@EnableRetry
-@EnableAsync
-public class RevquixBackendApplication {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revquix.backend.application.utils.ModelPayload;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
-    public static void main(String[] args) {
-        SpringApplication.run(RevquixBackendApplication.class, args);
-    }
+import java.time.LocalDateTime;
 
+@Data
+@AllArgsConstructor
+@Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class RateLimitResult extends ModelPayload<RateLimitResult> {
+
+    private final boolean allowed;
+    private final long remainingRequests;
+    private final long totalRequests;
+    private final long windowSizeSeconds;
+    private final LocalDateTime resetTime;
+    private final String rateLimitType;
 }

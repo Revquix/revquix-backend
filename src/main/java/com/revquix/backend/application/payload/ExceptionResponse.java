@@ -25,22 +25,34 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend;
+package com.revquix.backend.application.payload;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.retry.annotation.EnableRetry;
-import org.springframework.scheduling.annotation.EnableAsync;
+/*
+  Developer: Rohit Parihar
+  Project: revquix-backend
+  GitHub: github.com/rohit-zip
+  File: ExceptionResponse
+ */
 
-@SpringBootApplication
-@EnableJpaAuditing
-@EnableRetry
-@EnableAsync
-public class RevquixBackendApplication {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revquix.backend.application.utils.ModelPayload;
+import lombok.*;
 
-    public static void main(String[] args) {
-        SpringApplication.run(RevquixBackendApplication.class, args);
-    }
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ExceptionResponse extends ModelPayload<ExceptionResponse> {
 
+    private String message;
+    private String code;
+    private String breadcrumbId;
+    private String localizedMessage;
+    private String httpStatus;
+    private boolean isDataError;
+
+    @Builder.Default
+    private Boolean isTokenExpired = false;
 }
