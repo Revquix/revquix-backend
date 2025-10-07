@@ -28,10 +28,10 @@ spring:
   application:
     name: revquix-sm
   datasource:
-    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${POSTGRES_DB:rohitparihar}
+    url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5432}/${POSTGRES_DB:revquix}
     hikari:
-      username: ${PG_USER}
-      password: ${PG_PASSWORD}
+      username: ${PG_USER:revquix}
+      password: ${PG_PASSWORD:revquix123!}
       maximum-pool-size: 100
       minimum-idle: 7
       leak-detection-threshold: 120000
@@ -51,16 +51,16 @@ spring:
         show_sql: true
     hibernate:
       ddl-auto: update
-  sql:
-    init:
-      mode: always
-      schema-locations:
-        - classpath:scripts/*.sql
+#  sql:
+#    init:
+#      mode: always
+#      schema-locations:
+#        - classpath:scripts/*.sql
   data:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD:redis123}
+      password: ${REDIS_PASSWORD:redis123!}
       username: ${REDIS_USERNAME:default}
       database: 0
       connect-timeout: 2000ms
