@@ -1,0 +1,45 @@
+version: '3.8'
+
+name: postgres-stack
+
+services:
+  postgres-master:
+    image: postgres:15-alpine
+    container_name: revquix-postgres-master
+    hostname: postgres-master
+    restart: unless-stopped
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-revquix}
+      - POSTGRES_USER=${POSTGRES_USER:-revquix}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
+    volumes:
+      - ./config/postgresql/init:/docker-entrypoint-initdb.d
+      - ./config/postgresql/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./config/postgresql/pg_hba.conf:/etc/postgresql/pg_hba.conf
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - revquix-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-revquix} -d ${POSTGRES_DB:-revquix}"]
+      interval: ${POSTGRES_HEALTH_CHECK_INTERVAL:-30s}
+      timeout: ${POSTGRES_HEALTH_CHECK_TIMEOUT:-5s}
+      retries: ${POSTGRES_HEALTH_CHECK_RETRIES:-3}
+      start_period: ${POSTGRES_HEALTH_CHECK_START_PERIOD:-10s}
+    env_file:
+      - .env
+
+volumes:
+  postgres_data:
+    driver: local
+    name: revquix-postgres-data
+  pgadmin_data:
+    driver: local
+    name: revquix-pgadmin-data
+
+networks:
+  revquix-network:
+    name: revquix-network
+    driver: bridge

@@ -1,0 +1,67 @@
+import java.time.Year
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.6'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id "com.github.hierynomus.license" version "0.16.1"
+}
+
+group = 'com.revquix.backend'
+version = '0.0.1-SNAPSHOT'
+description = 'revquix-backend'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    modelMapperVersion = "2.1.1"
+    logstashVersion = "8.0"
+    awsS3SdkVersion = "2.32.31"
+    springdocVersion = "2.8.9"
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
+    implementation "org.springframework.boot:spring-boot-starter-mail"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}"
+    implementation group: "org.modelmapper", name: "modelmapper", version: "${modelMapperVersion}"
+    implementation group: "net.logstash.logback", name: "logstash-logback-encoder", version: "${logstashVersion}"
+    implementation group: "software.amazon.awssdk", name: "s3", version: "${awsS3SdkVersion}"
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.retry:spring-retry'
+    implementation 'org.springframework:spring-aspects'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    runtimeOnly "org.postgresql:postgresql"
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+license {
+    include "**/*.java"
+    exclude "**/generated/**"
+    ext.year = Year.now().toString()
+    strictCheck = true
+}
+
+classes.dependsOn(licenseFormat)
