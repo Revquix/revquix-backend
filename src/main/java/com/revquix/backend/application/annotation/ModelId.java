@@ -25,34 +25,25 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.application.exception;
+package com.revquix.backend.application.annotation;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: ErrorData
+  File: RevquixId
  */
 
-import lombok.Getter;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Getter
-public enum ErrorData {
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ModelId {
 
-    INTERNAL_SERVER_ERROR("IE-1", "Something went wrong at server side, please try again later or contact support team."),
-    ACCESS_DENIED_ERROR_CODE("DE-2", "You don't have permission to access this resource."),
-    FAILED_TO_GENERATE_SEQUENCE("IE-3", "Failed to generate sequence"),
-    SEQUENCE_NULL_OR_EMPTY("IE-4", "Sequence name is null or empty"),
-    ID_GENERATION_FAILED("IE-5", "ID generation failed"),;
-
-    ;
-    private static final String ERROR_PREFIX = "RQ-ERR-";
-
-    private final String code;
-    private final String message;
-
-    ErrorData(String code, String message) {
-        this.code = code;
-        this.message = message;
-    }
+    String prefix();
+    String sequence();
+    int length() default 4;
 }

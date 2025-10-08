@@ -25,34 +25,30 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.application.exception;
+package com.revquix.backend.application.utils;
 
 /*
   Developer: Rohit Parihar
-  Project: revquix-backend
+  Project: ap-payment-service
   GitHub: github.com/rohit-zip
-  File: ErrorData
+  File: SpringContextBridge
  */
 
-import lombok.Getter;
+import com.revquix.backend.application.dao.SequenceGeneratorDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-@Getter
-public enum ErrorData {
+@Component
+public class SequenceEntityContextBridge {
 
-    INTERNAL_SERVER_ERROR("IE-1", "Something went wrong at server side, please try again later or contact support team."),
-    ACCESS_DENIED_ERROR_CODE("DE-2", "You don't have permission to access this resource."),
-    FAILED_TO_GENERATE_SEQUENCE("IE-3", "Failed to generate sequence"),
-    SEQUENCE_NULL_OR_EMPTY("IE-4", "Sequence name is null or empty"),
-    ID_GENERATION_FAILED("IE-5", "ID generation failed"),;
+    private static SequenceGeneratorDao sequenceService;
 
-    ;
-    private static final String ERROR_PREFIX = "RQ-ERR-";
+    @Autowired
+    public SequenceEntityContextBridge(SequenceGeneratorDao injectedService) {
+        SequenceEntityContextBridge.sequenceService = injectedService;
+    }
 
-    private final String code;
-    private final String message;
-
-    ErrorData(String code, String message) {
-        this.code = code;
-        this.message = message;
+    public static SequenceGeneratorDao getSequenceService() {
+        return sequenceService;
     }
 }

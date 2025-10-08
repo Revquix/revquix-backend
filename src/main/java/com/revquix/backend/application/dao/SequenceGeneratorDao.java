@@ -25,34 +25,33 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.application.exception;
+package com.revquix.backend.application.dao;
 
 /*
   Developer: Rohit Parihar
-  Project: revquix-backend
+  Project: ap-payment-service
   GitHub: github.com/rohit-zip
-  File: ErrorData
+  File: EntityPersistentService
  */
 
-import lombok.Getter;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
-@Getter
-public enum ErrorData {
+@Component
+@Slf4j
+public class SequenceGeneratorDao {
 
-    INTERNAL_SERVER_ERROR("IE-1", "Something went wrong at server side, please try again later or contact support team."),
-    ACCESS_DENIED_ERROR_CODE("DE-2", "You don't have permission to access this resource."),
-    FAILED_TO_GENERATE_SEQUENCE("IE-3", "Failed to generate sequence"),
-    SEQUENCE_NULL_OR_EMPTY("IE-4", "Sequence name is null or empty"),
-    ID_GENERATION_FAILED("IE-5", "ID generation failed"),;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    ;
-    private static final String ERROR_PREFIX = "RQ-ERR-";
-
-    private final String code;
-    private final String message;
-
-    ErrorData(String code, String message) {
-        this.code = code;
-        this.message = message;
+    public Long getNextSequenceValue(String sequenceName) {
+        log.info("SequenceGeneratorDao::getNextSequenceValue -> Generating sequence for {}", sequenceName);
+        long nextSequence = ((Number) entityManager
+                .createNativeQuery("SELECT nextval('" + sequenceName + "')")
+                .getSingleResult()).longValue();
+        log.info("SequenceGeneratorDao::getNextSequenceValue -> Sequence Generated for {} with value {} ", sequenceName, nextSequence);
+        return nextSequence;
     }
 }

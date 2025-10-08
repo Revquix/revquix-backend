@@ -25,34 +25,47 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.application.exception;
+package com.revquix.backend.auth.model;
 
-/*
-  Developer: Rohit Parihar
-  Project: revquix-backend
-  GitHub: github.com/rohit-zip
-  File: ErrorData
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revquix.backend.application.constants.ModelConstants;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.util.List;
+
+/**
+ * Developer: Rohit Parihar
+ * Project: bloggios-matching
+ * GitHub: github.com/rohit-zip
+ * File: Role.java
  */
 
-import lombok.Getter;
-
+@Entity
 @Getter
-public enum ErrorData {
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Table(
+        name = ModelConstants.ROLE_TABLE,
+        schema = ModelConstants.AUTH_SCHEMA
+)
+public class Role {
 
-    INTERNAL_SERVER_ERROR("IE-1", "Something went wrong at server side, please try again later or contact support team."),
-    ACCESS_DENIED_ERROR_CODE("DE-2", "You don't have permission to access this resource."),
-    FAILED_TO_GENERATE_SEQUENCE("IE-3", "Failed to generate sequence"),
-    SEQUENCE_NULL_OR_EMPTY("IE-4", "Sequence name is null or empty"),
-    ID_GENERATION_FAILED("IE-5", "ID generation failed"),;
+    @Id
+    private String roleId;
+    private String role;
 
-    ;
-    private static final String ERROR_PREFIX = "RQ-ERR-";
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    @Column(columnDefinition = "text[]")
+    private List<String> internalRoles;
 
-    private final String code;
-    private final String message;
-
-    ErrorData(String code, String message) {
-        this.code = code;
-        this.message = message;
-    }
+    private String description;
 }

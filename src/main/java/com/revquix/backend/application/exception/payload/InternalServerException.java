@@ -25,34 +25,37 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.application.exception;
+package com.revquix.backend.application.exception.payload;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: ErrorData
+  File: BadRequestException
  */
 
+import com.revquix.backend.application.exception.BaseException;
+import com.revquix.backend.application.exception.ErrorData;
 import lombok.Getter;
+import lombok.Setter;
+import org.springframework.http.HttpStatus;
 
 @Getter
-public enum ErrorData {
+@Setter
+public class InternalServerException extends BaseException {
 
-    INTERNAL_SERVER_ERROR("IE-1", "Something went wrong at server side, please try again later or contact support team."),
-    ACCESS_DENIED_ERROR_CODE("DE-2", "You don't have permission to access this resource."),
-    FAILED_TO_GENERATE_SEQUENCE("IE-3", "Failed to generate sequence"),
-    SEQUENCE_NULL_OR_EMPTY("IE-4", "Sequence name is null or empty"),
-    ID_GENERATION_FAILED("IE-5", "ID generation failed"),;
+    public InternalServerException(ErrorData errorData) {
+        this.setMessage(errorData.getMessage());
+        this.setCode(errorData.getCode());
+        this.setCause(super.getCause());
+        this.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-    ;
-    private static final String ERROR_PREFIX = "RQ-ERR-";
-
-    private final String code;
-    private final String message;
-
-    ErrorData(String code, String message) {
-        this.code = code;
-        this.message = message;
+    public InternalServerException(ErrorData errorData, String message) {
+        this.setMessage(message);
+        this.setCode(errorData.getCode());
+        this.setCause(super.getCause());
+        this.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
+
