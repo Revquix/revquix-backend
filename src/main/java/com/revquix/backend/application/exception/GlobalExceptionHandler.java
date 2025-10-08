@@ -34,10 +34,12 @@ package com.revquix.backend.application.exception;
   File: GlobalExceptionHandler
  */
 
+import com.revquix.backend.application.constants.ServiceConstants;
 import com.revquix.backend.application.exception.payload.BadRequestException;
 import com.revquix.backend.application.payload.ExceptionResponse;
 import com.revquix.backend.application.utils.ErrorResponseGeneratorUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -54,6 +56,30 @@ public class GlobalExceptionHandler {
                 exceptionResponse,
                 exception.getHttpStatus()
         );
+    }
+
+//    @ExceptionHandler(AuthorizationDeniedException.class)
+//    public ResponseEntity<ExceptionResponse> authorizationDeniedException(AuthorizationDeniedException exception) {
+//        log.error("AuthorizationDeniedException Occurred >> {}", exception.toString());
+//        ExceptionResponse exceptionResponse = ErrorResponseGeneratorUtil.generate(exception);
+//        return new ResponseEntity<>(
+//                exceptionResponse,
+//                HttpStatus.FORBIDDEN
+//        );
+//    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionResponse> exception(Exception exception) {
+        log.error("Exception Occurred >> {}", exception.toString());
+        ExceptionResponse exceptionResponse = ExceptionResponse
+                .builder()
+                .message(ErrorData.INTERNAL_SERVER_ERROR.getMessage())
+                .code(ErrorData.INTERNAL_SERVER_ERROR.getCode())
+                .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
+                .localizedMessage(exception.getMessage())
+                .errorType(ServiceConstants.INTERNAL_ERROR)
+                .build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
     }
 
 }

@@ -25,34 +25,38 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.application.payload;
+package com.revquix.backend.application.config;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: ExceptionResponse
+  File: RateLimitConfig
  */
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revquix.backend.application.utils.ModelPayload;
-import lombok.*;
+import com.revquix.backend.application.interceptors.RateLimitInterceptor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class ExceptionResponse extends ModelPayload<ExceptionResponse> {
+@Configuration
+@RequiredArgsConstructor
+@Slf4j
+public class RateLimitConfig implements WebMvcConfigurer {
 
-    private String message;
-    private String code;
-    private String breadcrumbId;
-    private String localizedMessage;
-    private String httpStatus;
-    private String errorType;
+    private final RateLimitInterceptor rateLimitInterceptor;
 
-    @Builder.Default
-    private Boolean isTokenExpired = false;
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        log.info("Configuring rate limit interceptor for /v1/** API pattern");
+
+        registry.addInterceptor(rateLimitInterceptor)
+                .addPathPatterns("/v1/**")
+                .excludePathPatterns(
+                        "/actuator/**"
+                );
+        log.info("Rate limit interceptor configured for /v1/** paths");
+    }
 }

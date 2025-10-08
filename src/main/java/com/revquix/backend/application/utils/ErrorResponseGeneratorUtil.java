@@ -34,7 +34,6 @@ import com.revquix.backend.application.payload.ExceptionResponse;
 import lombok.experimental.UtilityClass;
 import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authorization.AuthorizationDeniedException;
 
 /**
  * Developer: Rohit Parihar
@@ -59,19 +58,19 @@ public class ErrorResponseGeneratorUtil {
                 .code(exception.getCode())
                 .httpStatus(exception.getHttpStatus().getReasonPhrase())
                 .localizedMessage(exception.getCause().getLocalizedMessage())
-                .isDataError(exception.getCode().contains("-DE-"))
+                .errorType(exception.getCode().contains("-DE-") ? ServiceConstants.DATA_ERROR : ServiceConstants.INTERNAL_ERROR)
                 .build();
     }
 
-    public ExceptionResponse generate(AuthorizationDeniedException exception) {
-        String breadcrumbId = MDC.get(ServiceConstants.BREADCRUMB_ID);
-        return ExceptionResponse
-                .builder()
-                .message(ErrorData.ACCESS_DENIED_ERROR_CODE.getMessage())
-                .breadcrumbId(breadcrumbId)
-                .code(ErrorData.ACCESS_DENIED_ERROR_CODE.getCode())
-                .httpStatus(HttpStatus.FORBIDDEN.getReasonPhrase())
-                .localizedMessage(exception.getMessage())
-                .build();
-    }
+//    public ExceptionResponse generate(AuthorizationDeniedException exception) {
+//        String breadcrumbId = MDC.get(ServiceConstants.BREADCRUMB_ID);
+//        return ExceptionResponse
+//                .builder()
+//                .message(ErrorData.ACCESS_DENIED_ERROR_CODE.getMessage())
+//                .breadcrumbId(breadcrumbId)
+//                .code(ErrorData.ACCESS_DENIED_ERROR_CODE.getCode())
+//                .httpStatus(HttpStatus.FORBIDDEN.getReasonPhrase())
+//                .localizedMessage(exception.getMessage())
+//                .build();
+//    }
 }

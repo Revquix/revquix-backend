@@ -41,4 +41,5 @@ public class ServiceConstants {
 
     public static final String BREADCRUMB_ID = "breadcrumbId";
     public static final String INTERNAL_ERROR = "Internal Error";
+    public static final String DATA_ERROR = "Data Error";
 }
