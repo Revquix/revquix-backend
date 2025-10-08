@@ -51,7 +51,10 @@ public enum ErrorData {
     ACCOUNT_LOCKED("DE-10", "User account is locked, please contact support team"),
     EMAIL_NOT_VERIFIED("DE-11", "Email is not verified, please verify your email first"),
     EXCEPTION_WHILE_FETCHING_PRIVATE_KEY("IE-12", "Exception occurred while fetching private key for JWT"),
-    EXCEPTION_WHILE_FETCHING_PUBLIC_KEY("IE-14", "Exception occurred while fetching public key for JWT"),;
+    EXCEPTION_WHILE_FETCHING_PUBLIC_KEY("IE-14", "Exception occurred while fetching public key for JWT"),
+    TOKEN_EXPIRED("DE-15", "JWT token has expired, please login again"),
+    MALFORMED_TOKEN("DE-16", "The JWT token is malformed, please provide a valid token"),
+    USER_NOT_FOUND_FOR_GIVEN_TOKEN("DE-17", "No user found for the given token"),;
 
     ;
     private static final String ERROR_PREFIX = "RQ-ERR-";

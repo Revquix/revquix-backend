@@ -44,9 +44,10 @@ public class WebSecurityConfig {
     private final RevquixAccessDeniedHandler revquixAccessDeniedHandler;
     private final CustomUserDetailsService customUserDetailsService;
     private final PasswordEncoder passwordEncoder;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         List<String> paths = authenticationProperties.getExcludePaths().getPaths();
         http
                 .csrf(AbstractHttpConfigurer::disable)

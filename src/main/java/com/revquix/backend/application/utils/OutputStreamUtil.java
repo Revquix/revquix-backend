@@ -25,35 +25,26 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.application.payload;
+package com.revquix.backend.application.utils;
 
-/*
-  Developer: Rohit Parihar
-  Project: revquix-backend
-  GitHub: github.com/rohit-zip
-  File: ExceptionResponse
- */
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revquix.backend.application.payload.OutputStreamErrorPayload;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.experimental.UtilityClass;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revquix.backend.application.constants.ServiceConstants;
-import com.revquix.backend.application.utils.ModelPayload;
-import lombok.*;
+import java.io.IOException;
+import java.io.OutputStream;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class ExceptionResponse extends ModelPayload<ExceptionResponse> {
+@UtilityClass
+public class OutputStreamUtil {
 
-    private String message;
-    private String code;
-    private String breadcrumbId;
-    private String localizedMessage;
-    private String httpStatus;
-    private String errorType = ServiceConstants.DATA_ERROR;
-
-    @Builder.Default
-    private Boolean isTokenExpired = false;
+    public static void getOutputStream(OutputStreamErrorPayload outputStreamErrorPayload) throws IOException {
+        HttpServletResponse httpServletResponse = outputStreamErrorPayload.getHttpServletResponse();
+        httpServletResponse.setStatus(outputStreamErrorPayload.getHttpStatus().value());
+        httpServletResponse.setContentType("application/json");
+        OutputStream output = httpServletResponse.getOutputStream();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(output, outputStreamErrorPayload.getData());
+        output.flush();
+    }
 }

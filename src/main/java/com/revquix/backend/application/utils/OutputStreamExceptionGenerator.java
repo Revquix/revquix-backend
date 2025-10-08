@@ -25,35 +25,35 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.application.payload;
+package com.revquix.backend.application.utils;
 
-/*
-  Developer: Rohit Parihar
-  Project: revquix-backend
-  GitHub: github.com/rohit-zip
-  File: ExceptionResponse
- */
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revquix.backend.application.constants.ServiceConstants;
-import com.revquix.backend.application.utils.ModelPayload;
-import lombok.*;
+import com.revquix.backend.application.exception.ErrorData;
+import com.revquix.backend.application.payload.ExceptionResponse;
+import com.revquix.backend.application.payload.OutputStreamErrorPayload;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
+import org.springframework.http.HttpStatus;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class ExceptionResponse extends ModelPayload<ExceptionResponse> {
+import java.io.IOException;
 
-    private String message;
-    private String code;
-    private String breadcrumbId;
-    private String localizedMessage;
-    private String httpStatus;
-    private String errorType = ServiceConstants.DATA_ERROR;
+@UtilityClass
+@Slf4j
+public class OutputStreamExceptionGenerator {
 
-    @Builder.Default
-    private Boolean isTokenExpired = false;
+    @SneakyThrows(value = {IOException.class})
+    public static void generateExceptionResponse(ErrorData errorData, HttpStatus httpStatus, HttpServletResponse httpServletResponse) {
+        ExceptionResponse exceptionResponse = ExceptionResponse
+                .builder()
+                .code(errorData.getCode())
+                .message(errorData.getMessage())
+                .breadcrumbId(MDC.get(ServiceConstants.BREADCRUMB_ID))
+                .isTokenExpired(false)
+                .build();
+        OutputStreamUtil.getOutputStream(new OutputStreamErrorPayload(httpStatus, exceptionResponse, httpServletResponse));
+        log.error("ExceptionResponseGenerator -> {}", exceptionResponse.toString());
+    }
 }

@@ -27,33 +27,26 @@
  */
 package com.revquix.backend.application.payload;
 
-/*
-  Developer: Rohit Parihar
-  Project: revquix-backend
-  GitHub: github.com/rohit-zip
-  File: ExceptionResponse
- */
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.revquix.backend.application.constants.ServiceConstants;
-import com.revquix.backend.application.utils.ModelPayload;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.*;
+import org.springframework.http.HttpStatus;
+
+/**
+ * Developer: Rohit Parihar
+ * Project: bloggios-matching
+ * GitHub: github.com/rohit-zip
+ * File: OutputStreamErrorPayload.java
+ */
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class ExceptionResponse extends ModelPayload<ExceptionResponse> {
+@ToString
+public class OutputStreamErrorPayload {
 
-    private String message;
-    private String code;
-    private String breadcrumbId;
-    private String localizedMessage;
-    private String httpStatus;
-    private String errorType = ServiceConstants.DATA_ERROR;
-
-    @Builder.Default
-    private Boolean isTokenExpired = false;
+    private HttpStatus httpStatus;
+    private Object data;
+    private HttpServletResponse httpServletResponse;
 }
