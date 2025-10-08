@@ -41,6 +41,7 @@ import com.revquix.backend.application.annotation.impl.ModelIdListener;
 import com.revquix.backend.application.constants.ModelConstants;
 import com.revquix.backend.application.enums.Status;
 import com.revquix.backend.application.utils.ModelPayload;
+import com.revquix.backend.auth.enums.UserBadge;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -140,4 +141,8 @@ public class UserAuth extends ModelPayload<UserAuth> {
     )
     @Builder.Default
     private List<Role> roles = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private UserBadge userBadge = UserBadge.STANDARD;
 }
