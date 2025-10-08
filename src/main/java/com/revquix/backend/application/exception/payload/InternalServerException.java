@@ -57,5 +57,12 @@ public class InternalServerException extends BaseException {
         this.setCause(super.getCause());
         this.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    public InternalServerException(ErrorData errorData, Throwable throwable) {
+        this.setMessage(errorData.getMessage());
+        this.setCode(errorData.getCode());
+        this.setCause(throwable);
+        this.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
 

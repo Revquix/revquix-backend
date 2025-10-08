@@ -49,7 +49,9 @@ public enum ErrorData {
     INCORRECT_PASSWORD("DE-8", "The password you have entered is incorrect"),
     USER_NOT_ENABLED("DE-9", "User is not enabled, please contact support team"),
     ACCOUNT_LOCKED("DE-10", "User account is locked, please contact support team"),
-    EMAIL_NOT_VERIFIED("DE-11", "Email is not verified, please verify your email first");
+    EMAIL_NOT_VERIFIED("DE-11", "Email is not verified, please verify your email first"),
+    EXCEPTION_WHILE_FETCHING_PRIVATE_KEY("IE-12", "Exception occurred while fetching private key for JWT"),
+    EXCEPTION_WHILE_FETCHING_PUBLIC_KEY("IE-14", "Exception occurred while fetching public key for JWT"),;
 
     ;
     private static final String ERROR_PREFIX = "RQ-ERR-";
