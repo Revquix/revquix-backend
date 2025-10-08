@@ -25,25 +25,36 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.application.constants;
+package com.revquix.backend.application.utils;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: ServiceConstants
+  File: IpUtils
  */
 
-import lombok.experimental.UtilityClass;
+import com.revquix.backend.application.constants.ServiceConstants;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
-@UtilityClass
-public class ServiceConstants {
+import java.util.Objects;
 
-    public static final String BREADCRUMB_ID = "breadcrumbId";
-    public static final String INTERNAL_ERROR = "Internal Error";
-    public static final String DATA_ERROR = "Data Error";
-    public static final String X_FORWARDED_FOR = "X-Forwarded-For";
-    public static final String REMOTE_ADDRESS = "remoteAddress";
-    public static final String REQUEST_URI = "requestUri";
-    public static final String HTTP_METHOD = "httpMethod";
+@Component
+@RequiredArgsConstructor
+@Slf4j
+public class IpUtils {
+
+    private final HttpServletRequest httpServletRequest;
+
+    public String getIpv4() {
+        log.debug("IpUtils::getIpv4 -> Fetching client IP address from request headers");
+        String clientIp = httpServletRequest.getHeader(ServiceConstants.X_FORWARDED_FOR);
+        if (clientIp != null && clientIp.contains(",")) {
+            clientIp = clientIp.split(",")[0].trim();
+        }
+        return Objects.isNull(clientIp) ? httpServletRequest.getRemoteAddr() : clientIp;
+    }
 }
