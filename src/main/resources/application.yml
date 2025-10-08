@@ -68,6 +68,7 @@ spring:
       database: 0
       connect-timeout: 2000ms
       timeout: 2000ms
+      ttl: 3600
       lettuce:
         pool:
           max-active: 50
