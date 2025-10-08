@@ -41,6 +41,7 @@ import com.revquix.backend.application.utils.ErrorResponseGeneratorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -58,15 +59,15 @@ public class GlobalExceptionHandler {
         );
     }
 
-//    @ExceptionHandler(AuthorizationDeniedException.class)
-//    public ResponseEntity<ExceptionResponse> authorizationDeniedException(AuthorizationDeniedException exception) {
-//        log.error("AuthorizationDeniedException Occurred >> {}", exception.toString());
-//        ExceptionResponse exceptionResponse = ErrorResponseGeneratorUtil.generate(exception);
-//        return new ResponseEntity<>(
-//                exceptionResponse,
-//                HttpStatus.FORBIDDEN
-//        );
-//    }
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ExceptionResponse> authorizationDeniedException(AuthorizationDeniedException exception) {
+        log.error("AuthorizationDeniedException Occurred >> {}", exception.toString());
+        ExceptionResponse exceptionResponse = ErrorResponseGeneratorUtil.generate(exception);
+        return new ResponseEntity<>(
+                exceptionResponse,
+                HttpStatus.FORBIDDEN
+        );
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponse> exception(Exception exception) {
