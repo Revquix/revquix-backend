@@ -1,0 +1,11 @@
+Generating the P12 Key
+keytool -genkeypair \
+  -alias jwt-key \
+  -keyalg RSA \
+  -keysize 2048 \
+  -validity 3650 \
+  -storetype PKCS12 \
+  -keystore jwt-keystore.p12 \
+  -storepass myStorePass \
+  -keypass myKeyPass \
+  -dname "CN=MyApp, OU=Dev, O=MyCompany, L=City, S=State, C=US"

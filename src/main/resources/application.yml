@@ -82,3 +82,27 @@ rate-limiting:
     requests-per-minute: 60
     request-per-hour: 2000
     blocked-duration-minutes: 15
+
+auth:
+  key-data:
+    alias: ${KEY_ALIAS:revquix}
+    password: ${KEY_PASSWORD:Revquix@1234}
+    path: /keys/revquix.p12
+  cors:
+    allow-credentials: true
+    max-age: 3600
+    allowed-origins:
+      - http://localhost:2000
+      - https://revquix.com
+  info:
+    access-token-expiry-minutes: 20
+    refresh-token-expiry-days: 30
+    refresh-token-cookie-name: revquix-refresh-token
+  exclude-paths:
+    paths:
+      - /v1/user-auth/**
+      - /v1/auth/**
+      - /v3/api-docs/**
+      - /swagger-ui/**
+      - /swagger-ui.html
+      - /actuator/**
