@@ -53,7 +53,7 @@ public class KeyProvider {
         try {
             KeyStore keyStore = KeyStore.getInstance(ServiceConstants.PKCS12);
             AuthenticationProperties.KeyData keyData = authenticationProperties.getKeyData();
-            try (InputStream keyStoreInputStream = getClass().getResourceAsStream(keyData.getPassword())) {
+            try (InputStream keyStoreInputStream = getClass().getResourceAsStream(keyData.getPath())) {
                 keyStore.load(keyStoreInputStream, keyData.getPassword().toCharArray());
             }
             return (PrivateKey) keyStore.getKey(keyData.getAlias(), keyData.getPassword().toCharArray());

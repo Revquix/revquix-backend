@@ -54,10 +54,13 @@ public enum ErrorData {
     EXCEPTION_WHILE_FETCHING_PUBLIC_KEY("IE-14", "Exception occurred while fetching public key for JWT"),
     TOKEN_EXPIRED("DE-15", "JWT token has expired, please login again"),
     MALFORMED_TOKEN("DE-16", "The JWT token is malformed, please provide a valid token"),
-    USER_NOT_FOUND_FOR_GIVEN_TOKEN("DE-17", "No user found for the given token"),;
-
-    ;
-    private static final String ERROR_PREFIX = "RQ-ERR-";
+    USER_NOT_FOUND_FOR_GIVEN_TOKEN("DE-17", "No user found for the given token"),
+    EMAIL_MANDATORY("DE-18", "Email is mandatory to continue. Please enter valid mail address"),
+    EMAIL_NOT_VALID("DE-19", "Email address is not valid, please enter valid email address"),
+    PASSWORD_MANDATORY("DE-20", "Password is mandatory to continue. Please enter valid password"),
+    INVALID_PASSWORD("DE-21", "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character"),
+    USER_ALREADY_REGISTERED("DE-22", "User is already registered with the given email address"),
+    USER_ROLE_NOT_FOUND("IE-23", "User role not found in the system"),;
 
     private final String code;
     private final String message;

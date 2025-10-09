@@ -101,9 +101,49 @@ auth:
     refresh-token-cookie-name: revquix-refresh-token
   exclude-paths:
     paths:
-      - /v1/user-auth/**
       - /v1/auth/**
       - /v3/api-docs/**
       - /swagger-ui/**
       - /swagger-ui.html
       - /actuator/**
+  otp-info:
+    registration:
+      log-enabled: true
+      otp-expiry-minutes: 10
+      mail-enabled: true
+      max-otp-requests: 4
+    password-reset:
+      log-enabled: true
+      otp-expiry-minutes: 10
+      mail-enabled: true
+      max-otp-requests: 4
+
+swagger:
+  group-name:
+    definition: ${spring.application.name}
+    scan-packages: com.revquix.backend
+  info:
+    title: Revquix Backend
+    version: v1
+    description: API Documentation for Revquix Backend Application
+    summary: The Revquix SM Application is a comprehensive blog platform integrated with advanced social media features, enabling users to create, share, and interact with content seamlessly. Built with Java 17 and Spring Boot, it supports blogging, user profiles, comments, likes, real-time notifications, and social sharing for an engaging community experience.
+    contact:
+      name: Revquix
+      email: support@revquix.com
+      url: https://www.revquix.com
+    license:
+      name: Apache 2 License
+      url: https://github.com/Revquix/revquix-backend/LICENSE
+  servers:
+    local:
+      name: Local Port
+      url: http://localhost:7001
+
+async:
+  executor:
+    core-pool-size: 10
+    max-pool-size: 20
+    queue-capacity: 100
+    keep-alive-seconds: 60
+    await-termination-seconds: 20
+    thread-name-prefix: revquix-async-

@@ -1,0 +1,12 @@
+roles:
+  data:
+    user:
+      id: user
+      role: user
+      description: Normal Role
+    admin:
+      id: admin
+      role: admin
+      internalRoles:
+        - user
+      description: All the access of the Application

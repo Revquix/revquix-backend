@@ -94,7 +94,7 @@ public class UserAuth extends ModelPayload<UserAuth> {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String username;
 
     @JsonIgnore
@@ -145,4 +145,6 @@ public class UserAuth extends ModelPayload<UserAuth> {
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private UserBadge userBadge = UserBadge.STANDARD;
+
+    private LocalDateTime lastUsernameChange;
 }

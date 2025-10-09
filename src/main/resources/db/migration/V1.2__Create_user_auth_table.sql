@@ -13,7 +13,7 @@ CREATE SEQUENCE auth.user_auth_id_seq START WITH 1
 CREATE TABLE auth.user_auth (
     user_id VARCHAR(255) PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
-    username VARCHAR(255) NOT NULL,
+    username VARCHAR(255),
     password VARCHAR(255) NOT NULL,
     is_email_verified BOOLEAN DEFAULT FALSE,
     is_enabled BOOLEAN DEFAULT TRUE,
@@ -24,7 +24,9 @@ CREATE TABLE auth.user_auth (
     last_password_change TIMESTAMP,
     register_ip VARCHAR(255),
     last_login_ip VARCHAR(255),
-    status VARCHAR(20) DEFAULT 'ACTIVE'
+    status VARCHAR(20) DEFAULT 'ACTIVE',
+    user_badge VARCHAR(20) DEFAULT 'STANDARD',
+    last_username_change TIMESTAMP
 );
 
 -- Add unique constraints

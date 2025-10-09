@@ -48,5 +48,5 @@ public class ServiceConstants {
     public static final String HTTP_METHOD = "httpMethod";
     public static final String PKCS12 = "PKCS12";
     public static final String USER_ID = "userId";
-
+    public static final String LOCAL = "local";
 }

@@ -36,6 +36,7 @@ package com.revquix.backend.application.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Data;
 import lombok.SneakyThrows;
 
@@ -54,6 +55,7 @@ public abstract class ModelPayload<A> {
             value = {JsonProcessingException.class}
     )
     public String toJson() {
+        objectMapper.registerModule(new JavaTimeModule());
         return objectMapper.writeValueAsString(this);
     }
 }
