@@ -74,4 +74,10 @@ public class UserAuthCache {
         String key = cacheService.generateKey(CacheConstants.USER_BY_ID_PREFIX, userAuth.getUserId());
         cacheService.put(key, userAuth);
     }
+
+    public void deleteById(String userId) {
+        log.info("{}::deleteById -> Deleting user auth cache for id: {}", this.getClass().getSimpleName(), userId);
+        String key = cacheService.generateKey(CacheConstants.USER_BY_ID_PREFIX, userId);
+        cacheService.delete(key);
+    }
 }

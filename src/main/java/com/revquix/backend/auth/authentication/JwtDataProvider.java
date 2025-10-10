@@ -34,7 +34,6 @@ package com.revquix.backend.auth.authentication;
   File: JwtDataProvider
  */
 
-import com.revquix.backend.application.constants.ServiceConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.jwt.Jwt;

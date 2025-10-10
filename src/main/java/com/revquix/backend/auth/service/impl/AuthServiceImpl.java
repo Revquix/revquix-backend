@@ -47,6 +47,7 @@ import com.revquix.backend.auth.payload.response.AuthResponse;
 import com.revquix.backend.auth.payload.response.ModuleResponse;
 import com.revquix.backend.auth.service.AuthService;
 import com.revquix.backend.auth.transformer.RegisterUserTransformer;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -71,11 +72,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<ModuleResponse> registerUser(String email, String password) {
         log.info("{}::registerUser -> Registering user with email: {}", this.getClass().getSimpleName(), email);
-        EmailValidator.validate(email.toLowerCase());
+        email = email.toLowerCase();
+        EmailValidator.validate(email);
         PasswordValidator.validate(password);
-        Optional<UserAuth> userAuthOptional = userAuthRepository.findByEmail(email.toLowerCase());
+        Optional<UserAuth> userAuthOptional = userAuthRepository.findByEmail(email);
         if (userAuthOptional.isPresent()) {
             log.info("{}::registerUser -> User already exists with email: {}", this.getClass().getSimpleName(), email);
             UserAuth userAuth = userAuthOptional.get();
@@ -84,6 +87,7 @@ public class AuthServiceImpl implements AuthService {
             } else {
                 log.warn("{}::registerUser -> Deleting User Auth Data as user not enabled and getting new request for register email: {}", this.getClass().getSimpleName(), email);
                 userAuthRepository.delete(userAuth);
+                userAuthCache.deleteById(userAuth.getUserId());
                 log.warn("{}::registerUser -> Deleted User Auth Data for email: {}", this.getClass().getSimpleName(), email);
             }
         }
@@ -92,7 +96,6 @@ public class AuthServiceImpl implements AuthService {
         log.info("{}::registerUser -> Registered user successfully with email: {}", this.getClass().getSimpleName(), email);
         userAuthCache.put(userAuth);
         applicationEventPublisher.publishEvent(new RegisterUserOtpEvent(userAuth, MdcUtils.getBreadcrumbId()));
-        userAuthCache.findById(userAuth.getUserId());
         return ResponseEntity.ok(
                 ModuleResponse
                         .builder()

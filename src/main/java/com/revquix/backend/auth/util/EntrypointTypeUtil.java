@@ -38,8 +38,6 @@ import com.revquix.backend.auth.enums.EntrypointType;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.regex.Pattern;
-
 @UtilityClass
 @Slf4j
 public class EntrypointTypeUtil {

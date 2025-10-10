@@ -28,10 +28,9 @@
 package com.revquix.backend.auth.processor;
 
 import com.revquix.backend.auth.dao.repository.RoleRepository;
-import com.revquix.backend.auth.properties.FetchRoleProperties;
-import com.revquix.backend.application.constants.ServiceConstants;
 import com.revquix.backend.auth.model.Role;
 import com.revquix.backend.auth.payload.RolePayload;
+import com.revquix.backend.auth.properties.FetchRoleProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
