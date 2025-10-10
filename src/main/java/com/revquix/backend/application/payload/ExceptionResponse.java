@@ -39,6 +39,8 @@ import com.revquix.backend.application.constants.ServiceConstants;
 import com.revquix.backend.application.utils.ModelPayload;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -53,6 +55,7 @@ public class ExceptionResponse extends ModelPayload<ExceptionResponse> {
     private String localizedMessage;
     private String httpStatus;
     private String errorType = ServiceConstants.DATA_ERROR;
+    private LocalDateTime timestamp = LocalDateTime.now();
 
     @Builder.Default
     private Boolean isTokenExpired = false;

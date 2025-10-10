@@ -60,7 +60,8 @@ public enum ErrorData {
     PASSWORD_MANDATORY("DE-20", "Password is mandatory to continue. Please enter valid password"),
     INVALID_PASSWORD("DE-21", "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character"),
     USER_ALREADY_REGISTERED("DE-22", "User is already registered with the given email address"),
-    USER_ROLE_NOT_FOUND("IE-23", "User role not found in the system"),;
+    USER_ROLE_NOT_FOUND("IE-23", "User role not found in the system"),
+    RATE_LIMIT_EXCEEDED("DE-24", "You have exceeded the number of allowed requests. Please try again later."),;
 
     private final String code;
     private final String message;

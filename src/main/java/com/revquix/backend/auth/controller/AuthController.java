@@ -122,7 +122,7 @@ public class AuthController {
     @PostMapping("/register-user")
     @RateLimit(
             type = RateLimitType.IP_BASED,
-            requestsPerMinute = 2,
+            requestsPerMinute = 10,
             requestsPerHour = 10,
             message = "User registration rate limit exceeded. Please try again later."
     )
@@ -133,6 +133,38 @@ public class AuthController {
         return LoggedResponse.call(
                 ()-> authService.registerUser(email, password),
                 "Register User",
+                log
+        );
+    }
+
+    @Operation(
+            summary = "Verify Registration OTP",
+            description = "Verifies the OTP sent to the user's email during registration.",
+            responses = {
+                    @ApiResponse(
+                            description = "OTP verified successfully.",
+                            responseCode = "200",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = AuthResponse.class)
+                            )
+                    )
+            }
+    )
+    @PostMapping("/register-otp")
+    @RateLimit(
+            type = RateLimitType.IP_BASED,
+            requestsPerMinute = 10,
+            requestsPerHour = 10,
+            message = "OTP Verification rate limit exceeded. Please try again later."
+    )
+    ResponseEntity<ModuleResponse> registerOtpVerification(
+            @Parameter(name = "userId", required = true, example = "UA0000001") @RequestParam String userId,
+            @Parameter(name = "otp", required = true, example = "1234") @RequestParam String otp
+    ) {
+        return LoggedResponse.call(
+                ()-> authService.registerOtpVerification(userId, otp),
+                "Register OTP Verification",
                 log
         );
     }

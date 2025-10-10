@@ -36,8 +36,11 @@ package com.revquix.backend.application.interceptors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revquix.backend.application.annotation.RateLimit;
+import com.revquix.backend.application.exception.ErrorData;
+import com.revquix.backend.application.payload.ExceptionResponse;
 import com.revquix.backend.application.payload.RateLimitResult;
 import com.revquix.backend.application.service.RateLimitService;
+import com.revquix.backend.application.utils.MdcUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -181,16 +184,17 @@ public class RateLimitInterceptor implements HandlerInterceptor {
         response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        Map<String, Object> errorResponse = Map.of(
-                "error", "Rate limit exceeded",
-                "message", message,
-                "type", result.getRateLimitType(),
-                "remainingRequests", result.getRemainingRequests(),
-                "resetTime", result.getResetTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                "timestamp", "2025-10-05 18:41:08"
-        );
+        ExceptionResponse exceptionResponse = ExceptionResponse
+                .builder()
+                .message(message)
+                .code(ErrorData.RATE_LIMIT_EXCEEDED.getCode())
+                .breadcrumbId(MdcUtils.getBreadcrumbId())
+                .localizedMessage(String.format("Rate limit exceeded. for type %s, remaining requests %s. Try again at %s", result.getResetTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
+                .errorType("Data Error")
+                .httpStatus(HttpStatus.TOO_MANY_REQUESTS.name())
+                .build();
 
-        response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+        response.getWriter().write(objectMapper.writeValueAsString(exceptionResponse));
         log.warn("Rate limit exceeded: {}", message);
     }
 

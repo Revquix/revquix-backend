@@ -41,4 +41,5 @@ import org.springframework.http.ResponseEntity;
 public interface AuthService {
     ResponseEntity<AuthResponse> token(String entrypoint, String password);
     ResponseEntity<ModuleResponse> registerUser(String email, String password);
+    ResponseEntity<ModuleResponse> registerOtpVerification(String userId, String otp);
 }
