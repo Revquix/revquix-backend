@@ -61,7 +61,11 @@ public enum ErrorData {
     INVALID_PASSWORD("DE-21", "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character"),
     USER_ALREADY_REGISTERED("DE-22", "User is already registered with the given email address"),
     USER_ROLE_NOT_FOUND("IE-23", "User role not found in the system"),
-    RATE_LIMIT_EXCEEDED("DE-24", "You have exceeded the number of allowed requests. Please try again later."),;
+    RATE_LIMIT_EXCEEDED("DE-24", "You have exceeded the number of allowed requests. Please try again later."),
+    NOT_OTP_FOR_REGISTER_FOUND("DE-25", "No OTP found for registration with the given email"),
+    INVALID_REGISTER_OTP("DE-26", "The OTP you have entered is invalid. Please try again with the OTP sent on your Email"),
+    USER_NOT_FOUND_BY_ID("DE-27", "No user found with the given id"),
+    REGISTRATION_OTP_EXPIRED("DE-28", "The OTP has expired. Please request a new OTP to continue with registration"),;
 
     private final String code;
     private final String message;

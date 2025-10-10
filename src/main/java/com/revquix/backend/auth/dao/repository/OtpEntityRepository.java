@@ -39,9 +39,12 @@ import com.revquix.backend.auth.enums.OtpStatus;
 import com.revquix.backend.auth.model.OtpEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface OtpEntityRepository extends JpaRepository<OtpEntity, String> {
 
     Optional<OtpEntity> findByEmailAndOtpForAndOtpStatus(String email, OtpFor otpFor, OtpStatus otpStatus);
+
+    Optional<OtpEntity> findByUserIdAndOtpForAndOtpStatus(String userId, OtpFor otpFor, OtpStatus otpStatus);
 }

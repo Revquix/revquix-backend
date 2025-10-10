@@ -52,13 +52,14 @@ public class ErrorResponseGeneratorUtil {
 
     public ExceptionResponse generate(BaseException exception) {
         String breadcrumbId = MDC.get(ServiceConstants.BREADCRUMB_ID);
+        String localizedMessage = exception.getCause() != null ? exception.getCause().getLocalizedMessage() : exception.getMessage();
         return ExceptionResponse
                 .builder()
                 .message(exception.getMessage())
                 .breadcrumbId(breadcrumbId)
                 .code(exception.getCode())
                 .httpStatus(exception.getHttpStatus().getReasonPhrase())
-                .localizedMessage(exception.getCause().getLocalizedMessage())
+                .localizedMessage(localizedMessage)
                 .errorType(exception.getCode().contains("-DE-") ? ServiceConstants.DATA_ERROR : ServiceConstants.INTERNAL_ERROR)
                 .build();
     }

@@ -38,10 +38,14 @@ import com.revquix.backend.application.exception.ErrorData;
 import com.revquix.backend.application.exception.payload.BadRequestException;
 import com.revquix.backend.application.utils.MdcUtils;
 import com.revquix.backend.auth.cache.UserAuthCache;
+import com.revquix.backend.auth.dao.repository.OtpEntityRepository;
 import com.revquix.backend.auth.dao.repository.UserAuthRepository;
+import com.revquix.backend.auth.enums.OtpFor;
+import com.revquix.backend.auth.enums.OtpStatus;
 import com.revquix.backend.auth.events.RegisterUserOtpEvent;
 import com.revquix.backend.auth.guardrails.EmailValidator;
 import com.revquix.backend.auth.guardrails.PasswordValidator;
+import com.revquix.backend.auth.model.OtpEntity;
 import com.revquix.backend.auth.model.UserAuth;
 import com.revquix.backend.auth.payload.response.AuthResponse;
 import com.revquix.backend.auth.payload.response.ModuleResponse;
@@ -54,6 +58,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -65,6 +70,7 @@ public class AuthServiceImpl implements AuthService {
     private final RegisterUserTransformer registerUserTransformer;
     private final UserAuthCache userAuthCache;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final OtpEntityRepository otpEntityRepository;
 
     @Override
     public ResponseEntity<AuthResponse> token(String entrypoint, String password) {
@@ -100,6 +106,52 @@ public class AuthServiceImpl implements AuthService {
                 ModuleResponse
                         .builder()
                         .message("User registered successfully. Please verify your email to activate your account.")
+                        .userId(userAuth.getUserId())
+                        .build()
+        );
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<ModuleResponse> registerOtpVerification(String userId, String otp) {
+        log.info("{}::registerOtpVerification -> Verifying OTP for userId: {}", this.getClass().getSimpleName(), userId);
+        OtpEntity otpEntity = otpEntityRepository.findByUserIdAndOtpForAndOtpStatus(
+                userId,
+                OtpFor.REGISTER,
+                OtpStatus.ACTIVE
+        ).orElseThrow(() -> new BadRequestException(ErrorData.NOT_OTP_FOR_REGISTER_FOUND));
+        if (!otpEntity.getOtp().equals(otp)) {
+            throw new BadRequestException(ErrorData.INVALID_REGISTER_OTP);
+        }
+        LocalDateTime now = LocalDateTime.now();
+        Optional<UserAuth> userAuthOptional = userAuthCache.findById(userId);
+        if (userAuthOptional.isEmpty()) {
+            otpEntity.setOtpStatus(OtpStatus.DELETED);
+            OtpEntity otpEntityResponse = otpEntityRepository.save(otpEntity);
+            log.info("{}::registerOtpVerification -> OTP marked as DELETED for userId: {}, response: {}", this.getClass().getSimpleName(), userId, otpEntityResponse.toJson());
+            throw new BadRequestException(ErrorData.USER_NOT_FOUND_BY_ID);
+        }
+        UserAuth userAuth = userAuthOptional.get();
+        if (Boolean.TRUE.equals(userAuth.isEmailVerified())) {
+            otpEntity.setOtpStatus(OtpStatus.DELETED);
+            OtpEntity otpEntityResponse = otpEntityRepository.save(otpEntity);
+            log.info("{}::registerOtpVerification -> OTP marked as DELETED for userId: {}, response: {}", this.getClass().getSimpleName(), userId, otpEntityResponse.toJson());
+            throw new BadRequestException(ErrorData.USER_ALREADY_REGISTERED);
+        }
+        if (otpEntity.getExpiryDate().isBefore(now)) {
+            throw new BadRequestException(ErrorData.REGISTRATION_OTP_EXPIRED);
+        }
+        userAuth.setEmailVerified(true);
+        UserAuth userAuthResponse = userAuthRepository.save(userAuth);
+        log.info("{}::registerOtpVerification -> User email verified successfully for userId: {}, response: {}", this.getClass().getSimpleName(), userId, userAuthResponse.toJson());
+        userAuthCache.put(userAuthResponse);
+        otpEntity.setOtpStatus(OtpStatus.DELETED);
+        OtpEntity otpEntityResponse = otpEntityRepository.save(otpEntity);
+        log.info("{}::registerOtpVerification -> OTP marked as DELETED for userId: {}, response: {}", this.getClass().getSimpleName(), userId, otpEntityResponse.toJson());
+        return ResponseEntity.ok(
+                ModuleResponse
+                        .builder()
+                        .message("User email verified successfully. You can now log in to your account.")
                         .userId(userAuth.getUserId())
                         .build()
         );

@@ -189,7 +189,7 @@ public class RateLimitInterceptor implements HandlerInterceptor {
                 .message(message)
                 .code(ErrorData.RATE_LIMIT_EXCEEDED.getCode())
                 .breadcrumbId(MdcUtils.getBreadcrumbId())
-                .localizedMessage(String.format("Rate limit exceeded. for type %s, remaining requests %s. Try again at %s", result.getResetTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
+                .localizedMessage(String.format("Rate limit exceeded. for type %s, remaining requests %s. Try again at %s", result.getRateLimitType(), result.getRemainingRequests(), result.getResetTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
                 .errorType("Data Error")
                 .httpStatus(HttpStatus.TOO_MANY_REQUESTS.name())
                 .build();

@@ -96,7 +96,6 @@ public class UserAuth extends ModelPayload<UserAuth> {
     @Column(unique = true)
     private String username;
 
-    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
