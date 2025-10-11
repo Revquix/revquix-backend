@@ -177,4 +177,33 @@ public class AuthController {
                 log
         );
     }
+
+    @Operation(
+            summary = "Refresh Authentication Token",
+            description = "Refreshes the JWT authentication token for a user using OTP verification.",
+            responses = {
+                    @ApiResponse(
+                            description = "OTP verified successfully.",
+                            responseCode = "200",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = AuthResponse.class)
+                            )
+                    )
+            }
+    )
+    @PostMapping("/refresh-token")
+    @RateLimit(
+            type = RateLimitType.IP_BASED,
+            requestsPerMinute = 10,
+            requestsPerHour = 20,
+            message = "Refresh token rate limit exceeded. Please try again later."
+    )
+    ResponseEntity<?> refreshToken() {
+        return LoggedResponse.call(
+                ()-> authService.refreshToken(),
+                "Register OTP Verification",
+                log
+        );
+    }
 }

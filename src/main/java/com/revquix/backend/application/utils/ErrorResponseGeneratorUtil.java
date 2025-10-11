@@ -36,17 +36,8 @@ import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 
-/**
- * Developer: Rohit Parihar
- * Project: bloggios-matching
- * GitHub: github.com/rohit-zip
- * File: ErrorResponseGeneratorUtil.java
- */
+import java.time.LocalDateTime;
 
-/**
- * ErrorResponseGeneratorUtil provides utility methods to generate standardized error responses
- * from exceptions.
- */
 @UtilityClass
 public class ErrorResponseGeneratorUtil {
 
@@ -61,6 +52,7 @@ public class ErrorResponseGeneratorUtil {
                 .httpStatus(exception.getHttpStatus().getReasonPhrase())
                 .localizedMessage(localizedMessage)
                 .errorType(exception.getCode().contains("DE-") ? ServiceConstants.DATA_ERROR : ServiceConstants.INTERNAL_ERROR)
+                .timestamp(LocalDateTime.now())
                 .build();
     }
 
@@ -73,6 +65,7 @@ public class ErrorResponseGeneratorUtil {
                 .code(ErrorData.ACCESS_DENIED_ERROR_CODE.getCode())
                 .httpStatus(HttpStatus.FORBIDDEN.getReasonPhrase())
                 .localizedMessage(exception.getMessage())
+                .timestamp(LocalDateTime.now())
                 .build();
     }
 }

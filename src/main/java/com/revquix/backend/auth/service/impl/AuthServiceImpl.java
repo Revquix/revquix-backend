@@ -37,6 +37,7 @@ package com.revquix.backend.auth.service.impl;
 import com.revquix.backend.application.exception.ErrorData;
 import com.revquix.backend.application.exception.payload.BadRequestException;
 import com.revquix.backend.application.utils.MdcUtils;
+import com.revquix.backend.auth.authentication.RefreshTokenAuthentication;
 import com.revquix.backend.auth.cache.UserAuthCache;
 import com.revquix.backend.auth.dao.repository.OtpEntityRepository;
 import com.revquix.backend.auth.dao.repository.UserAuthRepository;
@@ -52,6 +53,7 @@ import com.revquix.backend.auth.payload.response.ModuleResponse;
 import com.revquix.backend.auth.processor.AuthResponseGenerator;
 import com.revquix.backend.auth.service.AuthService;
 import com.revquix.backend.auth.transformer.RegisterUserTransformer;
+import com.revquix.backend.auth.util.RefreshTokenProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +63,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -79,6 +82,8 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final InstanceValidator instanceValidator;
     private final AuthResponseGenerator authResponseGenerator;
+    private final RefreshTokenProvider refreshTokenProvider;
+    private final RefreshTokenAuthentication refreshTokenAuthentication;
 
     @Override
     @Transactional
@@ -91,6 +96,7 @@ public class AuthServiceImpl implements AuthService {
         UserIdentity userIdentity = (UserIdentity) userAuthentication.getPrincipal();
         instanceValidator.validate(userIdentity);
         AuthResponse authResponse = authResponseGenerator.generate(userIdentity);
+        SecurityContextHolder.getContext().setAuthentication(userAuthentication);
         return ResponseEntity
                 .accepted()
                 .header(HttpHeaders.SET_COOKIE, authResponse.getRefreshTokenCookie().toString())
@@ -175,5 +181,20 @@ public class AuthServiceImpl implements AuthService {
                         .userId(userAuth.getUserId())
                         .build()
         );
+    }
+
+    @Override
+    public ResponseEntity<Object> refreshToken() {
+        log.info("{}::refreshToken -> Refresh token endpoint called", this.getClass().getSimpleName());
+        String refreshToken = refreshTokenProvider.get();
+        Authentication authentication = refreshTokenAuthentication.authenticate(refreshToken);
+        UserIdentity userIdentity = (UserIdentity) authentication.getPrincipal();
+        instanceValidator.validate(userIdentity);
+        AuthResponse authResponse = authResponseGenerator.generate(userIdentity);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return ResponseEntity
+                .accepted()
+                .header(HttpHeaders.SET_COOKIE, authResponse.getRefreshTokenCookie().toString())
+                .body(authResponse);
     }
 }
