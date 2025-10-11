@@ -103,6 +103,12 @@ public class AuthController {
             value = "/token",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
     )
+    @RateLimit(
+            type = RateLimitType.IP_BASED,
+            requestsPerMinute = 10,
+            requestsPerHour = 10,
+            message = "Too many login attempts from this IP, please try again later."
+    )
     ResponseEntity<AuthResponse> token(
             @Parameter(name = "entrypoint", required = true, example = "someone@example.com") @RequestParam String entrypoint,
             @Parameter(name = "password", required = true, example = "Hello@1234") @RequestParam String password

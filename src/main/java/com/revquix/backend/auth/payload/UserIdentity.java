@@ -35,6 +35,8 @@ package com.revquix.backend.auth.payload;
  */
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.revquix.backend.application.utils.MaskingSerializer;
 import com.revquix.backend.auth.enums.UserBadge;
 import com.revquix.backend.auth.model.Role;
 import com.revquix.backend.auth.model.UserAuth;
@@ -62,6 +64,8 @@ public class UserIdentity implements UserDetails {
     private String userId;
     private String email;
     private String username;
+
+    @JsonSerialize(using = MaskingSerializer.class)
     private String password;
     private boolean isEnabled;
     private boolean isAccountNonLocked;

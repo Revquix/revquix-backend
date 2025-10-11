@@ -82,7 +82,7 @@ rate-limiting:
   enabled: true
   ip-rate-limit:
     enabled: true
-    requests-per-minute: 60
+    request-per-minute: 60
     request-per-hour: 2000
     blocked-duration-minutes: 15
 

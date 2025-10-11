@@ -57,7 +57,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
 
 @Slf4j
 @Component
@@ -116,11 +115,11 @@ public class RateLimitInterceptor implements HandlerInterceptor {
 
         String ipAddress = getIdentifier(request, rateLimit, handlerMethod);
 
-        // Only IP-based rate limiting
-        RateLimitResult result = rateLimitService.checkRateLimit(ipAddress, rateLimit.requestsPerMinute(), 60);
+        // Check minute limit first
+        RateLimitResult minuteResult = rateLimitService.checkRateLimit(ipAddress, rateLimit.requestsPerMinute(), 60);
 
-        if (!result.isAllowed()) {
-            handleRateLimitExceeded(response, result, rateLimit.message());
+        if (!minuteResult.isAllowed()) {
+            handleRateLimitExceeded(response, minuteResult, rateLimit.message());
             return false;
         }
 
@@ -131,7 +130,8 @@ public class RateLimitInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        addRateLimitHeaders(response, result);
+        // Use the more restrictive result for headers (minute limit is typically more restrictive)
+        addRateLimitHeaders(response, minuteResult);
         return true;
     }
 

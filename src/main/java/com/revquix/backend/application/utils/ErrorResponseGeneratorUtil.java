@@ -64,7 +64,7 @@ public class ErrorResponseGeneratorUtil {
                 .breadcrumbId(breadcrumbId)
                 .code(ErrorData.ACCESS_DENIED_ERROR_CODE.getCode())
                 .httpStatus(HttpStatus.FORBIDDEN.getReasonPhrase())
-                .localizedMessage(exception.getMessage())
+                .localizedMessage(exception.getLocalizedMessage())
                 .timestamp(LocalDateTime.now())
                 .build();
     }
