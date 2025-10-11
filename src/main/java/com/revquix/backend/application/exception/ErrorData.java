@@ -65,7 +65,16 @@ public enum ErrorData {
     NOT_OTP_FOR_REGISTER_FOUND("DE-25", "No OTP found for registration with the given email"),
     INVALID_REGISTER_OTP("DE-26", "The OTP you have entered is invalid. Please try again with the OTP sent on your Email"),
     USER_NOT_FOUND_BY_ID("DE-27", "No user found with the given id"),
-    REGISTRATION_OTP_EXPIRED("DE-28", "The OTP has expired. Please request a new OTP to continue with registration"),;
+    REGISTRATION_OTP_EXPIRED("DE-28", "The OTP has expired. Please request a new OTP to continue with registration"),
+    ENTRYPOINT_MANDATORY("DE-29", "Please enter your email or username to continue"),
+    USERNAME_MANDATORY("DE-30", "Username is mandatory to continue. Please enter valid username"),
+    USERNAME_TOO_SHORT("DE-31", "Username must be at least 2 characters long"),
+    USERNAME_INVALID_CHARACTER("DE-32", "Username must not contain '@' character"),
+    USERNAME_INVALID_START("DE-33", "Username must start with a letter and contain only alphanumeric characters and underscores"),
+    USERNAME_TOO_LONG("DE-34", "Username must not exceed 16 characters"),
+    MULTIPLE_ACTIVE_PROFILES_FOUND("IE-35", "Multiple active profiles found for the application, please contact support team"),
+    NO_ACTIVE_PROFILE_FOUND("IE-36", "No active profile found for the application, please contact support team"),
+    REQUIRED_ROLES_NOT_PRESENT("DE-37", "You don't have required roles to access this Instance"),;
 
     private final String code;
     private final String message;

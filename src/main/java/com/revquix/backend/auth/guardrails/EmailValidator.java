@@ -37,10 +37,12 @@ package com.revquix.backend.auth.guardrails;
 import com.revquix.backend.application.exception.ErrorData;
 import com.revquix.backend.application.exception.payload.BadRequestException;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.regex.Pattern;
 
 @UtilityClass
+@Slf4j
 public class EmailValidator {
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile(
@@ -49,6 +51,7 @@ public class EmailValidator {
     );
 
     public static void validate(String email) throws BadRequestException {
+        log.info("{}::validate -> Validating email: {}", EmailValidator.class.getSimpleName(), email);
         if (email == null) {
             throw new BadRequestException(ErrorData.EMAIL_MANDATORY);
         }

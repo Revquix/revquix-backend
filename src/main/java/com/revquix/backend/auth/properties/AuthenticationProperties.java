@@ -41,6 +41,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @ConfigurationProperties(prefix = "auth")
 @Configuration
@@ -53,6 +54,7 @@ public class AuthenticationProperties {
     private TokenInfo info;
     private Cors cors;
     private OtpInfo otpInfo;
+    private Authorization authorization;
 
     @Getter
     @Setter
@@ -74,6 +76,7 @@ public class AuthenticationProperties {
         private int accessTokenExpiryMinutes;
         private int refreshTokenExpiryDays;
         private String refreshTokenCookieName;
+        private Boolean isProduction = true;
     }
 
     @Getter
@@ -107,5 +110,18 @@ public class AuthenticationProperties {
         private int otpExpiryMinutes = 10;
         private int maxOtpRequests = 5;
         private boolean logEnabled = false;
+    }
+
+    @Getter
+    @Setter
+    public static class Authorization {
+        private Map<String, RoleToAllow> rolesToAllow;
+    }
+
+    @Getter
+    @Setter
+    public static class RoleToAllow {
+        private String instance;
+        private List<String> mustRoles;
     }
 }

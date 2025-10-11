@@ -60,7 +60,7 @@ public class ErrorResponseGeneratorUtil {
                 .code(exception.getCode())
                 .httpStatus(exception.getHttpStatus().getReasonPhrase())
                 .localizedMessage(localizedMessage)
-                .errorType(exception.getCode().contains("-DE-") ? ServiceConstants.DATA_ERROR : ServiceConstants.INTERNAL_ERROR)
+                .errorType(exception.getCode().contains("DE-") ? ServiceConstants.DATA_ERROR : ServiceConstants.INTERNAL_ERROR)
                 .build();
     }
 

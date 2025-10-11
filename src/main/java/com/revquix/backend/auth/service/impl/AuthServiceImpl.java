@@ -43,19 +43,24 @@ import com.revquix.backend.auth.dao.repository.UserAuthRepository;
 import com.revquix.backend.auth.enums.OtpFor;
 import com.revquix.backend.auth.enums.OtpStatus;
 import com.revquix.backend.auth.events.RegisterUserOtpEvent;
-import com.revquix.backend.auth.guardrails.EmailValidator;
-import com.revquix.backend.auth.guardrails.PasswordValidator;
+import com.revquix.backend.auth.guardrails.*;
 import com.revquix.backend.auth.model.OtpEntity;
 import com.revquix.backend.auth.model.UserAuth;
+import com.revquix.backend.auth.payload.UserIdentity;
 import com.revquix.backend.auth.payload.response.AuthResponse;
 import com.revquix.backend.auth.payload.response.ModuleResponse;
+import com.revquix.backend.auth.processor.AuthResponseGenerator;
 import com.revquix.backend.auth.service.AuthService;
 import com.revquix.backend.auth.transformer.RegisterUserTransformer;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -71,10 +76,25 @@ public class AuthServiceImpl implements AuthService {
     private final UserAuthCache userAuthCache;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final OtpEntityRepository otpEntityRepository;
+    private final AuthenticationManager authenticationManager;
+    private final InstanceValidator instanceValidator;
+    private final AuthResponseGenerator authResponseGenerator;
 
     @Override
+    @Transactional
     public ResponseEntity<AuthResponse> token(String entrypoint, String password) {
-        return null;
+        log.info("{}::validate -> Validating token: {}", UsernameValidator.class.getSimpleName(), entrypoint);
+        entrypoint = entrypoint.toLowerCase();
+        EntrypointValidator.validate(entrypoint);
+        PasswordValidator.validate(password);
+        Authentication userAuthentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(entrypoint, password));
+        UserIdentity userIdentity = (UserIdentity) userAuthentication.getPrincipal();
+        instanceValidator.validate(userIdentity);
+        AuthResponse authResponse = authResponseGenerator.generate(userIdentity);
+        return ResponseEntity
+                .accepted()
+                .header(HttpHeaders.SET_COOKIE, authResponse.getRefreshTokenCookie().toString())
+                .body(authResponse);
     }
 
     @Override

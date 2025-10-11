@@ -25,24 +25,34 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.application.constants;
+package com.revquix.backend.auth.guardrails;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: ModelConstants
+  File: EntrypointValidator
  */
 
+import com.revquix.backend.application.exception.ErrorData;
+import com.revquix.backend.application.exception.payload.AuthenticationException;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
 @UtilityClass
-public class ModelConstants {
+@Slf4j
+public class EntrypointValidator {
 
-    public static final String AUTH_SCHEMA = "auth";
-    public static final String USER_AUTH_TABLE = "user_auth";
-    public static final String ROLE_TABLE = "role";
-    public static final String USER_ROLE_JOIN_TABLE = "user_role";
-    public static final String OTP_ENTITY_TABLE = "otp_entity";
-    public static final String REFRESH_TOKEN_TABLE = "refresh_token";
+    public void validate(String entrypoint) {
+        log.info("{}::validate -> Validating entrypoint: {}", EntrypointValidator.class.getSimpleName(), entrypoint);
+        if (entrypoint == null || entrypoint.isBlank()) {
+            throw new AuthenticationException(ErrorData.ENTRYPOINT_MANDATORY);
+        }
+        String lowerCaseEntrypoint = entrypoint.toLowerCase();
+        if (entrypoint.contains("@") && entrypoint.contains(".")) {
+            EmailValidator.validate(lowerCaseEntrypoint);
+        } else {
+            UsernameValidator.validate(lowerCaseEntrypoint);
+        }
+    }
 }

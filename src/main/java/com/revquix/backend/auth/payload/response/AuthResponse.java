@@ -50,10 +50,10 @@ import org.springframework.http.ResponseCookie;
 public class AuthResponse extends ModelPayload<AuthResponse> {
 
     private String accessToken;
-    private String expiresIn;
+    private long expiresIn;
     private String userId;
     private String tokenType = "Bearer";
-    private String expiresOn;
+    private long expiresOn;
 
     @JsonIgnore
     @Schema(hidden = true)

@@ -25,24 +25,52 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.application.constants;
+package com.revquix.backend.auth.model;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: ModelConstants
+  File: RefreshToken
  */
 
-import lombok.experimental.UtilityClass;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revquix.backend.application.constants.ModelConstants;
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@UtilityClass
-public class ModelConstants {
+import java.time.LocalDateTime;
 
-    public static final String AUTH_SCHEMA = "auth";
-    public static final String USER_AUTH_TABLE = "user_auth";
-    public static final String ROLE_TABLE = "role";
-    public static final String USER_ROLE_JOIN_TABLE = "user_role";
-    public static final String OTP_ENTITY_TABLE = "otp_entity";
-    public static final String REFRESH_TOKEN_TABLE = "refresh_token";
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Table(
+        name = ModelConstants.REFRESH_TOKEN_TABLE,
+        schema = ModelConstants.AUTH_SCHEMA
+)
+@EntityListeners(AuditingEntityListener.class)
+public class RefreshToken {
+
+    @Id
+    private String jti;
+
+    @Column(nullable = false, updatable = false)
+    private String userId;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime dateCreated;
+
+    @Column(nullable = false, updatable = false)
+    private long expiresIn;
+
+    @Column(nullable = false, updatable = false)
+    private String remoteAddress;
 }

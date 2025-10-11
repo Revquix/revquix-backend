@@ -25,24 +25,17 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.application.constants;
+package com.revquix.backend.auth.dao.repository;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: ModelConstants
+  File: RefreshTokenRepository
  */
 
-import lombok.experimental.UtilityClass;
+import com.revquix.backend.auth.model.RefreshToken;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@UtilityClass
-public class ModelConstants {
-
-    public static final String AUTH_SCHEMA = "auth";
-    public static final String USER_AUTH_TABLE = "user_auth";
-    public static final String ROLE_TABLE = "role";
-    public static final String USER_ROLE_JOIN_TABLE = "user_role";
-    public static final String OTP_ENTITY_TABLE = "otp_entity";
-    public static final String REFRESH_TOKEN_TABLE = "refresh_token";
+public interface RefreshTokenRepository extends JpaRepository<RefreshToken, String> {
 }

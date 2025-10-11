@@ -25,24 +25,50 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.application.constants;
+package com.revquix.backend.auth.guardrails;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: ModelConstants
+  File: UsernameValidator
  */
 
+import com.revquix.backend.application.exception.ErrorData;
+import com.revquix.backend.application.exception.payload.AuthenticationException;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.regex.Pattern;
 
 @UtilityClass
-public class ModelConstants {
+@Slf4j
+public class UsernameValidator {
 
-    public static final String AUTH_SCHEMA = "auth";
-    public static final String USER_AUTH_TABLE = "user_auth";
-    public static final String ROLE_TABLE = "role";
-    public static final String USER_ROLE_JOIN_TABLE = "user_role";
-    public static final String OTP_ENTITY_TABLE = "otp_entity";
-    public static final String REFRESH_TOKEN_TABLE = "refresh_token";
+    private static final Pattern VALID_USERNAME_PATTERN = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_]*$");
+    private static final int MIN_LENGTH = 2;
+    private static final int MAX_LENGTH = 16;
+
+    public static void validate(String username) {
+        log.info("{}::validate -> Validating username: {}", UsernameValidator.class.getSimpleName(), username);
+        if (username == null || username.isBlank()) {
+            throw new AuthenticationException(ErrorData.USERNAME_MANDATORY);
+        }
+
+        if (username.length() < MIN_LENGTH) {
+            throw new AuthenticationException(ErrorData.USERNAME_TOO_SHORT);
+        }
+
+        if (username.length() > MAX_LENGTH) {
+            throw new AuthenticationException(ErrorData.USERNAME_TOO_LONG);
+        }
+
+        if (username.contains("@")) {
+            throw new AuthenticationException(ErrorData.USERNAME_INVALID_CHARACTER);
+        }
+
+        if (!VALID_USERNAME_PATTERN.matcher(username).matches()) {
+            throw new AuthenticationException(ErrorData.USERNAME_INVALID_START);
+        }
+    }
 }

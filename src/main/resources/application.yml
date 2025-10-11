@@ -27,6 +27,8 @@ spring:
       max-file-size: 100MB
   application:
     name: revquix-backend
+  profiles:
+    active: local
   datasource:
     url: jdbc:postgresql://${PGHOST:localhost}:${PGPORT:5437}/${POSTGRES_DB:revquix}
     hikari:
@@ -99,6 +101,7 @@ auth:
     access-token-expiry-minutes: 20
     refresh-token-expiry-days: 30
     refresh-token-cookie-name: revquix-refresh-token
+    is-production: true
   exclude-paths:
     paths:
       - /v1/auth/**
@@ -117,6 +120,23 @@ auth:
       otp-expiry-minutes: 10
       mail-enabled: true
       max-otp-requests: 4
+  authorization:
+    roles-to-allow:
+      local:
+        instance: local
+        must-roles:
+          - user
+          - developer
+      dev:
+        instance: dev
+        must-roles:
+          - user
+          - developer
+          - tester
+      production:
+        instance: production
+        must-roles:
+          - user
 
 swagger:
   group-name:
@@ -147,3 +167,7 @@ async:
     keep-alive-seconds: 60
     await-termination-seconds: 20
     thread-name-prefix: revquix-async-
+
+logging:
+  level:
+    com.revquix.backend: DEBUG

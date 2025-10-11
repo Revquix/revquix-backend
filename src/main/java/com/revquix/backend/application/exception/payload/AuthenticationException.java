@@ -50,5 +50,12 @@ public class AuthenticationException extends BaseException {
         this.setCause(super.getCause());
         this.setHttpStatus(HttpStatus.UNAUTHORIZED);
     }
+
+    public AuthenticationException(ErrorData errorData, HttpStatus httpStatus) {
+        this.setMessage(errorData.getMessage());
+        this.setCode(errorData.getCode());
+        this.setCause(super.getCause());
+        this.setHttpStatus(httpStatus);
+    }
 }
 

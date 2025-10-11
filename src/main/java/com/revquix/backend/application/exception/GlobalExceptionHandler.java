@@ -35,6 +35,7 @@ package com.revquix.backend.application.exception;
  */
 
 import com.revquix.backend.application.constants.ServiceConstants;
+import com.revquix.backend.application.exception.payload.AuthenticationException;
 import com.revquix.backend.application.exception.payload.BadRequestException;
 import com.revquix.backend.application.payload.ExceptionResponse;
 import com.revquix.backend.application.utils.ErrorResponseGeneratorUtil;
@@ -51,7 +52,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ExceptionResponse> badRequestException(BadRequestException exception) {
-        log.error("BadRequestException Occurred >> {}", exception.toJson());
+        log.error("BadRequestException Occurred >> {}", exception.getMessage());
+        ExceptionResponse exceptionResponse = ErrorResponseGeneratorUtil.generate(exception);
+        return new ResponseEntity<>(
+                exceptionResponse,
+                exception.getHttpStatus()
+        );
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ExceptionResponse> authenticationException(AuthenticationException exception) {
+        log.error("AuthenticationException Occurred >> {}", exception.getMessage());
         ExceptionResponse exceptionResponse = ErrorResponseGeneratorUtil.generate(exception);
         return new ResponseEntity<>(
                 exceptionResponse,
