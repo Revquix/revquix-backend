@@ -74,7 +74,10 @@ public enum ErrorData {
     USERNAME_TOO_LONG("DE-34", "Username must not exceed 16 characters"),
     MULTIPLE_ACTIVE_PROFILES_FOUND("IE-35", "Multiple active profiles found for the application, please contact support team"),
     NO_ACTIVE_PROFILE_FOUND("IE-36", "No active profile found for the application, please contact support team"),
-    REQUIRED_ROLES_NOT_PRESENT("DE-37", "You don't have required roles to access this Instance"),;
+    REQUIRED_ROLES_NOT_PRESENT("DE-37", "You don't have required roles to access this Instance"),
+    USER_NOT_ACTIVE("DE-38", "User is not active or might be deleted"),
+    INVALID_REMOTE_ADDRESS("DE-39", "Remote address is not valid, please login again"),
+    INVALID_TOKEN_JTI("DE-40", "The token identifier (jti) is invalid, please login again"),;
 
     private final String code;
     private final String message;

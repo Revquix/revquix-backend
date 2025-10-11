@@ -70,6 +70,7 @@ public class RateLimitInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        log.debug("{}::preHandle -> Checking rate limits for request: {}", this.getClass().getSimpleName(), request.getRequestURI());
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }

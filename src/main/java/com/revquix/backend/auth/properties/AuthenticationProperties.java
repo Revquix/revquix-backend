@@ -77,6 +77,8 @@ public class AuthenticationProperties {
         private int refreshTokenExpiryDays;
         private String refreshTokenCookieName;
         private Boolean isProduction = true;
+        private Boolean isRemoteAddressAuthentication = true;
+        private Boolean isRefreshTokenAuthentication = true;
     }
 
     @Getter

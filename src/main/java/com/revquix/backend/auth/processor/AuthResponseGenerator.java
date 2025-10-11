@@ -36,6 +36,7 @@ package com.revquix.backend.auth.processor;
 
 import com.revquix.backend.application.utils.IpUtils;
 import com.revquix.backend.auth.authentication.JwtTokenGenerator;
+import com.revquix.backend.auth.cache.RefreshTokenCache;
 import com.revquix.backend.auth.dao.repository.RefreshTokenRepository;
 import com.revquix.backend.auth.model.RefreshToken;
 import com.revquix.backend.auth.payload.UserIdentity;
@@ -66,6 +67,7 @@ public class AuthResponseGenerator {
     private final IpUtils ipUtils;
     private final RefreshTokenRepository refreshTokenRepository;
     private final AuthenticationProperties authenticationProperties;
+    private final RefreshTokenCache refreshTokenCache;
 
     @SneakyThrows
     public AuthResponse generate(UserIdentity userIdentity) {
@@ -76,6 +78,7 @@ public class AuthResponseGenerator {
         RefreshToken refreshToken = build(userIdentity, jti, refreshTokenResponse);
         RefreshToken save = refreshTokenRepository.save(refreshToken);
         log.info("{}::generate -> Saved RefreshToken with ID: {} for userId: {}", AuthResponseGenerator.class.getSimpleName(), save.getJti(), userIdentity.getUserId());
+        refreshTokenCache.put(save);
         ResponseCookie responseCookie = getAuthResponseCookie(refreshTokenResponse.getRefreshToken());
         return AuthResponse
                 .builder()

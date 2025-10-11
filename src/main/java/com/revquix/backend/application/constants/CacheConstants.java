@@ -38,4 +38,5 @@ public class CacheConstants {
 
     public static final String USER_BY_ID_PREFIX = "userAuth:userId";
     public static final String ROLE_BY_ID_PREFIX = "role:roleId";
+    public static final String REFRESH_TOKEN_BY_ID_PREFIX = "refreshToken:jti";
 }

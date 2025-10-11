@@ -53,12 +53,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtValidationException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Collection;
 
 @Component
@@ -72,7 +74,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        log.debug("JwtAuthenticationFilter::doFilterInternal -> Inside JWT Authentication Filter");
+        log.error("JwtAuthenticationFilter::doFilterInternal -> Inside JWT Authentication Filter");
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
@@ -83,7 +85,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         try {
-            jwtDecoder.decode(token);
+            Jwt jwt = jwtDecoder.decode(token);
+            if (isExpired(jwt)) {
+                handleExpiredToken(response);
+                return;
+            }
         } catch (JwtValidationException exception) {
             handleJwtValidationException(exception, response);
             return;
@@ -138,6 +144,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 .breadcrumbId(MDC.get(ServiceConstants.BREADCRUMB_ID))
                 .isTokenExpired(false)
                 .localizedMessage(exception.getMessage())
+                .build();
+        OutputStreamUtil.getOutputStream(new OutputStreamErrorPayload(HttpStatus.UNAUTHORIZED, exceptionResponse, response));
+    }
+
+    private boolean isExpired(Jwt jwt) {
+        log.info("{}::handleExpiration -> Validating token expiration", getClass().getSimpleName());
+        Instant expiration = jwt.getExpiresAt();
+        if (expiration != null && expiration.isBefore(Instant.now())) {
+            log.error("{}::handleExpiration -> Token is expired", getClass().getSimpleName());
+            return true;
+        }
+        return false;
+    }
+
+    private void handleExpiredToken(HttpServletResponse response) throws IOException {
+        ExceptionResponse exceptionResponse = ExceptionResponse
+                .builder()
+                .code(ErrorData.TOKEN_EXPIRED.getCode())
+                .message(ErrorData.TOKEN_EXPIRED.getMessage())
+                .breadcrumbId(MDC.get(ServiceConstants.BREADCRUMB_ID))
+                .isTokenExpired(true)
                 .build();
         OutputStreamUtil.getOutputStream(new OutputStreamErrorPayload(HttpStatus.UNAUTHORIZED, exceptionResponse, response));
     }

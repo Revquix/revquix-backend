@@ -102,6 +102,8 @@ auth:
     refresh-token-expiry-days: 30
     refresh-token-cookie-name: revquix-refresh-token
     is-production: true
+    is-remote-address-authentication: true
+    is-refresh-token-authentication: true
   exclude-paths:
     paths:
       - /v1/auth/**
@@ -126,7 +128,6 @@ auth:
         instance: local
         must-roles:
           - user
-          - developer
       dev:
         instance: dev
         must-roles:
