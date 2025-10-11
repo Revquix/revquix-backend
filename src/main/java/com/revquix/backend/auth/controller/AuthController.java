@@ -38,6 +38,7 @@ import com.revquix.backend.application.annotation.RateLimit;
 import com.revquix.backend.application.enums.RateLimitType;
 import com.revquix.backend.application.payload.ExceptionResponse;
 import com.revquix.backend.application.utils.LoggedResponse;
+import com.revquix.backend.auth.payload.request.TokenRequest;
 import com.revquix.backend.auth.payload.response.AuthResponse;
 import com.revquix.backend.auth.payload.response.ModuleResponse;
 import com.revquix.backend.auth.service.AuthService;
@@ -53,10 +54,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/auth")
@@ -82,6 +80,14 @@ public class AuthController {
     @Operation(
             summary = "Generate Authentication Token for User",
             description = "Generates a JWT authentication token for a user based on their entrypoint (email/username) and password.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Login credentials",
+                    required = true,
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+                            schema = @Schema(implementation = TokenRequest.class)
+                    )
+            ),
             responses = {
                     @ApiResponse(
                             description = "Authentication token generated successfully.",
@@ -93,11 +99,14 @@ public class AuthController {
                     )
             }
     )
-    @PostMapping("/token")
+    @PostMapping(
+            value = "/token",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+    )
     ResponseEntity<AuthResponse> token(
             @Parameter(name = "entrypoint", required = true, example = "someone@example.com") @RequestParam String entrypoint,
             @Parameter(name = "password", required = true, example = "Hello@1234") @RequestParam String password
-    ) {
+            ) {
         return LoggedResponse.call(
                 ()-> authService.token(entrypoint, password),
                 "Token",

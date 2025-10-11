@@ -87,6 +87,7 @@ public class AuthResponseGenerator {
                 .userId(userIdentity.getUserId())
                 .expiresOn(accessTokenResponse.getExpiresOn())
                 .refreshTokenCookie(responseCookie)
+                .tokenType("Bearer")
                 .build();
     }
 
