@@ -67,7 +67,7 @@ public class SendRegistrationOtpMail {
     }
 
     private String prepareContext(RegistrationOtpPayload registrationOtpPayload) {
-        log.info("SendRegistrationOtpMail::prepareContext -> Preparing email context for Registration OTP mail {}");
+        log.info("{}::prepareContext -> Preparing email context for Registration OTP mail", getClass().getSimpleName());
         MailProperties.Registration registration = mailProperties.getZeptoMail().getRegistration();
         Context context = new Context();
         context.setVariable(registration.getContext(), registrationOtpPayload);
