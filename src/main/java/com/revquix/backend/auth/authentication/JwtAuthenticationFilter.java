@@ -74,7 +74,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        log.error("JwtAuthenticationFilter::doFilterInternal -> Inside JWT Authentication Filter");
+        log.debug("JwtAuthenticationFilter::doFilterInternal -> Inside JWT Authentication Filter");
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;

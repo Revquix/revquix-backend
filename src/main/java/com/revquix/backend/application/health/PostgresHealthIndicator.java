@@ -25,26 +25,43 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.auth.authentication;
+package com.revquix.backend.application.health;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+/*
+  Developer: Rohit Parihar
+  Project: revquix-backend
+  GitHub: github.com/rohit-zip
+  File: PostgresHealthIndicator
+ */
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-
 @Component
+@RequiredArgsConstructor
 @Slf4j
-public class RevquixAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class PostgresHealthIndicator implements HealthIndicator {
+
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        if (response.isCommitted()) return;
-        log.error("{}::commence >> Unauthorized -> {}, path: {}", getClass().getSimpleName(), authException.getMessage(), request.getRequestURI());
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-                "Unauthorized");
+    public Health health() {
+        try {
+            jdbcTemplate.queryForObject("SELECT 1", Integer.class);
+            log.info("PostgresHealth :: Postgres seems to be healthy");
+            return Health.up()
+                    .withDetail("postgresql", "Available")
+                    .build();
+        } catch (Exception exception) {
+            log.error("PostgresHealth :: Postgres seems to be unhealthy", exception);
+            return Health.down()
+                    .withDetail("postgresql", "Not reachable")
+                    .withException(exception)
+                    .build();
+        }
     }
 }
