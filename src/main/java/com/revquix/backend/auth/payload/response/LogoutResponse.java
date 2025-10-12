@@ -25,23 +25,36 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.auth.service;
+package com.revquix.backend.auth.payload.response;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: AuthService
+  File: LogoutResponse
  */
 
-import com.revquix.backend.auth.payload.response.AuthResponse;
-import com.revquix.backend.auth.payload.response.ModuleResponse;
-import org.springframework.http.ResponseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revquix.backend.application.utils.ModelPayload;
+import lombok.*;
 
-public interface AuthService {
-    ResponseEntity<AuthResponse> token(String entrypoint, String password);
-    ResponseEntity<ModuleResponse> registerUser(String email, String password);
-    ResponseEntity<ModuleResponse> registerOtpVerification(String userId, String otp);
-    ResponseEntity<AuthResponse> refreshToken();
-    ResponseEntity<Object> logout();
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class LogoutResponse extends ModelPayload<LogoutResponse> {
+
+    @Builder.Default
+    private String message = "User logged out successfully";
+
+    @Builder.Default
+    private boolean success = true;
+    private String localizedMessage;
+
+    @Builder.Default
+    private LocalDateTime timestamp = LocalDateTime.now();
 }

@@ -49,8 +49,11 @@ import com.revquix.backend.auth.model.OtpEntity;
 import com.revquix.backend.auth.model.UserAuth;
 import com.revquix.backend.auth.payload.UserIdentity;
 import com.revquix.backend.auth.payload.response.AuthResponse;
+import com.revquix.backend.auth.payload.response.LogoutResponse;
 import com.revquix.backend.auth.payload.response.ModuleResponse;
 import com.revquix.backend.auth.processor.AuthResponseGenerator;
+import com.revquix.backend.auth.processor.LogoutProcessor;
+import com.revquix.backend.auth.properties.AuthenticationProperties;
 import com.revquix.backend.auth.service.AuthService;
 import com.revquix.backend.auth.transformer.RegisterUserTransformer;
 import com.revquix.backend.auth.util.RefreshTokenProvider;
@@ -59,6 +62,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -86,6 +90,8 @@ public class AuthServiceImpl implements AuthService {
     private final RefreshTokenProvider refreshTokenProvider;
     private final RefreshTokenAuthentication refreshTokenAuthentication;
     private final PasswordEncoder passwordEncoder;
+    private final LogoutProcessor logoutProcessor;
+    private final AuthenticationProperties authenticationProperties;
 
     @Override
     @Transactional
@@ -186,7 +192,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<Object> refreshToken() {
+    @Transactional
+    public ResponseEntity<AuthResponse> refreshToken() {
         log.info("{}::refreshToken -> Refresh token endpoint called", this.getClass().getSimpleName());
         String refreshToken = refreshTokenProvider.get();
         Authentication authentication = refreshTokenAuthentication.authenticate(refreshToken);
@@ -198,5 +205,25 @@ public class AuthServiceImpl implements AuthService {
                 .accepted()
                 .header(HttpHeaders.SET_COOKIE, authResponse.getRefreshTokenCookie().toString())
                 .body(authResponse);
+    }
+
+    @Override
+    public ResponseEntity<Object> logout() {
+        log.info("{}::logout", this.getClass().getSimpleName());
+        String message = logoutProcessor.process();
+        AuthenticationProperties.TokenInfo tokenInfo = authenticationProperties.getInfo();
+        ResponseCookie clearCookie = ResponseCookie
+                .from(tokenInfo.getRefreshTokenCookieName(), null)
+                .httpOnly(true)
+                .maxAge(0L)
+                .path("/")
+                .sameSite(tokenInfo.getIsProduction() ? "Strict" : "Lax")
+                .secure(tokenInfo.getIsProduction())
+                .domain(null)
+                .build();
+        return ResponseEntity
+                .accepted()
+                .header(HttpHeaders.SET_COOKIE, clearCookie.toString())
+                .body(LogoutResponse.builder().localizedMessage(message).build());
     }
 }

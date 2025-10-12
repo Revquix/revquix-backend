@@ -211,7 +211,36 @@ public class AuthController {
     ResponseEntity<?> refreshToken() {
         return LoggedResponse.call(
                 ()-> authService.refreshToken(),
-                "Register OTP Verification",
+                "Refresh Token",
+                log
+        );
+    }
+
+    @Operation(
+            summary = "Logout User",
+            description = "Logs out the currently authenticated user by invalidating their session or token.",
+            responses = {
+                    @ApiResponse(
+                            description = "User logged out successfully.",
+                            responseCode = "200",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Void.class)
+                            )
+                    )
+            }
+    )
+    @PostMapping("/logout")
+    @RateLimit(
+            type = RateLimitType.IP_BASED,
+            requestsPerMinute = 10,
+            requestsPerHour = 20,
+            message = "Logout rate limit exceeded. Please try again later."
+    )
+    ResponseEntity<?> logout() {
+        return LoggedResponse.call(
+                ()-> authService.logout(),
+                "Logout",
                 log
         );
     }
