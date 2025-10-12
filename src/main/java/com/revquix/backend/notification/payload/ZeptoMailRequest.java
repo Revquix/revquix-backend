@@ -25,21 +25,21 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.auth.payload.response;
+package com.revquix.backend.notification.payload;
 
 /*
   Developer: Rohit Parihar
-  Project: revquix-backend
+  Project: revquix-sm
   GitHub: github.com/rohit-zip
-  File: ModuleResponse
+  File: ZeptoMailRequest
  */
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.revquix.backend.application.utils.ModelPayload;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -47,13 +47,37 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ModuleResponse extends ModelPayload<ModuleResponse> {
+public class ZeptoMailRequest extends ModelPayload<ZeptoMailRequest> {
 
-    private String message;
-    private String userId;
-    private String id;
+    private From from;
+    private List<To> to;
+    private String subject;
 
-    @Builder.Default
-    private LocalDateTime timestamp = LocalDateTime.now();
+    @JsonProperty("htmlbody")
+    private String htmlBody;
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class From {
+        private String address;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class To {
+        @JsonProperty("email_address")
+        private EmailAddress emailAddress;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class EmailAddress {
+        private String address;
+    }
 }

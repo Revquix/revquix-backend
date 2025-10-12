@@ -25,35 +25,54 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.auth.payload.response;
+package com.revquix.backend.notification.properties;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: ModuleResponse
+  File: MailProperties
  */
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.revquix.backend.application.utils.ModelPayload;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDateTime;
-
+@Configuration
+@ConfigurationProperties(prefix = "mail")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ModuleResponse extends ModelPayload<ModuleResponse> {
+public class MailProperties {
 
-    private String message;
-    private String userId;
-    private String id;
+    private ZeptoMail zeptoMail;
 
-    @Builder.Default
-    private LocalDateTime timestamp = LocalDateTime.now();
+    @Getter
+    @Setter
+    public static class ZeptoMail {
+        private String apiUrl;
+        private String apiKey;
+        private int timeoutSeconds;
+
+        private Registration registration;
+        private ForgotPassword forgotPassword;
+    }
+
+    @Getter
+    @Setter
+    public static class Registration {
+        private String prefix;
+        private String subject;
+        private String template;
+        private String context;
+    }
+
+    @Getter
+    @Setter
+    public static class ForgotPassword {
+        private String prefix;
+        private String subject;
+        private String template;
+        private String context;
+    }
 }

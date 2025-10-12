@@ -25,28 +25,27 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.auth.events;
+package com.revquix.backend.application.config;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: RegisterUserOtpEvent
+  File: WebClientConfig
  */
 
-import com.revquix.backend.auth.model.UserAuth;
-import lombok.Getter;
-import org.springframework.context.ApplicationEvent;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.WebClient;
 
-@Getter
-public class RegisterUserOtpEvent extends ApplicationEvent {
+@Configuration
+public class WebClientConfig {
 
-    private final UserAuth userAuth;
-    private String breadcrumbId;
-
-    public RegisterUserOtpEvent(UserAuth userAuth, String breadcrumbId) {
-        super(userAuth);
-        this.userAuth = userAuth;
-        this.breadcrumbId = breadcrumbId;
+    @Bean
+    public WebClient webClient() {
+        return WebClient
+                .builder()
+                .codecs(clientCodecConfigurer -> clientCodecConfigurer.defaultCodecs().maxInMemorySize(1024 * 1024 * 10))
+                .build();
     }
 }

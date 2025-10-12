@@ -52,6 +52,8 @@ public class AuthResponse extends ModelPayload<AuthResponse> {
     private String accessToken;
     private long expiresIn;
     private String userId;
+
+    @Builder.Default
     private String tokenType = "Bearer";
     private long expiresOn;
 

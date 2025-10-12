@@ -41,6 +41,8 @@ import com.revquix.backend.auth.model.OtpEntity;
 import com.revquix.backend.auth.model.UserAuth;
 import com.revquix.backend.auth.properties.AuthenticationProperties;
 import com.revquix.backend.auth.util.OtpGenerator;
+import com.revquix.backend.notification.payload.RegistrationOtpPayload;
+import com.revquix.backend.notification.processor.SendRegistrationOtpMail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,6 +59,7 @@ public class RegistrationOtpProcessor {
     private final OtpEntityRepository otpEntityRepository;
     private final AuthenticationProperties authenticationProperties;
     private final PasswordEncoder passwordEncoder;
+    private final SendRegistrationOtpMail sendRegistrationOtpMail;
 
     public void process(UserAuth userAuth) {
         log.info("{}::process -> Processing Register OTP: {}", this.getClass().getSimpleName(), userAuth.getEmail());
@@ -94,7 +97,7 @@ public class RegistrationOtpProcessor {
         log.info("{}::process -> New OtpEntity saved successfully for email: {}, otpEntity: {}", this.getClass().getSimpleName(), userAuth.getEmail(), otpEntityResponse.toJson());
         if (registration.isMailEnabled()) {
             log.info("{}::process -> Registration OTP mail sending is enabled, OTP: {}", this.getClass().getSimpleName(), otpEntity.getOtp());
-            // Send Mail
+            sendRegistrationOtpMail.execute(new RegistrationOtpPayload(otp, otpEntity.getEmail()));
         }
         if (registration.isLogEnabled()) {
             log.info("{}::process -> Registration OTP for email: {}, otp: {}", this.getClass().getSimpleName(), userAuth.getEmail(), otp);

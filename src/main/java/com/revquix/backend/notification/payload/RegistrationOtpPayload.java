@@ -25,21 +25,20 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.auth.payload.response;
+package com.revquix.backend.notification.payload;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: ModuleResponse
+  File: RegistrationOtpPayload
  */
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.revquix.backend.application.utils.MaskingSerializer;
 import com.revquix.backend.application.utils.ModelPayload;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -47,13 +46,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ModuleResponse extends ModelPayload<ModuleResponse> {
+public class RegistrationOtpPayload extends ModelPayload<RegistrationOtpPayload> {
 
-    private String message;
-    private String userId;
-    private String id;
+    @JsonSerialize(using = MaskingSerializer.class)
+    private String otp;
 
-    @Builder.Default
-    private LocalDateTime timestamp = LocalDateTime.now();
+    private String email;
 }

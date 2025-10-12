@@ -43,7 +43,6 @@ import com.revquix.backend.auth.dao.repository.OtpEntityRepository;
 import com.revquix.backend.auth.dao.repository.UserAuthRepository;
 import com.revquix.backend.auth.enums.OtpFor;
 import com.revquix.backend.auth.enums.OtpStatus;
-import com.revquix.backend.auth.events.RegisterUserOtpEvent;
 import com.revquix.backend.auth.guardrails.*;
 import com.revquix.backend.auth.model.OtpEntity;
 import com.revquix.backend.auth.model.UserAuth;
@@ -53,6 +52,7 @@ import com.revquix.backend.auth.payload.response.LogoutResponse;
 import com.revquix.backend.auth.payload.response.ModuleResponse;
 import com.revquix.backend.auth.processor.AuthResponseGenerator;
 import com.revquix.backend.auth.processor.LogoutProcessor;
+import com.revquix.backend.auth.processor.RegistrationOtpProcessor;
 import com.revquix.backend.auth.properties.AuthenticationProperties;
 import com.revquix.backend.auth.service.AuthService;
 import com.revquix.backend.auth.transformer.RegisterUserTransformer;
@@ -92,6 +92,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final LogoutProcessor logoutProcessor;
     private final AuthenticationProperties authenticationProperties;
+    private final RegistrationOtpProcessor registrationOtpProcessor;
 
     @Override
     @Transactional
@@ -135,7 +136,7 @@ public class AuthServiceImpl implements AuthService {
         UserAuth userAuth = userAuthRepository.save(transformedUserAuth);
         log.info("{}::registerUser -> Registered user successfully with email: {}", this.getClass().getSimpleName(), email);
         userAuthCache.put(userAuth);
-        applicationEventPublisher.publishEvent(new RegisterUserOtpEvent(userAuth, MdcUtils.getBreadcrumbId()));
+        registrationOtpProcessor.process(userAuth);
         return ResponseEntity.ok(
                 ModuleResponse
                         .builder()

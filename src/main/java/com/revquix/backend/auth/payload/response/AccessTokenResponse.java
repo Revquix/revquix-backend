@@ -46,6 +46,8 @@ import lombok.*;
 public class AccessTokenResponse {
 
     private String accessToken;
+
+    @Builder.Default
     private String tokenType = "Bearer";
     private long expiresIn;
     private long expiresOn;

@@ -98,7 +98,8 @@ public enum ErrorData {
     USER_NOT_ENABLED_THIRD("DE-58", "User is not enabled or might be deleted. So cannot assign roles to that user"),
     ACCOUNT_LOCKED_THIRD("DE-59", "User account is locked. So cannot assign roles to that user"),
     EMAIL_NOT_VERIFIED_THIRD("DE-60", "Given user hasn't verified their email yet. So cannot assign roles to that user"),
-    CANNOT_ASSIGN_ROLE_TO_SELF("DE-61", "You cannot assign roles to yourself");
+    CANNOT_ASSIGN_ROLE_TO_SELF("DE-61", "You cannot assign roles to yourself"),
+    FAILED_TO_SEND_MAIL_API_ERROR("DE-62", "Failed to send email, please try again later or contact support team"),;
 
     private final String code;
     private final String message;

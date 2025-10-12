@@ -174,3 +174,19 @@ logging:
     com.revquix.backend: INFO
     org.springframework.web: WARN
     org.hibernate: WARN
+
+mail:
+  zepto-mail:
+    api-key: ${ZEPTO_MAIL_API_KEY}
+    api-url: https://api.zeptomail.in/v1.1/email
+    timeout-seconds: 60
+    registration:
+      prefix: welcome
+      subject: Revquix - Verify Your Email Address
+      template: RegistrationOtpMail
+      context: otpPayload
+    forgot-password:
+      prefix: no-reply
+      subject: Revquix - Password Reset Request
+      template: ForgotPasswordOtpMail
+      context: otpPayload
