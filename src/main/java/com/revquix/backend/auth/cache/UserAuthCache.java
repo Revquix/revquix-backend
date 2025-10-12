@@ -57,7 +57,6 @@ public class UserAuthCache {
         String key = cacheService.generateKey(CacheConstants.USER_BY_ID_PREFIX, id);
         UserAuth userAuth;
         userAuth = cacheService.get(key, UserAuth.class);
-        log.error("Fetched from cache: {}", userAuth.toJson());
         if (userAuth == null) {
             Optional<UserAuth> byId = userAuthRepository.findById(id);
             if (byId.isEmpty()) {

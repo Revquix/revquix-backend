@@ -39,7 +39,6 @@ import com.revquix.backend.application.enums.RateLimitType;
 import com.revquix.backend.auth.payload.UserIdentity;
 import com.revquix.backend.auth.util.IdentityProvider;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

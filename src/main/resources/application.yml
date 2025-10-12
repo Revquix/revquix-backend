@@ -115,11 +115,13 @@ auth:
       otp-expiry-minutes: 10
       mail-enabled: true
       max-otp-requests: 4
+      otp-size: 4
     password-reset:
       log-enabled: true
       otp-expiry-minutes: 10
       mail-enabled: true
       max-otp-requests: 4
+      otp-size: 4
   authorization:
     roles-to-allow:
       local:
@@ -169,4 +171,6 @@ async:
 
 logging:
   level:
-    com.revquix.backend: DEBUG
+    com.revquix.backend: INFO
+    org.springframework.web: WARN
+    org.hibernate: WARN

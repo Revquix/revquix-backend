@@ -38,7 +38,6 @@ import com.revquix.backend.application.constants.CacheConstants;
 import com.revquix.backend.application.service.CacheService;
 import com.revquix.backend.auth.dao.repository.RefreshTokenRepository;
 import com.revquix.backend.auth.model.RefreshToken;
-import com.revquix.backend.auth.model.UserAuth;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

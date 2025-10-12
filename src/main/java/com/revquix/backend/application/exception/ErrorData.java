@@ -84,7 +84,21 @@ public enum ErrorData {
     JTI_NOT_PRESENT_DB("DE-44", "The token identifier (jti) is not present in database, please login again"),
     JTI_USER_NOT_MATCHED_WITH_TOKEN("DE-45", "The token identifier (jti) does not match with the user, please login again"),
     INVALID_REMOTE_ADDRESS_REFRESH_TOKEN("DE-46", "Remote address does not match with the one present in refresh token, please login again"),
-    USER_NOT_LOGGED_IN("DE-47", "User is not logged in, please login to continue"),;
+    USER_NOT_LOGGED_IN("DE-47", "User is not logged in, please login to continue"),
+    ASSIGNEE_USER_NOT_FOUND("DE-48", "No user found with the given userId to assign roles"),
+    USER_ID_NULL("DE-49", "UserId is null or empty"),
+    ROLES_EMPTY("DE-50", "Roles list is empty"),
+    ROLE_LIST_CONTAINS_NULL("DE-51", "Roles list contains null value"),
+    ROLES_ALREADY_ASSIGNED("DE-52", "All the roles are already assigned to the user"),
+    ASSIGNER_NOT_HAVE_ROLES("DE-53", "You don't have required roles to assign to the user"),
+    ROLE_NOT_FOUND_NAME("DE-54", "No role found with the given name"),
+    INVALID_ROLES_PROVIDED("DE-55", "Invalid Roles provided, please provide valid roles"),
+    ONLY_USER_ROLE_NOT_ALLOWED("DE-56", "Operation not allowed with only 'user' role."),
+    ADMIN_ROLE_CANNOT_BE_ASSIGNED_THROUGH_THIS_API("DE-57", "Admin role cannot be assigned through this API. Please use assign admin role API"),
+    USER_NOT_ENABLED_THIRD("DE-58", "User is not enabled or might be deleted. So cannot assign roles to that user"),
+    ACCOUNT_LOCKED_THIRD("DE-59", "User account is locked. So cannot assign roles to that user"),
+    EMAIL_NOT_VERIFIED_THIRD("DE-60", "Given user hasn't verified their email yet. So cannot assign roles to that user"),
+    CANNOT_ASSIGN_ROLE_TO_SELF("DE-61", "You cannot assign roles to yourself");
 
     private final String code;
     private final String message;

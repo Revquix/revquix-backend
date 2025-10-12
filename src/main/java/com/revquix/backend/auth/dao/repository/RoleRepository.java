@@ -37,5 +37,8 @@ package com.revquix.backend.auth.dao.repository;
 import com.revquix.backend.auth.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface RoleRepository extends JpaRepository<Role, String> {
+    Optional<Role> findByRole(String role);
 }

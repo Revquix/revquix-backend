@@ -25,29 +25,19 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.auth.util;
+package com.revquix.backend.auth.service;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: OtpGenerator
+  File: AuthorizationService
  */
 
-import lombok.extern.slf4j.Slf4j;
+import com.revquix.backend.auth.payload.request.AssignRoleRequest;
+import com.revquix.backend.auth.payload.response.AssignRoleResponse;
+import org.springframework.http.ResponseEntity;
 
-import java.security.SecureRandom;
-
-@Slf4j
-public class OtpGenerator {
-
-    public static final String generate(int digits) {
-        log.info("{}::generate -> Generating OTP of {} digits", OtpGenerator.class.getSimpleName(), digits);
-        StringBuilder string = new StringBuilder();
-        SecureRandom secureRandom = new SecureRandom();
-        for (int i=0 ; i<digits ; i++){
-            string.append(secureRandom.nextInt(9));
-        }
-        return string.toString();
-    };
+public interface AuthorizationService {
+    ResponseEntity<AssignRoleResponse> assignRoles(AssignRoleRequest assignRoleRequest);
 }

@@ -34,7 +34,6 @@ package com.revquix.backend.auth.authentication;
   File: TokenAuthenticationHelper
  */
 
-import com.revquix.backend.application.enums.Status;
 import com.revquix.backend.application.exception.ErrorData;
 import com.revquix.backend.application.utils.IpUtils;
 import com.revquix.backend.application.utils.OutputStreamExceptionGenerator;
@@ -127,11 +126,6 @@ public class TokenAuthenticationHelper {
         if (!userAuth.getIsAccountNonLocked()) {
             log.error("{}::validateUser -> User account is locked with userId: {}", this.getClass().getSimpleName(), userAuth.getUserId());
             OutputStreamExceptionGenerator.generateExceptionResponse(ErrorData.ACCOUNT_LOCKED, HttpStatus.UNAUTHORIZED, httpServletResponse);
-            return false;
-        }
-        if (!userAuth.getStatus().equals(Status.ACTIVE)) {
-            log.error("{}::validateUser -> User status is not active with userId: {}", this.getClass().getSimpleName(), userAuth.getUserId());
-            OutputStreamExceptionGenerator.generateExceptionResponse(ErrorData.USER_NOT_ACTIVE, HttpStatus.UNAUTHORIZED, httpServletResponse);
             return false;
         }
         return true;

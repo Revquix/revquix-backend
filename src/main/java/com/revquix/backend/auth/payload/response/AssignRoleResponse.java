@@ -25,29 +25,32 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.auth.util;
+package com.revquix.backend.auth.payload.response;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: OtpGenerator
+  File: AssignRoleResponse
  */
 
-import lombok.extern.slf4j.Slf4j;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revquix.backend.application.utils.ModelPayload;
+import com.revquix.backend.auth.model.Role;
+import lombok.*;
 
-import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.util.List;
 
-@Slf4j
-public class OtpGenerator {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class AssignRoleResponse extends ModelPayload<AssignRoleResponse> {
 
-    public static final String generate(int digits) {
-        log.info("{}::generate -> Generating OTP of {} digits", OtpGenerator.class.getSimpleName(), digits);
-        StringBuilder string = new StringBuilder();
-        SecureRandom secureRandom = new SecureRandom();
-        for (int i=0 ; i<digits ; i++){
-            string.append(secureRandom.nextInt(9));
-        }
-        return string.toString();
-    };
+    private String userId;
+    private List<Role> roles;
+    private LocalDateTime timestamp;
 }

@@ -9,4 +9,17 @@ roles:
       role: admin
       internalRoles:
         - user
+        - developer
       description: All the access of the Application
+    developer:
+      id: developer
+      role: developer
+      internalRoles:
+        - user
+      description: Developer Role
+    tester:
+      id: tester
+      role: tester
+      internalRoles:
+          - user
+      description: Tester Role

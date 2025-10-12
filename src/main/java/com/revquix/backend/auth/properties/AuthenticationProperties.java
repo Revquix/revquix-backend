@@ -103,6 +103,7 @@ public class AuthenticationProperties {
         private int otpExpiryMinutes = 10;
         private int maxOtpRequests = 5;
         private boolean logEnabled = false;
+        private int otpSize = 4;
     }
 
     @Getter
@@ -112,6 +113,7 @@ public class AuthenticationProperties {
         private int otpExpiryMinutes = 10;
         private int maxOtpRequests = 5;
         private boolean logEnabled = false;
+        private int otpSize = 4;
     }
 
     @Getter

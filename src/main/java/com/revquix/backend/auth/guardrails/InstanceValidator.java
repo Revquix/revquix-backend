@@ -36,7 +36,6 @@ package com.revquix.backend.auth.guardrails;
 
 import com.revquix.backend.application.exception.ErrorData;
 import com.revquix.backend.application.exception.payload.AuthenticationException;
-import com.revquix.backend.application.exception.payload.BadRequestException;
 import com.revquix.backend.application.exception.payload.InternalServerException;
 import com.revquix.backend.auth.payload.UserIdentity;
 import com.revquix.backend.auth.properties.AuthenticationProperties;

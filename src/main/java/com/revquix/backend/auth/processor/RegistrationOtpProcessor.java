@@ -43,6 +43,7 @@ import com.revquix.backend.auth.properties.AuthenticationProperties;
 import com.revquix.backend.auth.util.OtpGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -55,6 +56,7 @@ public class RegistrationOtpProcessor {
 
     private final OtpEntityRepository otpEntityRepository;
     private final AuthenticationProperties authenticationProperties;
+    private final PasswordEncoder passwordEncoder;
 
     public void process(UserAuth userAuth) {
         log.info("{}::process -> Processing Register OTP: {}", this.getClass().getSimpleName(), userAuth.getEmail());
@@ -85,25 +87,25 @@ public class RegistrationOtpProcessor {
             log.warn("{}::process -> Email already verified for email: {}, skipping OTP generation", this.getClass().getSimpleName(), userAuth.getEmail());
             return;
         }
-        OtpEntity otpEntity = buildOtpEntity(userAuth);
+        AuthenticationProperties.Registration registration = authenticationProperties.getOtpInfo().getRegistration();
+        String otp = OtpGenerator.generate(registration.getOtpSize());
+        OtpEntity otpEntity = buildOtpEntity(userAuth, otp);
         OtpEntity otpEntityResponse = otpEntityRepository.save(otpEntity);
         log.info("{}::process -> New OtpEntity saved successfully for email: {}, otpEntity: {}", this.getClass().getSimpleName(), userAuth.getEmail(), otpEntityResponse.toJson());
-        AuthenticationProperties.Registration registration = authenticationProperties.getOtpInfo().getRegistration();
         if (registration.isMailEnabled()) {
             log.info("{}::process -> Registration OTP mail sending is enabled, OTP: {}", this.getClass().getSimpleName(), otpEntity.getOtp());
             // Send Mail
         }
         if (registration.isLogEnabled()) {
-            log.info("{}::process -> Registration OTP for email: {}, otp: {}", this.getClass().getSimpleName(), userAuth.getEmail(), otpEntity.getOtp());
+            log.info("{}::process -> Registration OTP for email: {}, otp: {}", this.getClass().getSimpleName(), userAuth.getEmail(), otp);
         }
     }
 
-    private OtpEntity buildOtpEntity(UserAuth userAuth) {
-        String otp = OtpGenerator.generate.get();
+    private OtpEntity buildOtpEntity(UserAuth userAuth, String otp) {
         AuthenticationProperties.Registration registration = authenticationProperties.getOtpInfo().getRegistration();
         OtpEntity otpEntity = OtpEntity
                 .builder()
-                .otp(otp)
+                .otp(passwordEncoder.encode(otp))
                 .userId(userAuth.getUserId())
                 .email(userAuth.getEmail())
                 .otpFor(OtpFor.REGISTER)

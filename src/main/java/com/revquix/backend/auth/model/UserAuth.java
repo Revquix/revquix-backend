@@ -34,12 +34,10 @@ package com.revquix.backend.auth.model;
   File: UserAuth
  */
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.revquix.backend.application.annotation.ModelId;
 import com.revquix.backend.application.annotation.impl.ModelIdListener;
 import com.revquix.backend.application.constants.ModelConstants;
-import com.revquix.backend.application.enums.Status;
 import com.revquix.backend.application.utils.ModelPayload;
 import com.revquix.backend.auth.enums.UserBadge;
 import jakarta.persistence.*;
@@ -125,10 +123,6 @@ public class UserAuth extends ModelPayload<UserAuth> {
 
     private String registerIp;
     private String lastLoginIp;
-
-    @Enumerated(EnumType.STRING)
-    @Builder.Default
-    private Status status = Status.ACTIVE;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

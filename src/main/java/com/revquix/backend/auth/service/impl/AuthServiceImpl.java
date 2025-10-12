@@ -64,6 +64,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -84,6 +85,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthResponseGenerator authResponseGenerator;
     private final RefreshTokenProvider refreshTokenProvider;
     private final RefreshTokenAuthentication refreshTokenAuthentication;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -146,7 +148,7 @@ public class AuthServiceImpl implements AuthService {
                 OtpFor.REGISTER,
                 OtpStatus.ACTIVE
         ).orElseThrow(() -> new BadRequestException(ErrorData.NOT_OTP_FOR_REGISTER_FOUND));
-        if (!otpEntity.getOtp().equals(otp)) {
+        if (!passwordEncoder.matches(otp, otpEntity.getOtp())) {
             throw new BadRequestException(ErrorData.INVALID_REGISTER_OTP);
         }
         LocalDateTime now = LocalDateTime.now();

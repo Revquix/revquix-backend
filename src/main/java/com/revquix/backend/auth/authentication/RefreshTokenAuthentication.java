@@ -40,6 +40,7 @@ import com.revquix.backend.application.utils.IpUtils;
 import com.revquix.backend.auth.cache.RefreshTokenCache;
 import com.revquix.backend.auth.cache.UserAuthCache;
 import com.revquix.backend.auth.dao.repository.RefreshTokenRepository;
+import com.revquix.backend.auth.guardrails.GenericUserValidator;
 import com.revquix.backend.auth.model.RefreshToken;
 import com.revquix.backend.auth.model.UserAuth;
 import com.revquix.backend.auth.payload.UserIdentity;
@@ -83,7 +84,7 @@ public class RefreshTokenAuthentication {
         validateRemoteAddress(jwt);
         UserAuth userAuth = userAuthCache.findById(userId)
                 .orElseThrow(() -> new AuthenticationException(ErrorData.USER_NOT_FOUND_FOR_GIVEN_TOKEN));
-        validateUser(userAuth);
+        GenericUserValidator.validate(userAuth);
         UserIdentity userIdentity = UserIdentity.create(userAuth);
         refreshTokenCache.deleteById(jti);
         refreshTokenRepository.delete(refreshToken);
@@ -134,18 +135,6 @@ public class RefreshTokenAuthentication {
                 log.error("{}::validateRemoteAddress -> Remote address does not match. Token remote address: {}, Current remote address: {}", this.getClass().getSimpleName(), tokenRemoteAddress, ipUtils.getIpv4());
                 throw new AuthenticationException(ErrorData.INVALID_REMOTE_ADDRESS_REFRESH_TOKEN);
             }
-        }
-    }
-
-    private void validateUser(UserAuth userAuth) {
-        if (!userAuth.isEnabled()) {
-            throw new AuthenticationException(ErrorData.USER_NOT_ENABLED);
-        }
-        if (!userAuth.getIsAccountNonLocked()) {
-            throw new AuthenticationException(ErrorData.ACCOUNT_LOCKED);
-        }
-        if (!userAuth.isEmailVerified()) {
-            throw new AuthenticationException(ErrorData.EMAIL_NOT_VERIFIED);
         }
     }
 }

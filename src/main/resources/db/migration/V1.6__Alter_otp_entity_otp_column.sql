@@ -1,0 +1,2 @@
+ALTER TABLE auth.otp_entity
+    ALTER COLUMN otp TYPE VARCHAR(255);
