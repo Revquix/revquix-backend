@@ -48,6 +48,6 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AssignRoleRequest extends ModelPayload<AssignRoleRequest> {
 
-    private List<String> roles;
-    private String userId;
+    private List<String> roles; // user, developer, manager
+    private String userId; // UA0000007
 }

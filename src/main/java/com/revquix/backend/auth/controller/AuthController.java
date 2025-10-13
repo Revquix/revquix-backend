@@ -177,7 +177,7 @@ public class AuthController {
             message = "OTP Verification rate limit exceeded. Please try again later."
     )
     ResponseEntity<ModuleResponse> registerOtpVerification(
-            @Parameter(name = "userId", required = true, example = "UA0000001") @RequestParam String userId,
+            @Parameter(name = "userId", required = true, example = "UA000001") @RequestParam String userId,
             @Parameter(name = "otp", required = true, example = "1234") @RequestParam String otp
     ) {
         return LoggedResponse.call(
