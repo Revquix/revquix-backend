@@ -109,6 +109,7 @@ auth:
       - /v3/api-docs/**
       - /swagger-ui/**
       - /swagger-ui.html
+      - /actuator/**
   otp-info:
     registration:
       log-enabled: true

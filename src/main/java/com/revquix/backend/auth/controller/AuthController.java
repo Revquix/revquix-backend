@@ -252,7 +252,7 @@ public class AuthController {
                             responseCode = "200",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = AuthResponse.class)
+                                    schema = @Schema(implementation = ModuleResponse.class)
                             )
                     )
             }
@@ -281,7 +281,7 @@ public class AuthController {
                             responseCode = "200",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = AuthResponse.class)
+                                    schema = @Schema(implementation = ModuleResponse.class)
                             )
                     )
             }
