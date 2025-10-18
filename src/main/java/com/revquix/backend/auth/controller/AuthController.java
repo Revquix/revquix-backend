@@ -38,6 +38,7 @@ import com.revquix.backend.application.annotation.RateLimit;
 import com.revquix.backend.application.enums.RateLimitType;
 import com.revquix.backend.application.payload.ExceptionResponse;
 import com.revquix.backend.application.utils.LoggedResponse;
+import com.revquix.backend.auth.payload.request.ForgotPasswordRequest;
 import com.revquix.backend.auth.payload.request.TokenRequest;
 import com.revquix.backend.auth.payload.response.AuthResponse;
 import com.revquix.backend.auth.payload.response.ModuleResponse;
@@ -54,10 +55,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/auth")
@@ -270,6 +268,42 @@ public class AuthController {
         return LoggedResponse.call(
                 ()-> authService.forgotPasswordOtp(email),
                 "Forgot Password OTP",
+                log
+        );
+    }
+
+    @Operation(
+            summary = "Forgot Password",
+            description = "Verifies the OTP sent to the user for password reset.",
+            responses = {
+                    @ApiResponse(
+                            description = "OTP verified successfully.",
+                            responseCode = "200",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = AuthResponse.class)
+                            )
+                    )
+            }
+    )
+    @PostMapping("/forgot-password")
+    @RateLimit(
+            type = RateLimitType.IP_BASED,
+            requestsPerMinute = 10,
+            requestsPerHour = 10,
+            message = "OTP Sent for Forgot Password"
+    )
+    ResponseEntity<ModuleResponse> forgotPassword(@Parameter(name = "userId", required = true, example = "UA000001") @RequestParam String userId,
+                                                  @Parameter(name = "otp", required = true, example = "1234") @RequestParam String otp,
+                                                  @Parameter(name = "password", required = true, example = "Hello@1234") @RequestParam String password) {
+        ForgotPasswordRequest forgotPasswordRequest = ForgotPasswordRequest.builder()
+                .userId(userId)
+                .otp(otp)
+                .password(password)
+                .build();
+        return LoggedResponse.call(
+                ()-> authService.forgotPassword(forgotPasswordRequest),
+                "Forgot Password",
                 log
         );
     }

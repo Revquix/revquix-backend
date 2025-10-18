@@ -100,7 +100,9 @@ public enum ErrorData {
     EMAIL_NOT_VERIFIED_THIRD("DE-60", "Given user hasn't verified their email yet. So cannot assign roles to that user"),
     CANNOT_ASSIGN_ROLE_TO_SELF("DE-61", "You cannot assign roles to yourself"),
     FAILED_TO_SEND_MAIL_API_ERROR("DE-62", "Failed to send email, please try again later or contact support team"),
-    USER_EMAIL_NOT_FOUND("DE-63", "User not found with the given email"),;
+    USER_EMAIL_NOT_FOUND("DE-63", "User not found with the given email"),
+    FORGOT_PASSWORD_OTP_EXPIRED("DE-64", "OTP has expired. Please request a new OTP to continue with forgot password"),
+    INVALID_FORGOT_PASSWORD_OTP("DE-65", "The OTP you have entered is invalid. Please try again with the OTP sent on your Email"),;
 
     private final String code;
     private final String message;
