@@ -36,7 +36,6 @@ package com.revquix.backend.auth.service.impl;
 
 import com.revquix.backend.application.exception.ErrorData;
 import com.revquix.backend.application.exception.payload.BadRequestException;
-import com.revquix.backend.application.utils.MdcUtils;
 import com.revquix.backend.auth.authentication.RefreshTokenAuthentication;
 import com.revquix.backend.auth.cache.UserAuthCache;
 import com.revquix.backend.auth.dao.repository.OtpEntityRepository;
@@ -51,6 +50,7 @@ import com.revquix.backend.auth.payload.response.AuthResponse;
 import com.revquix.backend.auth.payload.response.LogoutResponse;
 import com.revquix.backend.auth.payload.response.ModuleResponse;
 import com.revquix.backend.auth.processor.AuthResponseGenerator;
+import com.revquix.backend.auth.processor.ForgotPasswordOtpProcessor;
 import com.revquix.backend.auth.processor.LogoutProcessor;
 import com.revquix.backend.auth.processor.RegistrationOtpProcessor;
 import com.revquix.backend.auth.properties.AuthenticationProperties;
@@ -93,6 +93,7 @@ public class AuthServiceImpl implements AuthService {
     private final LogoutProcessor logoutProcessor;
     private final AuthenticationProperties authenticationProperties;
     private final RegistrationOtpProcessor registrationOtpProcessor;
+    private final ForgotPasswordOtpProcessor forgotPasswordOtpProcessor;
 
     @Override
     @Transactional
@@ -226,5 +227,28 @@ public class AuthServiceImpl implements AuthService {
                 .accepted()
                 .header(HttpHeaders.SET_COOKIE, clearCookie.toString())
                 .body(LogoutResponse.builder().localizedMessage(message).build());
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<ModuleResponse> forgotPasswordOtp(String email) {
+        log.info("{}::forgotPasswordOtp -> Sending OTP for Forgot Password", this.getClass().getSimpleName());
+        email = email.toLowerCase();
+        Optional<UserAuth> userAuthOptional = userAuthRepository.findByEmail(email);
+        if (userAuthOptional.isEmpty()) {
+            throw new BadRequestException(ErrorData.USER_EMAIL_NOT_FOUND);
+        }
+        UserAuth userAuth = userAuthOptional.get();
+        if (Boolean.FALSE.equals(userAuth.isEmailVerified())) {
+            throw new BadRequestException(ErrorData.USER_NOT_ENABLED);
+        }
+        forgotPasswordOtpProcessor.process(userAuth);
+        return ResponseEntity.ok(
+                ModuleResponse
+                        .builder()
+                        .userId(userAuth.getUserId())
+                        .message("OTP Sent for Forgot Password")
+                        .build()
+        );
     }
 }

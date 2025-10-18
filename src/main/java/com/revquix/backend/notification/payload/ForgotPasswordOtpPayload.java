@@ -25,24 +25,22 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.auth.service;
+package com.revquix.backend.notification.payload;
 
-/*
-  Developer: Rohit Parihar
-  Project: revquix-backend
-  GitHub: github.com/rohit-zip
-  File: AuthService
- */
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.revquix.backend.application.utils.MaskingSerializer;
+import com.revquix.backend.application.utils.ModelPayload;
+import lombok.*;
 
-import com.revquix.backend.auth.payload.response.AuthResponse;
-import com.revquix.backend.auth.payload.response.ModuleResponse;
-import org.springframework.http.ResponseEntity;
-
-public interface AuthService {
-    ResponseEntity<AuthResponse> token(String entrypoint, String password);
-    ResponseEntity<ModuleResponse> registerUser(String email, String password);
-    ResponseEntity<ModuleResponse> registerOtpVerification(String userId, String otp);
-    ResponseEntity<AuthResponse> refreshToken();
-    ResponseEntity<Object> logout();
-    ResponseEntity<ModuleResponse> forgotPasswordOtp(String email);
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ForgotPasswordOtpPayload extends ModelPayload<ForgotPasswordOtpPayload> {
+    @JsonSerialize(using = MaskingSerializer.class)
+    private String otp;
+    private String email;
 }

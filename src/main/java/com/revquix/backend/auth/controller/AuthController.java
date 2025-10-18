@@ -244,4 +244,33 @@ public class AuthController {
                 log
         );
     }
+
+    @Operation(
+            summary = "Forgot Password OTP",
+            description = "Sends a forgot password OTP to the user's email.",
+            responses = {
+                    @ApiResponse(
+                            description = "OTP sent successfully.",
+                            responseCode = "200",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = AuthResponse.class)
+                            )
+                    )
+            }
+    )
+    @PostMapping("/forgot-password-otp")
+    @RateLimit(
+            type = RateLimitType.IP_BASED,
+            requestsPerMinute = 10,
+            requestsPerHour = 10,
+            message = "OTP Sent for Forgot Password"
+    )
+    ResponseEntity<ModuleResponse> forgotPasswordOtp(@Parameter(name = "email", required = true, example = "someone@example.com") @RequestParam String email) {
+        return LoggedResponse.call(
+                ()-> authService.forgotPasswordOtp(email),
+                "Forgot Password OTP",
+                log
+        );
+    }
 }
