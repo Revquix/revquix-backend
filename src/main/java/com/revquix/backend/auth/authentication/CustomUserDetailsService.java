@@ -38,6 +38,7 @@ import com.revquix.backend.application.constants.CacheConstants;
 import com.revquix.backend.application.exception.ErrorData;
 import com.revquix.backend.application.exception.payload.AuthenticationException;
 import com.revquix.backend.application.service.CacheService;
+import com.revquix.backend.auth.cache.UserAuthCache;
 import com.revquix.backend.auth.dao.repository.UserAuthRepository;
 import com.revquix.backend.auth.enums.EntrypointType;
 import com.revquix.backend.auth.model.UserAuth;
@@ -56,6 +57,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserAuthRepository userAuthRepository;
     private final CacheService cacheService;
+    private final UserAuthCache userAuthcache;
 
     @Override
     public UserDetails loadUserByUsername(String username) {
@@ -66,8 +68,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         else errorData = ErrorData.NO_USER_WITH_EMAIL;
         UserAuth userAuth = userAuthRepository.findByEntrypoint(username)
                 .orElseThrow(() -> new AuthenticationException(errorData));
-        String key = cacheService.generateKey(CacheConstants.USER_BY_ID_PREFIX, userAuth.getUserId());
-        cacheService.put(key, userAuth);
+        userAuthcache.put(userAuth);
         return UserIdentity.create(userAuth);
     }
 }
