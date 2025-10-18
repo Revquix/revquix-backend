@@ -59,7 +59,6 @@ import java.util.UUID;
 public class AuthResponseGenerator {
 
     private final JwtTokenGenerator jwtTokenGenerator;
-    private final JwtDecoder jwtDecoder;
     private final IpUtils ipUtils;
     private final RefreshTokenRepository refreshTokenRepository;
     private final AuthenticationProperties authenticationProperties;

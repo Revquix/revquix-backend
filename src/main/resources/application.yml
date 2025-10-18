@@ -109,6 +109,8 @@ auth:
       - /v3/api-docs/**
       - /swagger-ui/**
       - /swagger-ui.html
+      - /actuator/**
+      - /favicon.ico
   otp-info:
     registration:
       log-enabled: true
@@ -190,3 +192,15 @@ mail:
       subject: Revquix - Password Reset Request
       template: ForgotPasswordOtpMail
       context: otpPayload
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+    info:
+      access: unrestricted

@@ -34,11 +34,14 @@ package com.revquix.backend.auth.controller;
   File: TestController
  */
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revquix.backend.application.annotation.RateLimit;
 import com.revquix.backend.application.enums.RateLimitType;
 import com.revquix.backend.auth.payload.UserIdentity;
 import com.revquix.backend.auth.util.IdentityProvider;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,7 +49,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/v1/test")
 @SecurityRequirement(name = "bearerAuth")
+@Slf4j
 public class TestController {
+
+    private final ObjectMapper objectMapper;
+
+    public TestController(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @GetMapping
     @RateLimit(
@@ -55,7 +65,9 @@ public class TestController {
             requestsPerHour = 1000,
             message = "Too many requests from this IP, please try again later."
     )
-    public UserIdentity test() {
-        return IdentityProvider.getOrThrow();
+    public UserIdentity test() throws JsonProcessingException {
+        UserIdentity userIdentity = IdentityProvider.getOrThrow();
+        log.error("{}:: Testing secured endpoint access userIdentity: {}", objectMapper.writeValueAsString(userIdentity));
+        return userIdentity;
     }
 }
