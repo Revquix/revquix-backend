@@ -36,7 +36,6 @@ package com.revquix.backend.auth.service.impl;
 
 import com.revquix.backend.application.exception.ErrorData;
 import com.revquix.backend.application.exception.payload.BadRequestException;
-import com.revquix.backend.application.utils.MdcUtils;
 import com.revquix.backend.auth.authentication.RefreshTokenAuthentication;
 import com.revquix.backend.auth.cache.UserAuthCache;
 import com.revquix.backend.auth.dao.repository.OtpEntityRepository;
@@ -47,10 +46,12 @@ import com.revquix.backend.auth.guardrails.*;
 import com.revquix.backend.auth.model.OtpEntity;
 import com.revquix.backend.auth.model.UserAuth;
 import com.revquix.backend.auth.payload.UserIdentity;
+import com.revquix.backend.auth.payload.request.ForgotPasswordRequest;
 import com.revquix.backend.auth.payload.response.AuthResponse;
 import com.revquix.backend.auth.payload.response.LogoutResponse;
 import com.revquix.backend.auth.payload.response.ModuleResponse;
 import com.revquix.backend.auth.processor.AuthResponseGenerator;
+import com.revquix.backend.auth.processor.ForgotPasswordOtpProcessor;
 import com.revquix.backend.auth.processor.LogoutProcessor;
 import com.revquix.backend.auth.processor.RegistrationOtpProcessor;
 import com.revquix.backend.auth.properties.AuthenticationProperties;
@@ -93,6 +94,7 @@ public class AuthServiceImpl implements AuthService {
     private final LogoutProcessor logoutProcessor;
     private final AuthenticationProperties authenticationProperties;
     private final RegistrationOtpProcessor registrationOtpProcessor;
+    private final ForgotPasswordOtpProcessor forgotPasswordOtpProcessor;
 
     @Override
     @Transactional
@@ -226,5 +228,78 @@ public class AuthServiceImpl implements AuthService {
                 .accepted()
                 .header(HttpHeaders.SET_COOKIE, clearCookie.toString())
                 .body(LogoutResponse.builder().localizedMessage(message).build());
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<ModuleResponse> forgotPasswordOtp(String email) {
+        log.info("{}::forgotPasswordOtp -> Sending OTP for Forgot Password", this.getClass().getSimpleName());
+        email = email.toLowerCase();
+        Optional<UserAuth> userAuthOptional = userAuthRepository.findByEmail(email);
+        if (userAuthOptional.isEmpty()) {
+            throw new BadRequestException(ErrorData.USER_EMAIL_NOT_FOUND);
+        }
+        UserAuth userAuth = userAuthOptional.get();
+        if (Boolean.FALSE.equals(userAuth.isEmailVerified())) {
+            throw new BadRequestException(ErrorData.USER_NOT_ENABLED);
+        }
+        forgotPasswordOtpProcessor.process(userAuth);
+        userAuthCache.put(userAuth);
+        return ResponseEntity.ok(
+                ModuleResponse
+                        .builder()
+                        .userId(userAuth.getUserId())
+                        .message("OTP Sent for Forgot Password")
+                        .build()
+        );
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<ModuleResponse> forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
+        log.info("{}::forgotPassword -> Forgot Password", this.getClass().getSimpleName());
+        String userId = forgotPasswordRequest.getUserId();
+        OtpEntity otpEntity = otpEntityRepository.findByUserIdAndOtpForAndOtpStatus(
+                userId,
+                OtpFor.FORGOT_PASSWORD,
+                OtpStatus.ACTIVE
+        ).orElseThrow(() -> new BadRequestException(ErrorData.NOT_OTP_FOR_REGISTER_FOUND));
+        if (!passwordEncoder.matches(forgotPasswordRequest.getOtp(), otpEntity.getOtp())) {
+            throw new BadRequestException(ErrorData.INVALID_FORGOT_PASSWORD_OTP);
+        }
+        LocalDateTime now = LocalDateTime.now();
+        Optional<UserAuth> userAuthOptional = userAuthCache.findById(userId);
+        if (userAuthOptional.isEmpty()) {
+            otpEntity.setOtpStatus(OtpStatus.DELETED);
+            OtpEntity otpEntityResponse = otpEntityRepository.save(otpEntity);
+            log.info("{}::forgotPassword -> OTP marked as DELETED for userId: {}, response: {}", this.getClass().getSimpleName(), userId, otpEntityResponse.toJson());
+            throw new BadRequestException(ErrorData.USER_NOT_FOUND_BY_ID);
+        }
+        UserAuth userAuth = userAuthOptional.get();
+        if (Boolean.FALSE.equals(userAuth.isEmailVerified())) {
+            otpEntity.setOtpStatus(OtpStatus.DELETED);
+            OtpEntity otpEntityResponse = otpEntityRepository.save(otpEntity);
+            log.info("{}::forgotPassword -> OTP marked as DELETED for userId: {}, response: {}", this.getClass().getSimpleName(), userId, otpEntityResponse.toJson());
+            throw new BadRequestException(ErrorData.USER_NOT_ENABLED);
+        }
+        if (otpEntity.getExpiryDate().isBefore(now)) {
+            throw new BadRequestException(ErrorData.FORGOT_PASSWORD_OTP_EXPIRED);
+        }
+
+        userAuth.setPassword(passwordEncoder.encode(forgotPasswordRequest.getPassword()));
+        userAuth.setLastPasswordChange(now);
+        UserAuth userAuthResponse = userAuthRepository.save(userAuth);
+        log.info("{}::forgotPassword -> User password updated successfully for userId: {}, response: {}", this.getClass().getSimpleName(), userId, userAuthResponse.toJson());
+        userAuthCache.put(userAuthResponse);
+        otpEntity.setOtpStatus(OtpStatus.DELETED);
+        OtpEntity otpEntityResponse = otpEntityRepository.save(otpEntity);
+        log.info("{}::forgotPassword -> OTP marked as DELETED for userId: {}, response: {}", this.getClass().getSimpleName(), userId, otpEntityResponse.toJson());
+        return ResponseEntity.ok(
+                ModuleResponse
+                        .builder()
+                        .userId(userAuth.getUserId())
+                        .message("Password has been updated successfully. Please use new password next time you LogIn")
+                        .build()
+        );
     }
 }

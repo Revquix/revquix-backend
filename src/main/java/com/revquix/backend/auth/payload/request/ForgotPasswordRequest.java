@@ -25,26 +25,32 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.auth.service;
+package com.revquix.backend.auth.payload.request;
 
-/*
-  Developer: Rohit Parihar
-  Project: revquix-backend
-  GitHub: github.com/rohit-zip
-  File: AuthService
- */
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
 
-import com.revquix.backend.auth.payload.request.ForgotPasswordRequest;
-import com.revquix.backend.auth.payload.response.AuthResponse;
-import com.revquix.backend.auth.payload.response.ModuleResponse;
-import org.springframework.http.ResponseEntity;
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ForgotPasswordRequest {
 
-public interface AuthService {
-    ResponseEntity<AuthResponse> token(String entrypoint, String password);
-    ResponseEntity<ModuleResponse> registerUser(String email, String password);
-    ResponseEntity<ModuleResponse> registerOtpVerification(String userId, String otp);
-    ResponseEntity<AuthResponse> refreshToken();
-    ResponseEntity<Object> logout();
-    ResponseEntity<ModuleResponse> forgotPasswordOtp(String email);
-    ResponseEntity<ModuleResponse> forgotPassword(ForgotPasswordRequest forgotPasswordRequest);
+    @Schema(description = "User's unique identifier",
+          example = "user123",
+          required = true)
+    private String userId;
+
+    @Schema(description = "One-time password for verification",
+          example = "123456",
+          required = true)
+    private String otp;
+
+    @Schema(description = "New password to be set",
+          example = "newPassword123",
+          required = true)
+    private String password;
 }

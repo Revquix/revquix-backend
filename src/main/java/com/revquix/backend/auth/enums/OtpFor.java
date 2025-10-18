@@ -36,5 +36,6 @@ package com.revquix.backend.auth.enums;
 
 public enum OtpFor {
 
-    REGISTER
+    REGISTER,
+    FORGOT_PASSWORD
 }
