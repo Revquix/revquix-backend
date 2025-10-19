@@ -53,4 +53,18 @@ public class IdentityProvider {
         log.info("Request coming from unauthenticated user -> Throwing Exception");
         throw new AuthenticationException(ErrorData.USER_NOT_LOGGED_IN);
     }
+
+    public static UserIdentity get() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserIdentity userIdentity) {
+            return userIdentity;
+        }
+        log.info("Request coming from unauthenticated user -> Returning Null");
+        return null;
+    }
+
+    public static String getUserId() {
+        UserIdentity userIdentity = get();
+        return userIdentity == null ? null : userIdentity.getUserId();
+    }
 }

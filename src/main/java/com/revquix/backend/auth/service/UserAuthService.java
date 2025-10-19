@@ -25,38 +25,18 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.auth.payload.response;
+package com.revquix.backend.auth.service;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: ModuleResponse
+  File: UserAuthService
  */
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.revquix.backend.application.utils.ModelPayload;
-import com.revquix.backend.auth.util.IdentityProvider;
-import lombok.*;
+import com.revquix.backend.auth.payload.response.ModuleResponse;
+import org.springframework.http.ResponseEntity;
 
-import java.time.LocalDateTime;
-
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ModuleResponse extends ModelPayload<ModuleResponse> {
-
-    private String message;
-
-    @Builder.Default
-    private String userId = IdentityProvider.getUserId();
-    private String id;
-
-    @Builder.Default
-    private LocalDateTime timestamp = LocalDateTime.now();
+public interface UserAuthService {
+    ResponseEntity<ModuleResponse> enableMfa();
 }

@@ -139,4 +139,7 @@ public class UserAuth extends ModelPayload<UserAuth> {
     private UserBadge userBadge = UserBadge.STANDARD;
 
     private LocalDateTime lastUsernameChange;
+
+    @Builder.Default
+    private boolean mfaEnabled = false;
 }

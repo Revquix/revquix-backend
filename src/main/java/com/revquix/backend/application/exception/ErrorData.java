@@ -102,7 +102,8 @@ public enum ErrorData {
     FAILED_TO_SEND_MAIL_API_ERROR("DE-62", "Failed to send email, please try again later or contact support team"),
     USER_EMAIL_NOT_FOUND("DE-63", "User not found with the given email"),
     FORGOT_PASSWORD_OTP_EXPIRED("DE-64", "OTP has expired. Please request a new OTP to continue with forgot password"),
-    INVALID_FORGOT_PASSWORD_OTP("DE-65", "The OTP you have entered is invalid. Please try again with the OTP sent on your Email"),;
+    INVALID_FORGOT_PASSWORD_OTP("DE-65", "The OTP you have entered is invalid. Please try again with the OTP sent on your Email"),
+    MFA_ALREADY_ENABLED("DE-66", "MFA is already enabled for this user"),;
 
     private final String code;
     private final String message;
