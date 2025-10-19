@@ -34,10 +34,14 @@ package com.revquix.backend.auth.controller;
   File: UserAuthController
  */
 
+import com.revquix.backend.application.annotation.RateLimit;
+import com.revquix.backend.application.enums.RateLimitType;
 import com.revquix.backend.application.payload.ExceptionResponse;
 import com.revquix.backend.application.utils.LoggedResponse;
+import com.revquix.backend.auth.payload.request.MfaRequest;
 import com.revquix.backend.auth.payload.response.ModuleResponse;
 import com.revquix.backend.auth.service.UserAuthService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -47,8 +51,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -90,11 +93,31 @@ public class UserAuthController {
     private static final Logger log = LoggerFactory.getLogger(UserAuthController.class);
     private final UserAuthService userAuthService;
 
-    @PostMapping("/enable-mfa")
-    ResponseEntity<ModuleResponse> enableMfa() {
+    @Operation(
+            summary = "Toggle Multi-Factor Authentication (MFA)",
+            description = "Enables or disables Multi-Factor Authentication for the authenticated user.",
+            responses = {
+                    @ApiResponse(
+                            description = "MFA toggled successfully.",
+                            responseCode = "200",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ModuleResponse.class)
+                            )
+                    )
+            }
+    )
+    @PostMapping("/toggle-mfa")
+    @RateLimit(
+            type = RateLimitType.IP_BASED,
+            requestsPerMinute = 1,
+            requestsPerHour = 1,
+            message = "You can toggle MFA only once per hour."
+    )
+    ResponseEntity<ModuleResponse> toggleMfa(@RequestBody MfaRequest mfaRequest) {
         return LoggedResponse.call(
-                ()-> userAuthService.enableMfa(),
-                "Enable MFA",
+                ()-> userAuthService.toggleMfa(mfaRequest),
+                "Toggle MFA",
                 log
         );
     }

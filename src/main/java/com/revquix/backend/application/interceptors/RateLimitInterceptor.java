@@ -126,7 +126,7 @@ public class RateLimitInterceptor implements HandlerInterceptor {
         // Also check hour limit
         RateLimitResult hourResult = rateLimitService.checkRateLimit(ipAddress, rateLimit.requestsPerHour(), 3600);
         if (!hourResult.isAllowed()) {
-            handleRateLimitExceeded(response, hourResult, rateLimit.message() + " (hourly)");
+            handleRateLimitExceeded(response, hourResult, rateLimit.message());
             return false;
         }
 
