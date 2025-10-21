@@ -42,6 +42,7 @@ import com.revquix.backend.auth.payload.request.ForgotPasswordRequest;
 import com.revquix.backend.auth.payload.request.TokenRequest;
 import com.revquix.backend.auth.payload.response.AuthResponse;
 import com.revquix.backend.auth.payload.response.ModuleResponse;
+import com.revquix.backend.auth.payload.response.RegistrationResponse;
 import com.revquix.backend.auth.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -106,7 +107,7 @@ public class AuthController {
     )
     @RateLimit(
             type = RateLimitType.IP_BASED,
-            requestsPerMinute = 10,
+            requestsPerMinute = 2,
             requestsPerHour = 10,
             message = "Too many login attempts from this IP, please try again later."
     )
@@ -138,7 +139,7 @@ public class AuthController {
     @PostMapping("/register-user")
     @RateLimit(
             type = RateLimitType.IP_BASED,
-            requestsPerMinute = 10,
+            requestsPerMinute = 2,
             requestsPerHour = 10,
             message = "User registration rate limit exceeded. Please try again later."
     )
@@ -304,6 +305,35 @@ public class AuthController {
         return LoggedResponse.call(
                 ()-> authService.forgotPassword(forgotPasswordRequest),
                 "Forgot Password",
+                log
+        );
+    }
+
+    @Operation(
+            summary = "Get Registration Status",
+            description = "Retrieves the registration status of the current user.",
+            responses = {
+                    @ApiResponse(
+                            description = "Registration status retrieved successfully.",
+                            responseCode = "200",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = RegistrationResponse.class)
+                            )
+                    )
+            }
+    )
+    @GetMapping("/registration-status")
+    @RateLimit(
+            type = RateLimitType.IP_BASED,
+            requestsPerMinute = 10,
+            requestsPerHour = 100,
+            message = "Request limit exceeded. Please try again later."
+    )
+    ResponseEntity<RegistrationResponse> getRegistrationStatus(@RequestParam String email) {
+        return LoggedResponse.call(
+                ()-> authService.getRegistrationStatus(email),
+                "Get Registration Status",
                 log
         );
     }

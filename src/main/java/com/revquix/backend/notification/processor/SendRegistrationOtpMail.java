@@ -34,7 +34,6 @@ package com.revquix.backend.notification.processor;
   File: SendRegistrationOtpMail
  */
 
-import com.revquix.backend.auth.model.OtpEntity;
 import com.revquix.backend.notification.payload.RegistrationOtpPayload;
 import com.revquix.backend.notification.payload.ZeptoMailResponse;
 import com.revquix.backend.notification.properties.MailProperties;

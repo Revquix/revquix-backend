@@ -35,11 +35,9 @@ package com.revquix.backend.auth.service.impl;
  */
 
 import com.revquix.backend.application.exception.ErrorData;
-import com.revquix.backend.application.exception.payload.AuthenticationException;
 import com.revquix.backend.application.exception.payload.BadRequestException;
 import com.revquix.backend.auth.cache.UserAuthCache;
 import com.revquix.backend.auth.dao.repository.UserAuthRepository;
-import com.revquix.backend.auth.guardrails.GenericUserValidator;
 import com.revquix.backend.auth.model.UserAuth;
 import com.revquix.backend.auth.payload.request.MfaRequest;
 import com.revquix.backend.auth.payload.response.ModuleResponse;

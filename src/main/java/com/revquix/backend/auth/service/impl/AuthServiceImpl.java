@@ -50,10 +50,8 @@ import com.revquix.backend.auth.payload.request.ForgotPasswordRequest;
 import com.revquix.backend.auth.payload.response.AuthResponse;
 import com.revquix.backend.auth.payload.response.LogoutResponse;
 import com.revquix.backend.auth.payload.response.ModuleResponse;
-import com.revquix.backend.auth.processor.AuthResponseGenerator;
-import com.revquix.backend.auth.processor.ForgotPasswordOtpProcessor;
-import com.revquix.backend.auth.processor.LogoutProcessor;
-import com.revquix.backend.auth.processor.RegistrationOtpProcessor;
+import com.revquix.backend.auth.payload.response.RegistrationResponse;
+import com.revquix.backend.auth.processor.*;
 import com.revquix.backend.auth.properties.AuthenticationProperties;
 import com.revquix.backend.auth.service.AuthService;
 import com.revquix.backend.auth.transformer.RegisterUserTransformer;
@@ -95,6 +93,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationProperties authenticationProperties;
     private final RegistrationOtpProcessor registrationOtpProcessor;
     private final ForgotPasswordOtpProcessor forgotPasswordOtpProcessor;
+    private final MfaAuthResponseGenerator mfaAuthResponseGenerator;
 
     @Override
     @Transactional
@@ -106,7 +105,12 @@ public class AuthServiceImpl implements AuthService {
         Authentication userAuthentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(entrypoint, password));
         UserIdentity userIdentity = (UserIdentity) userAuthentication.getPrincipal();
         instanceValidator.validate(userIdentity);
-        AuthResponse authResponse = authResponseGenerator.generate(userIdentity);
+        AuthResponse authResponse;
+        if (userIdentity.isMfaEnabled()) {
+            authResponse = mfaAuthResponseGenerator.generate(userIdentity);
+        } else {
+            authResponse = authResponseGenerator.generate(userIdentity);
+        }
         SecurityContextHolder.getContext().setAuthentication(userAuthentication);
         return ResponseEntity
                 .accepted()
@@ -301,5 +305,20 @@ public class AuthServiceImpl implements AuthService {
                         .message("Password has been updated successfully. Please use new password next time you LogIn")
                         .build()
         );
+    }
+
+    @Override
+    public ResponseEntity<RegistrationResponse> getRegistrationStatus(String email) {
+        log.info("{}::getRegistrationStatus -> Get Registration Status", this.getClass().getSimpleName());
+        email = email.toLowerCase();
+        EmailValidator.validate(email);
+        Optional<UserAuth> userAuthOptional = userAuthRepository.findByEmail(email);
+        RegistrationResponse.RegistrationResponseBuilder responseBuilder = RegistrationResponse.builder().email(email);
+        userAuthOptional.ifPresent(userAuth -> {
+            if (Boolean.TRUE.equals(userAuth.isEmailVerified())) {
+                responseBuilder.isRegistered(true);
+            }
+        });
+        return ResponseEntity.ok(responseBuilder.build());
     }
 }

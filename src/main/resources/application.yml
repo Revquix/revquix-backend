@@ -140,6 +140,10 @@ auth:
         instance: production
         must-roles:
           - user
+  mfa:
+    enabled: true
+    max-requests: 4
+    expiry-minutes: 4
 
 swagger:
   group-name:

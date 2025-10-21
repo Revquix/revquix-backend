@@ -25,28 +25,34 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.auth.service;
+package com.revquix.backend.auth.payload.response;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: AuthService
+  File: UserRegisteredResponse
  */
 
-import com.revquix.backend.auth.payload.request.ForgotPasswordRequest;
-import com.revquix.backend.auth.payload.response.AuthResponse;
-import com.revquix.backend.auth.payload.response.ModuleResponse;
-import com.revquix.backend.auth.payload.response.RegistrationResponse;
-import org.springframework.http.ResponseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revquix.backend.application.utils.ModelPayload;
+import lombok.*;
 
-public interface AuthService {
-    ResponseEntity<AuthResponse> token(String entrypoint, String password);
-    ResponseEntity<ModuleResponse> registerUser(String email, String password);
-    ResponseEntity<ModuleResponse> registerOtpVerification(String userId, String otp);
-    ResponseEntity<AuthResponse> refreshToken();
-    ResponseEntity<Object> logout();
-    ResponseEntity<ModuleResponse> forgotPasswordOtp(String email);
-    ResponseEntity<ModuleResponse> forgotPassword(ForgotPasswordRequest forgotPasswordRequest);
-    ResponseEntity<RegistrationResponse> getRegistrationStatus(String email);
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class RegistrationResponse extends ModelPayload<RegistrationResponse> {
+
+    @Builder.Default
+    public boolean isRegistered = false;
+
+    private String email;
+
+    @Builder.Default
+    private LocalDateTime timestamp = LocalDateTime.now();
 }

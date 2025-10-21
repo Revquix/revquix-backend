@@ -49,6 +49,7 @@ import org.springframework.http.ResponseCookie;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AuthResponse extends ModelPayload<AuthResponse> {
 
+    private String mfaToken;
     private String accessToken;
     private long expiresIn;
     private String userId;

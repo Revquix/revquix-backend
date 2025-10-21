@@ -74,6 +74,7 @@ public class UserIdentity implements UserDetails {
     private String lastLoginIp;
     private UserBadge userBadge;
     private Collection<? extends GrantedAuthority> authorities;
+    private boolean mfaEnabled;
 
     public UserIdentity(
             String userId,
@@ -86,7 +87,8 @@ public class UserIdentity implements UserDetails {
             boolean isEmailVerified,
             String lastLoginIp,
             UserBadge userBadge,
-            Collection<? extends GrantedAuthority> authorities
+            Collection<? extends GrantedAuthority> authorities,
+            boolean mfaEnabled
     ) {
         this.userId = userId;
         this.email = email;
@@ -99,6 +101,7 @@ public class UserIdentity implements UserDetails {
         this.lastLoginIp = lastLoginIp;
         this.userBadge = userBadge;
         this.authorities = authorities;
+        this.mfaEnabled = mfaEnabled;
     }
 
     public static UserIdentity create(UserAuth userAuth) {
@@ -115,7 +118,8 @@ public class UserIdentity implements UserDetails {
                 userAuth.isEmailVerified(),
                 userAuth.getLastLoginIp(),
                 userAuth.getUserBadge(),
-                grantedAuthorities
+                grantedAuthorities,
+                userAuth.isMfaEnabled()
         );
     }
 

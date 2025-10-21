@@ -25,28 +25,36 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.auth.service;
+package com.revquix.backend.auth.processor;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: AuthService
+  File: MfaAuthResponseGenerator
  */
 
-import com.revquix.backend.auth.payload.request.ForgotPasswordRequest;
+import com.revquix.backend.auth.payload.UserIdentity;
 import com.revquix.backend.auth.payload.response.AuthResponse;
-import com.revquix.backend.auth.payload.response.ModuleResponse;
-import com.revquix.backend.auth.payload.response.RegistrationResponse;
-import org.springframework.http.ResponseEntity;
+import com.revquix.backend.auth.properties.AuthenticationProperties;
+import com.revquix.backend.auth.util.MfaTokenGenerator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
-public interface AuthService {
-    ResponseEntity<AuthResponse> token(String entrypoint, String password);
-    ResponseEntity<ModuleResponse> registerUser(String email, String password);
-    ResponseEntity<ModuleResponse> registerOtpVerification(String userId, String otp);
-    ResponseEntity<AuthResponse> refreshToken();
-    ResponseEntity<Object> logout();
-    ResponseEntity<ModuleResponse> forgotPasswordOtp(String email);
-    ResponseEntity<ModuleResponse> forgotPassword(ForgotPasswordRequest forgotPasswordRequest);
-    ResponseEntity<RegistrationResponse> getRegistrationStatus(String email);
+import java.time.Instant;
+
+@Component
+@RequiredArgsConstructor
+@Slf4j
+public class MfaAuthResponseGenerator {
+
+    private final AuthenticationProperties authenticationProperties;
+
+    public AuthResponse generate(UserIdentity userIdentity) {
+        log.info("{}::generate -> Generating MFA Auth Response for user: {}", getClass().getSimpleName(), userIdentity.getUserId());
+        Instant now = Instant.now();
+        String mfaToken = MfaTokenGenerator.get();
+        return null;
+    }
 }

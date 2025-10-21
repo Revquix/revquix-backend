@@ -55,6 +55,7 @@ public class AuthenticationProperties {
     private Cors cors;
     private OtpInfo otpInfo;
     private Authorization authorization;
+    private Mfa mfa;
 
     @Getter
     @Setter
@@ -127,5 +128,13 @@ public class AuthenticationProperties {
     public static class RoleToAllow {
         private String instance;
         private List<String> mustRoles;
+    }
+
+    @Getter
+    @Setter
+    public static class Mfa {
+        private boolean enabled = true;
+        private int expiryMinutes = 5;
+        private int maxRequests = 5;
     }
 }

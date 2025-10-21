@@ -34,7 +34,6 @@ package com.revquix.backend.auth.authentication;
   File: CustomUserDetailsService
  */
 
-import com.revquix.backend.application.constants.CacheConstants;
 import com.revquix.backend.application.exception.ErrorData;
 import com.revquix.backend.application.exception.payload.AuthenticationException;
 import com.revquix.backend.application.service.CacheService;

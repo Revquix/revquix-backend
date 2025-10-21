@@ -27,8 +27,6 @@
  */
 package com.revquix.backend.auth.processor;
 
-import com.revquix.backend.application.exception.ErrorData;
-import com.revquix.backend.application.exception.payload.BadRequestException;
 import com.revquix.backend.auth.dao.repository.OtpEntityRepository;
 import com.revquix.backend.auth.enums.OtpFor;
 import com.revquix.backend.auth.enums.OtpStatus;
