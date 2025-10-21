@@ -39,6 +39,7 @@ import com.revquix.backend.application.enums.RateLimitType;
 import com.revquix.backend.application.payload.ExceptionResponse;
 import com.revquix.backend.application.utils.LoggedResponse;
 import com.revquix.backend.auth.payload.request.ForgotPasswordRequest;
+import com.revquix.backend.auth.payload.request.RegisterRequest;
 import com.revquix.backend.auth.payload.request.TokenRequest;
 import com.revquix.backend.auth.payload.response.AuthResponse;
 import com.revquix.backend.auth.payload.response.ModuleResponse;
@@ -125,18 +126,29 @@ public class AuthController {
     @Operation(
             summary = "Register a new user",
             description = "Registers a new user with the provided email and password.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Register Details",
+                    required = true,
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+                            schema = @Schema(implementation = RegisterRequest.class)
+                    )
+            ),
             responses = {
                     @ApiResponse(
                             description = "User registered successfully.",
                             responseCode = "200",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = AuthResponse.class)
+                                    schema = @Schema(implementation = ModuleResponse.class)
                             )
                     )
             }
     )
-    @PostMapping("/register-user")
+    @PostMapping(
+            value = "/register-user",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+    )
     @RateLimit(
             type = RateLimitType.IP_BASED,
             requestsPerMinute = 2,
