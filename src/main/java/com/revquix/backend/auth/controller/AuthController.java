@@ -39,6 +39,7 @@ import com.revquix.backend.application.enums.RateLimitType;
 import com.revquix.backend.application.payload.ExceptionResponse;
 import com.revquix.backend.application.utils.LoggedResponse;
 import com.revquix.backend.auth.payload.request.ForgotPasswordRequest;
+import com.revquix.backend.auth.payload.request.RegisterOtpRequest;
 import com.revquix.backend.auth.payload.request.RegisterRequest;
 import com.revquix.backend.auth.payload.request.TokenRequest;
 import com.revquix.backend.auth.payload.response.AuthResponse;
@@ -146,13 +147,13 @@ public class AuthController {
             }
     )
     @PostMapping(
-            value = "/register-user",
+            value = "/register",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
     )
     @RateLimit(
             type = RateLimitType.IP_BASED,
-            requestsPerMinute = 2,
-            requestsPerHour = 10,
+            requestsPerMinute = 100,
+            requestsPerHour = 1000,
             message = "User registration rate limit exceeded. Please try again later."
     )
     ResponseEntity<ModuleResponse> registerUser(
@@ -169,6 +170,14 @@ public class AuthController {
     @Operation(
             summary = "Verify Registration OTP",
             description = "Verifies the OTP sent to the user's email during registration.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Register Details",
+                    required = true,
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+                            schema = @Schema(implementation = RegisterOtpRequest.class)
+                    )
+            ),
             responses = {
                     @ApiResponse(
                             description = "OTP verified successfully.",
@@ -180,11 +189,14 @@ public class AuthController {
                     )
             }
     )
-    @PostMapping("/register-otp")
+    @PostMapping(
+            value = "/register-otp",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+    )
     @RateLimit(
             type = RateLimitType.IP_BASED,
-            requestsPerMinute = 10,
-            requestsPerHour = 10,
+            requestsPerMinute = 100,
+            requestsPerHour = 1000,
             message = "OTP Verification rate limit exceeded. Please try again later."
     )
     ResponseEntity<ModuleResponse> registerOtpVerification(
