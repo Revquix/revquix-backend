@@ -135,6 +135,6 @@ public class AuthenticationProperties {
     public static class Mfa {
         private boolean enabled = true;
         private int expiryMinutes = 5;
-        private int maxRequests = 5;
+        private int otpSize = 4;
     }
 }

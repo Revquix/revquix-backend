@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revquix - Two-Factor Authentication Code</title>
+    <!--[if mso]>
+    <noscript>
+        <xml>
+            <o:OfficeDocumentSettings>
+                <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+        </xml>
+    </noscript>
+    <![endif]-->
+    <style>
+        /* Reset styles for email clients */
+        body, table, td, p, a, li, blockquote {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        table, td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+            border: 0;
+            outline: none;
+            text-decoration: none;
+        }
+
+        /* Mobile-first responsive styles */
+        @media only screen and (max-width: 600px) {
+            .container {
+                max-width: 100% !important;
+                margin: 0 10px !important;
+            }
+            .content-padding {
+                padding: 24px 20px !important;
+            }
+            .header-padding {
+                padding: 20px !important;
+            }
+            .footer-padding {
+                padding: 20px !important;
+            }
+            .main-heading {
+                font-size: 22px !important;
+            }
+            .main-text {
+                font-size: 15px !important;
+            }
+            .otp-container {
+                margin: 24px 0 !important;
+            }
+            .otp-box {
+                padding: 16px 24px !important;
+            }
+            .otp-text {
+                font-size: 28px !important;
+                letter-spacing: 4px !important;
+            }
+            .info-table {
+                font-size: 13px !important;
+            }
+            .notice-box {
+                padding: 12px !important;
+                margin: 16px 0 !important;
+            }
+        }
+    </style>
+</head>
+<body style="margin:0; padding:0; background-color:#f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;">
+
+<!-- Wrapper Table -->
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+        <td align="center" style="padding:30px 15px;">
+            <!-- Container -->
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" class="container"
+                   style="max-width:520px; background-color:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.12); border:1px solid #e2e8f0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+
+                <!-- Header with Logo -->
+                <tr>
+                    <td align="center" class="header-padding" style="padding:24px 40px; background: linear-gradient(135deg, #006fee 0%, #0052cc 100%); text-align: center;">
+                        <!-- Logo with fallback -->
+                        <img src="https://revquix-asset.s3.us-east-1.amazonaws.com/revquix-white.png"
+                             alt="Revquix"
+                             style="height:36px; width:auto; display:block; margin:0 auto; border:0; outline:none;"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+
+                        <!-- Text fallback for logo -->
+                        <div style="display:none; color:#ffffff; font-size:24px; font-weight:800; letter-spacing:1px; text-align:center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                            REVQUIX
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Main Content -->
+                <tr>
+                    <td class="content-padding" style="padding:40px 40px 32px 40px; color:#1e293b;">
+
+                        <!-- MFA Header -->
+                        <div style="text-align:center; margin-bottom:28px;">
+                            <div style="font-size:48px; margin-bottom:12px; line-height:1;">🔐</div>
+                            <h1 class="main-heading" style="margin:0 0 8px 0; color:#006fee; font-size:24px; font-weight:700; text-align:center; line-height:1.2; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                Your Authentication Code
+                            </h1>
+                            <p style="font-size:14px; color:#64748b; font-weight:500; margin:0; text-align:center;">
+                                Complete your secure login to Revquix
+                            </p>
+                        </div>
+
+                        <p class="main-text" style="font-size:16px; line-height:1.6; text-align:center; margin:0 0 28px 0; color:#475569;">
+                            Hi <strong>rohit-zip</strong>, we received a login request for your account. Please use the verification code below to complete your two-factor authentication.
+                        </p>
+
+                        <!-- OTP Container -->
+                        <div class="otp-container" style="text-align:center; margin:32px 0;">
+                            <!--[if mso]>
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                                <tr>
+                                    <td align="center">
+                            <![endif]-->
+
+                            <div class="otp-box" style="display:inline-block; background: linear-gradient(135deg, #006fee 0%, #0052cc 100%); border-radius:12px; padding:20px 32px; box-shadow:0 4px 12px rgba(0, 111, 238, 0.3); mso-padding-alt: 20px 32px 20px 32px;">
+                                <span class="otp-text" style="color:#ffffff; font-size:32px; font-weight:800; letter-spacing:8px; font-family: 'Courier New', Consolas, monospace;" th:text="${mfaOtp.code}">
+                                    123456
+                                </span>
+                            </div>
+
+                            <!--[if mso]>
+                            </td>
+                            </tr>
+                            </table>
+                            <![endif]-->
+                        </div>
+
+                        <!-- Login Request Details -->
+                        <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius:12px; padding:24px; margin:28px 0; border-left:4px solid #006fee;">
+                            <h3 style="color:#0c4a6e; font-size:16px; font-weight:600; margin:0 0 16px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                🔍 Login Request Details
+                            </h3>
+
+                            <!-- Details Table -->
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" class="info-table" style="border-collapse: collapse; font-size:14px;">
+                                <tr>
+                                    <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
+                                        👤 Account:
+                                    </td>
+                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${user.email}">
+                                        rohit-zip@example.com
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
+                                        🕐 Request Time:
+                                    </td>
+                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaOtp.requestTime}">
+                                        2025-10-23 12:38:02 UTC
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
+                                        🌐 IP Address:
+                                    </td>
+                                    <td style="padding:8px 0; color:#0c4a6e; font-family: 'Courier New', monospace;" th:text="${mfaOtp.ipAddress}">
+                                        103.216.189.204
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
+                                        💻 Operating System:
+                                    </td>
+                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaOtp.operatingSystem}">
+                                        Windows 11
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
+                                        🌍 Browser:
+                                    </td>
+                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaOtp.browser}">
+                                        Google Chrome 119.0
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
+                                        📍 Location:
+                                    </td>
+                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaOtp.location}">
+                                        Mumbai, India
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Expiry Notice -->
+                        <div class="notice-box" style="background-color:#f1f5f9; border-radius:8px; padding:16px; margin:24px 0; text-align:center;">
+                            <p style="font-size:14px; margin:0; color:#64748b; line-height:1.5;">
+                                <strong style="color:#374151;">⏱️ This code expires in 5 minutes</strong><br>
+                                Enter this code in your authentication app or login screen to proceed.
+                            </p>
+                        </div>
+
+                        <!-- Security Instructions -->
+                        <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-radius:12px; padding:20px; margin:28px 0; border-left:4px solid #10b981;">
+                            <h3 style="color:#047857; font-size:15px; font-weight:600; margin:0 0 12px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                🔒 Security Instructions
+                            </h3>
+                            <ul style="color:#047857; font-size:13px; line-height:1.5; margin:0; padding-left:20px;">
+                                <li style="margin-bottom:6px;">Enter this code only on the official Revquix login page</li>
+                                <li style="margin-bottom:6px;">Never share this code with anyone, including support staff</li>
+                                <li style="margin-bottom:6px;">This code can only be used once and expires in 5 minutes</li>
+                                <li>If you didn't request this code, someone may be trying to access your account</li>
+                            </ul>
+                        </div>
+
+                        <!-- Important Warning -->
+                        <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-radius:12px; padding:20px; margin:28px 0; border-left:4px solid #ef4444;">
+                            <p style="color:#dc2626; font-size:14px; line-height:1.5; margin:0; text-align:center;">
+                                <strong>⚠️ Didn't request this code?</strong> If you didn't try to log in, someone may be attempting to access your account.
+                                Change your password immediately and contact our security team at
+                                <a href="mailto:security@revquix.com" style="color:#dc2626; text-decoration:none; font-weight:600;">security@revquix.com</a>
+                            </p>
+                        </div>
+
+                    </td>
+                </tr>
+
+                <!-- Support Section -->
+                <tr>
+                    <td style="padding:24px 40px; background-color:#fafbfc; border-top:1px solid #e2e8f0;">
+                        <div style="text-align:center;">
+                            <p style="font-size:14px; margin:0 0 8px 0; color:#374151; font-weight:600;">
+                                Having Trouble with Authentication?
+                            </p>
+                            <p style="font-size:13px; margin:0; color:#64748b; line-height:1.5;">
+                                Contact our support team for assistance<br>
+                                <a href="mailto:support@revquix.com" style="color:#006fee; text-decoration:none; font-weight:600;">support@revquix.com</a>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td align="center" class="footer-padding" style="padding:20px 40px; background-color:#f8fafc; color:#94a3b8; font-size:12px; line-height:1.5; text-align:center;">
+                        <p style="margin:0 0 4px 0;">
+                            This authentication code was sent because you requested to log in to your account.
+                        </p>
+                        <p style="margin:0; font-weight:500; color:#64748b;">
+                            &copy; 2025 Revquix. Securing your digital experience.
+                        </p>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

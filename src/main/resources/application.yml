@@ -142,8 +142,8 @@ auth:
           - user
   mfa:
     enabled: true
-    max-requests: 4
     expiry-minutes: 4
+    otp-size: 4
 
 swagger:
   group-name:

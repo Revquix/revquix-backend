@@ -43,9 +43,11 @@ import com.revquix.backend.auth.payload.UserIdentity;
 import com.revquix.backend.auth.payload.response.AuthResponse;
 import com.revquix.backend.auth.properties.AuthenticationProperties;
 import com.revquix.backend.auth.util.MfaTokenGenerator;
+import com.revquix.backend.auth.util.OtpGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -62,10 +64,13 @@ public class MfaAuthResponseGenerator {
     private final IpUtils ipUtils;
     private final ServletUtil servletUtil;
     private final MfaEntityRepository mfaEntityRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public AuthResponse generate(UserIdentity userIdentity) {
         log.info("{}::generate -> Generating MFA Auth Response for user: {}", getClass().getSimpleName(), userIdentity.getUserId());
-        MfaEntity mfaEntity = build(userIdentity);
+        String otp = OtpGenerator.generate(authenticationProperties.getMfa().getOtpSize());
+        String encodedOtp = passwordEncoder.encode(otp);
+        MfaEntity mfaEntity = build(userIdentity, encodedOtp);
         MfaEntity mfaEntityResponse = mfaEntityRepository.save(mfaEntity);
         log.info("{}::generate -> Saved MFA Entity: {}", getClass().getSimpleName(), mfaEntityResponse.toJson());
         return buildAuthResponse(mfaEntityResponse);
@@ -98,13 +103,14 @@ public class MfaAuthResponseGenerator {
         return authResponse;
     }
 
-    private MfaEntity build(UserIdentity userIdentity) {
+    private MfaEntity build(UserIdentity userIdentity, String otp) {
         log.info("{}::build -> Building MFA Entity for userId: {}", getClass().getSimpleName(), userIdentity.getUserId());
         String mfaToken = MfaTokenGenerator.get();
         int expiryMinutes = authenticationProperties.getMfa().getExpiryMinutes();
         MfaEntity mfaEntity = MfaEntity
                 .builder()
                 .token(mfaToken)
+                .otp(otp)
                 .userId(userIdentity.getUserId())
                 .expiresIn(LocalDateTime.now().plusMinutes(expiryMinutes))
                 .remoteAddress(ipUtils.getIpv4())

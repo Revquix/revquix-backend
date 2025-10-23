@@ -38,10 +38,7 @@ import com.revquix.backend.application.annotation.RateLimit;
 import com.revquix.backend.application.enums.RateLimitType;
 import com.revquix.backend.application.payload.ExceptionResponse;
 import com.revquix.backend.application.utils.LoggedResponse;
-import com.revquix.backend.auth.payload.request.ForgotPasswordRequest;
-import com.revquix.backend.auth.payload.request.RegisterOtpRequest;
-import com.revquix.backend.auth.payload.request.RegisterRequest;
-import com.revquix.backend.auth.payload.request.TokenRequest;
+import com.revquix.backend.auth.payload.request.*;
 import com.revquix.backend.auth.payload.response.AuthResponse;
 import com.revquix.backend.auth.payload.response.ModuleResponse;
 import com.revquix.backend.auth.payload.response.RegistrationResponse;
@@ -358,6 +355,49 @@ public class AuthController {
         return LoggedResponse.call(
                 ()-> authService.getRegistrationStatus(email),
                 "Get Registration Status",
+                log
+        );
+    }
+
+    @Operation(
+            summary = "Generate Authentication Token for User",
+            description = "Generates a JWT authentication token for a user based on their entrypoint (email/username) and password.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Login credentials",
+                    required = true,
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+                            schema = @Schema(implementation = VerifyMfaRequest.class)
+                    )
+            ),
+            responses = {
+                    @ApiResponse(
+                            description = "Authentication token generated successfully.",
+                            responseCode = "200",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = AuthResponse.class)
+                            )
+                    )
+            }
+    )
+    @PostMapping(
+            value = "/verify-mfa",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+    )
+    @RateLimit(
+            type = RateLimitType.IP_BASED,
+            requestsPerMinute = 20,
+            requestsPerHour = 1000,
+            message = "Too many mfa attempts from this IP, please try again later."
+    )
+    ResponseEntity<AuthResponse> verifyMfa(
+            @Parameter(name = "entrypoint", required = true, example = "someone@example.com") @RequestParam String entrypoint,
+            @Parameter(name = "password", required = true, example = "Hello@1234") @RequestParam String password
+    ) {
+        return LoggedResponse.call(
+                ()-> authService.token(entrypoint, password),
+                "Token",
                 log
         );
     }

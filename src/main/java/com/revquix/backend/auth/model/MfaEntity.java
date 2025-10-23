@@ -68,6 +68,9 @@ public class MfaEntity extends ModelPayload<MfaEntity> {
     @JsonSerialize(using = MaskingSerializer.class)
     private String token;
 
+    @Column(nullable = false, updatable = false, length = 10)
+    private String otp;
+
     @Column(nullable = false, updatable = false)
     private String userId;
 

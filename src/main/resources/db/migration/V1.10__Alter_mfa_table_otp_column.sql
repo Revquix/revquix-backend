@@ -1,0 +1,2 @@
+ALTER TABLE auth.mfa
+    ADD COLUMN otp VARCHAR(255) NOT NULL;
