@@ -3,91 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revquix - Verify Your Account</title>
+    <title>Revquix - Email Verification</title>
+    <!--[if mso]>
+    <noscript>
+        <xml>
+            <o:OfficeDocumentSettings>
+                <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+        </xml>
+    </noscript>
+    <![endif]-->
+    <style>
+        /* Reset styles for email clients */
+        body, table, td, p, a, li, blockquote {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        table, td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+            border: 0;
+            outline: none;
+            text-decoration: none;
+        }
+
+        /* Mobile-first responsive styles */
+        @media only screen and (max-width: 600px) {
+            .container {
+                max-width: 100% !important;
+                margin: 0 10px !important;
+            }
+            .content-padding {
+                padding: 20px 15px 16px 15px !important;
+            }
+            .header-padding {
+                padding: 15px 15px !important;
+            }
+            .support-padding {
+                padding: 20px 15px !important;
+            }
+            .footer-padding {
+                padding: 20px 15px !important;
+            }
+            .main-heading {
+                font-size: 24px !important;
+            }
+            .main-text {
+                font-size: 15px !important;
+            }
+            .otp-container {
+                margin: 24px 0 !important;
+            }
+            .otp-box {
+                padding: 16px 20px !important;
+            }
+            .otp-text {
+                font-size: 28px !important;
+                letter-spacing: 4px !important;
+            }
+            .notice-box, .welcome-box, .tips-box {
+                padding: 12px !important;
+                margin: 16px 0 !important;
+            }
+            .social-container {
+                margin: 12px auto 0 auto !important;
+            }
+            .social-icon {
+                width: 32px !important;
+                height: 32px !important;
+            }
+            .social-padding {
+                padding: 0 6px !important;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .dark-bg { background-color: #1a1a1a !important; }
+            .dark-text { color: #ffffff !important; }
+        }
+    </style>
 </head>
-<body style="margin:0; padding:0; background-color:#eff6ff; font-family: Arial, sans-serif;">
+<body style="margin:0; padding:0; background-color:#f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;">
 
 <!-- Wrapper Table -->
-<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
     <tr>
-        <td align="center" style="padding:30px 15px;">
+        <td align="center" style="padding:40px 20px;">
             <!-- Container -->
-            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%"
-                   style="max-width:600px; background-color:#ffffff; border-radius:10px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" class="container"
+                   style="max-width:520px; background-color:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 10px 25px rgba(0,0,0,0.08); border:1px solid #e2e8f0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
 
-                <!-- Logo -->
+                <!-- Header with Logo -->
                 <tr>
-                    <td align="center" style="background-color:#1e40af; padding:20px;">
-                        <h1 style="color:#ffffff; font-size:36px; font-weight:bold; margin:0; letter-spacing:2px;">REVQUIX</h1>
+                    <td align="center" class="header-padding" style="padding:20px 40px; background: linear-gradient(135deg, #006fee 0%, #0052cc 100%); text-align: center;">
+                        <!--[if mso]>
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                            <tr>
+                                <td align="center">
+                        <![endif]-->
+
+                        <!-- Logo with multiple fallbacks -->
+                        <img src="https://revquix-asset.s3.us-east-1.amazonaws.com/revquix-white.png"
+                             alt="Revquix"
+                             style="height:40px; width:auto; display:block; margin:0 auto; border:0; outline:none;"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+
+                        <!-- Text fallback for logo -->
+                        <div style="display:none; color:#ffffff; font-size:28px; font-weight:800; letter-spacing:2px; text-align:center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                            REVQUIX
+                        </div>
+
+                        <!--[if mso]>
+                        </td>
+                        </tr>
+                        </table>
+                        <![endif]-->
                     </td>
                 </tr>
 
-                <!-- Content -->
+                <!-- Main Content -->
                 <tr>
-                    <td style="padding:40px 30px; color:#333333;">
-                        <h2 style="margin:0; color:#1e40af; font-size:24px; text-align:center;">Verify Your Email</h2>
-                        <p style="font-size:16px; line-height:1.6; text-align:center; margin-top:20px;">
-                            Welcome to <strong>Revquix</strong>! To complete your registration, please use the One-Time Password (OTP) below:
+                    <td class="content-padding" style="padding:40px 40px 32px 40px; color:#1e293b;">
+                        <h1 class="main-heading" style="margin:0 0 16px 0; color:#0f172a; font-size:28px; font-weight:700; text-align:center; line-height:1.2; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                            Verify Your Email
+                        </h1>
+
+                        <p class="main-text" style="font-size:16px; line-height:1.6; text-align:center; margin:0 0 32px 0; color:#475569;">
+                            Welcome to Revquix! Please use the verification code below to complete your registration and activate your account.
                         </p>
 
-                        <!-- OTP Box -->
-                        <p style="text-align:center; margin:30px 0;">
-                <span style="display:inline-block; background-color:#1e40af; color:#ffffff;
-                             font-size:26px; letter-spacing:8px; font-weight:bold;
-                             padding:14px 28px; border-radius:8px;" th:text="${otpPayload.otp}">
-                  123456
-                </span>
-                        </p>
+                        <!-- OTP Container -->
+                        <div class="otp-container" style="text-align:center; margin:32px 0;">
+                            <!--[if mso]>
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                                <tr>
+                                    <td align="center">
+                            <![endif]-->
 
-                        <!-- Expiry Info -->
-                        <p style="font-size:14px; line-height:1.6; text-align:center; color:#555555;">
-                            This OTP will expire in <strong>10 minutes</strong>.<br>
-                            If you didn't request this code, please ignore this email.
-                        </p>
+                            <div class="otp-box" style="display:inline-block; background: linear-gradient(135deg, #006fee 0%, #0052cc 100%); border-radius:12px; padding:20px 32px; box-shadow:0 4px 12px rgba(0, 111, 238, 0.3); mso-padding-alt: 20px 32px 20px 32px;">
+                                <span class="otp-text" style="color:#ffffff; font-size:32px; font-weight:800; letter-spacing:8px; font-family: 'Courier New', Consolas, monospace;" th:text="${otpPayload.otp}">
+                                    1234
+                                </span>
+                            </div>
 
-                        <!-- Additional Info -->
-                        <div style="margin-top:30px; font-size:13px; line-height:1.6; color:#444444;">
-                            <p>
-                                If you have any questions, concerns, or require assistance, please do not hesitate to contact
-                                <a href="#" target="_blank" style="color:#1e40af; text-decoration:none; font-weight:bold;">Revquix Support</a>.
+                            <!--[if mso]>
+                            </td>
+                            </tr>
+                            </table>
+                            <![endif]-->
+                        </div>
+
+                        <!-- Expiry Notice -->
+                        <div class="notice-box" style="background-color:#f1f5f9; border-radius:8px; padding:16px; margin:24px 0; text-align:center;">
+                            <p style="font-size:14px; margin:0; color:#64748b; line-height:1.5;">
+                                <strong style="color:#374151;">⏱️ This code expires in 10 minutes</strong><br>
+                                Enter this code in the verification screen to activate your account.
                             </p>
-                            <p>
-                                Revquix will never email you and ask you to disclose or verify your password,
-                                credit card, or banking account number. If you receive a suspicious email with a link to update your account information,
-                                do not click on the link. Instead, report the email to Revquix for investigation.
+                        </div>
+
+                        <!-- Welcome Message -->
+                        <div class="welcome-box" style="background-color:#f0f9ff; border-radius:8px; padding:16px; margin:24px 0; border-left:4px solid #006fee;">
+                            <p style="font-size:13px; margin:0 0 8px 0; color:#1e40af; line-height:1.5; font-weight:600;">
+                                🎉 Welcome to the Revquix Community!
+                            </p>
+                            <p style="font-size:12px; margin:0; color:#1e40af; line-height:1.4;">
+                                Once verified, you'll have access to all our features and can start your journey with us. We're excited to have you on board!
+                            </p>
+                        </div>
+
+                        <!-- Security Notice -->
+                        <div class="tips-box" style="border-left:4px solid #10b981; background-color:#f0fdf4; padding:16px; margin:24px 0; border-radius:8px;">
+                            <p style="font-size:13px; margin:0; color:#059669; line-height:1.5;">
+                                <strong style="color:#047857;">🔒 Security Note:</strong> If you didn't create a Revquix account, please ignore this email. Your email address will not be used without verification.
                             </p>
                         </div>
                     </td>
                 </tr>
 
+                <!-- Support Section -->
+                <tr>
+                    <td class="support-padding" style="padding:24px 40px; background-color:#fafbfc; border-top:1px solid #e2e8f0;">
+                        <p style="font-size:13px; margin:0 0 12px 0; color:#64748b; text-align:center; line-height:1.5;">
+                            Need help with verification? Contact our
+                            <a href="mailto:support@revquix.com" style="color:#006fee; text-decoration:none; font-weight:600;">support team</a>
+                        </p>
+                    </td>
+                </tr>
+
                 <!-- Footer -->
                 <tr>
-                    <td align="center" style="padding:30px 20px; font-size:12px; color:#777777; background-color:#f9fafb;">
-                        <p style="margin:0 0 15px 0; font-size:13px; color:#555;">
-                            Stay connected with Revquix
+                    <td align="center" class="footer-padding" style="padding:24px 40px; background-color:#f8fafc; color:#94a3b8; font-size:12px; line-height:1.5; text-align:center;">
+                        <p style="margin:0 0 8px 0;">
+                            You're receiving this email because you signed up for a Revquix account.
                         </p>
-                        <!-- Social Links -->
-                        <table role="presentation" cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td style="padding:0 8px;">
-                                    <a href="https://instagram.com" target="_blank">
-                                        <img src="https://img.icons8.com/ios-glyphs/30/000000/instagram-new.png" alt="Instagram" width="22" height="22" style="display:block;">
-                                    </a>
-                                </td>
-                                <td style="padding:0 8px;">
-                                    <a href="https://facebook.com" target="_blank">
-                                        <img src="https://img.icons8.com/ios-glyphs/30/000000/facebook-new.png" alt="Facebook" width="22" height="22" style="display:block;">
-                                    </a>
-                                </td>
-                                <td style="padding:0 8px;">
-                                    <a href="https://x.com" target="_blank">
-                                        <img src="https://img.icons8.com/ios-glyphs/30/000000/twitterx.png" alt="X" width="22" height="22" style="display:block;">
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
-                        <p style="margin:15px 0 0 0; font-size:12px; color:#999;">
-                            You are receiving this email because you registered for Revquix.<br>
+                        <p style="margin:0; font-weight:600; color:#64748b;">
                             &copy; 2025 Revquix. All rights reserved.
                         </p>
                     </td>

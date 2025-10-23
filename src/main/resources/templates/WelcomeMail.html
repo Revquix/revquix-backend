@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Revquix - Let's Get Started!</title>
+    <!--[if mso]>
+    <noscript>
+        <xml>
+            <o:OfficeDocumentSettings>
+                <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+        </xml>
+    </noscript>
+    <![endif]-->
+    <style>
+        /* Reset styles for email clients */
+        body, table, td, p, a, li, blockquote {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        table, td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+            border: 0;
+            outline: none;
+            text-decoration: none;
+        }
+
+        /* Mobile-first responsive styles */
+        @media only screen and (max-width: 600px) {
+            .container {
+                max-width: 100% !important;
+                margin: 0 10px !important;
+            }
+            .content-padding {
+                padding: 24px 20px !important;
+            }
+            .header-padding {
+                padding: 20px !important;
+            }
+            .support-padding {
+                padding: 20px !important;
+            }
+            .footer-padding {
+                padding: 20px !important;
+            }
+            .main-heading {
+                font-size: 26px !important;
+            }
+            .main-text {
+                font-size: 15px !important;
+            }
+            .feature-row {
+                display: block !important;
+                width: 100% !important;
+            }
+            .feature-cell {
+                display: block !important;
+                width: 100% !important;
+                padding: 0 !important;
+            }
+            .feature-item {
+                margin: 0 0 16px 0 !important;
+            }
+            .cta-button {
+                padding: 14px 28px !important;
+                font-size: 16px !important;
+            }
+            .social-icon {
+                width: 34px !important;
+                height: 34px !important;
+            }
+            .social-padding {
+                padding: 0 6px !important;
+            }
+        }
+    </style>
+</head>
+<body style="margin:0; padding:0; background-color:#f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;">
+
+<!-- Wrapper Table -->
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+        <td align="center" style="padding:30px 15px;">
+            <!-- Container -->
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" class="container"
+                   style="max-width:580px; background-color:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.12); border:1px solid #e2e8f0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+
+                <!-- Header with Logo -->
+                <tr>
+                    <td align="center" class="header-padding" style="padding:24px 40px; background: linear-gradient(135deg, #006fee 0%, #0052cc 100%); text-align: center;">
+                        <!-- Logo with fallback -->
+                        <img src="https://revquix-asset.s3.us-east-1.amazonaws.com/revquix-white.png"
+                             alt="Revquix"
+                             style="height:36px; width:auto; display:block; margin:0 auto; border:0; outline:none;"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+
+                        <!-- Text fallback for logo -->
+                        <div style="display:none; color:#ffffff; font-size:24px; font-weight:800; letter-spacing:1px; text-align:center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                            REVQUIX
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Main Content -->
+                <tr>
+                    <td class="content-padding" style="padding:40px 40px 36px 40px; color:#1e293b;">
+
+                        <!-- Welcome Header -->
+                        <div style="text-align:center; margin-bottom:32px;">
+                            <div style="font-size:40px; margin-bottom:12px; line-height:1;">🎉</div>
+                            <h1 class="main-heading" style="margin:0 0 8px 0; color:#0f172a; font-size:28px; font-weight:700; text-align:center; line-height:1.2; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                Welcome to Revquix!
+                            </h1>
+                            <p style="font-size:16px; color:#006fee; font-weight:600; margin:0; text-align:center;" th:text="'Hi ' + ${user.name} + '!'">
+                                Hi there!
+                            </p>
+                        </div>
+
+                        <p class="main-text" style="font-size:16px; line-height:1.6; text-align:center; margin:0 0 28px 0; color:#64748b;">
+                            Your account is ready! Join thousands of creators, thinkers, and innovators sharing ideas and building connections.
+                        </p>
+
+                        <!-- CTA Button -->
+                        <div style="text-align:center; margin:28px 0 36px 0;">
+                            <a href="https://revquix.com/dashboard" class="cta-button" style="display:inline-block; background: linear-gradient(135deg, #006fee 0%, #0052cc 100%); color:#ffffff; text-decoration:none; font-weight:600; font-size:16px; padding:16px 32px; border-radius:8px; box-shadow:0 4px 14px rgba(0, 111, 238, 0.4); transition:all 0.3s ease;">
+                                Start Exploring
+                            </a>
+                        </div>
+
+                        <!-- Features Section - Using Proper Table Structure -->
+                        <div style="margin:32px 0 28px 0;">
+                            <h2 style="color:#0f172a; font-size:20px; font-weight:700; text-align:center; margin:0 0 20px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                Everything You Need to Connect & Create
+                            </h2>
+
+                            <!-- Features Table -->
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+                                <!-- Row 1 -->
+                                <tr class="feature-row">
+                                    <td class="feature-cell" style="width:50%; padding:0 8px 0 0; vertical-align:top;">
+                                        <div class="feature-item" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius:12px; padding:20px; margin:0 0 16px 0; border-left:3px solid #006fee; height:auto;">
+                                            <div style="display:flex; align-items:center; margin-bottom:8px;">
+                                                <span style="font-size:20px; margin-right:8px; line-height:1;">✍️</span>
+                                                <h3 style="color:#0f172a; font-size:15px; font-weight:600; margin:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                                    Write & Share
+                                                </h3>
+                                            </div>
+                                            <p style="color:#64748b; font-size:13px; line-height:1.4; margin:0;">
+                                                Create compelling blog posts with our intuitive editor
+                                            </p>
+                                        </div>
+                                    </td>
+                                    <td class="feature-cell" style="width:50%; padding:0 0 0 8px; vertical-align:top;">
+                                        <div class="feature-item" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius:12px; padding:20px; margin:0 0 16px 0; border-left:3px solid #10b981; height:auto;">
+                                            <div style="display:flex; align-items:center; margin-bottom:8px;">
+                                                <span style="font-size:20px; margin-right:8px; line-height:1;">🗣️</span>
+                                                <h3 style="color:#0f172a; font-size:15px; font-weight:600; margin:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                                    Join Discussions
+                                                </h3>
+                                            </div>
+                                            <p style="color:#64748b; font-size:13px; line-height:1.4; margin:0;">
+                                                Engage in meaningful conversations in our forums
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Row 2 -->
+                                <tr class="feature-row">
+                                    <td class="feature-cell" style="width:50%; padding:0 8px 0 0; vertical-align:top;">
+                                        <div class="feature-item" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius:12px; padding:20px; margin:0; border-left:3px solid #f59e0b; height:auto;">
+                                            <div style="display:flex; align-items:center; margin-bottom:8px;">
+                                                <span style="font-size:20px; margin-right:8px; line-height:1;">💬</span>
+                                                <h3 style="color:#0f172a; font-size:15px; font-weight:600; margin:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                                    Private Chat
+                                                </h3>
+                                            </div>
+                                            <p style="color:#64748b; font-size:13px; line-height:1.4; margin:0;">
+                                                Connect personally through secure messaging
+                                            </p>
+                                        </div>
+                                    </td>
+                                    <td class="feature-cell" style="width:50%; padding:0 0 0 8px; vertical-align:top;">
+                                        <div class="feature-item" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius:12px; padding:20px; margin:0; border-left:3px solid #ef4444; height:auto;">
+                                            <div style="display:flex; align-items:center; margin-bottom:8px;">
+                                                <span style="font-size:20px; margin-right:8px; line-height:1;">👥</span>
+                                                <h3 style="color:#0f172a; font-size:15px; font-weight:600; margin:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                                    Find Friends
+                                                </h3>
+                                            </div>
+                                            <p style="color:#64748b; font-size:13px; line-height:1.4; margin:0;">
+                                                Discover people who share your interests
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Quick Start Tips -->
+                        <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius:12px; padding:20px; margin:28px 0; border-left:3px solid #06b6d4;">
+                            <h3 style="color:#0e7490; font-size:15px; font-weight:600; margin:0 0 8px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                💡 Ready to dive in?
+                            </h3>
+                            <p style="color:#0e7490; font-size:13px; line-height:1.5; margin:0;">
+                                Complete your profile • Explore trending topics • Write your first post • Connect with others
+                            </p>
+                        </div>
+
+                    </td>
+                </tr>
+
+                <!-- Footer Section -->
+                <tr>
+                    <td class="support-padding" style="padding:24px 40px; background-color:#fafbfc; border-top:1px solid #e2e8f0;">
+
+                        <!-- Support -->
+                        <div style="text-align:center; margin-bottom:20px;">
+                            <p style="font-size:13px; margin:0; color:#64748b; line-height:1.5;">
+                                Questions? We're here to help at
+                                <a href="mailto:support@revquix.com" style="color:#006fee; text-decoration:none; font-weight:600;">support@revquix.com</a>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td align="center" class="footer-padding" style="padding:20px 40px; background-color:#f8fafc; color:#94a3b8; font-size:12px; line-height:1.5; text-align:center;">
+                        <p style="margin:0; font-weight:500; color:#64748b;">
+                            &copy; 2025 Revquix. Ready to revolutionize your digital experience.
+                        </p>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

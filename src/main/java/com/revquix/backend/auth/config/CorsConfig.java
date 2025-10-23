@@ -60,7 +60,8 @@ public class CorsConfig {
             "Authorization", "Content-Type", "Accept", "Origin",
             "Access-Control-Request-Method", "Access-Control-Request-Headers",
             "X-Requested-With", "X-Auth-Token", "X-Client-Version",
-            "User-Agent", "Cache-Control", "Pragma", "Expires"
+            "User-Agent", "Cache-Control", "Pragma", "Expires",
+            "Revquix-Web-OS", "Revquix-Web-Browser"
     );
 
     private static final List<String> EXPOSED_HEADERS = List.of(

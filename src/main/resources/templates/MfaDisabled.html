@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revquix - Two-Factor Authentication Disabled</title>
+    <!--[if mso]>
+    <noscript>
+        <xml>
+            <o:OfficeDocumentSettings>
+                <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+        </xml>
+    </noscript>
+    <![endif]-->
+    <style>
+        /* Reset styles for email clients */
+        body, table, td, p, a, li, blockquote {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        table, td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+            border: 0;
+            outline: none;
+            text-decoration: none;
+        }
+
+        /* Mobile-first responsive styles */
+        @media only screen and (max-width: 600px) {
+            .container {
+                max-width: 100% !important;
+                margin: 0 10px !important;
+            }
+            .content-padding {
+                padding: 24px 20px !important;
+            }
+            .header-padding {
+                padding: 20px !important;
+            }
+            .footer-padding {
+                padding: 20px !important;
+            }
+            .main-heading {
+                font-size: 22px !important;
+            }
+            .main-text {
+                font-size: 15px !important;
+            }
+            .info-table {
+                font-size: 13px !important;
+            }
+            .action-button {
+                padding: 14px 24px !important;
+                font-size: 15px !important;
+                display: block !important;
+                margin: 8px auto !important;
+                width: 200px !important;
+            }
+        }
+    </style>
+</head>
+<body style="margin:0; padding:0; background-color:#f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;">
+
+<!-- Wrapper Table -->
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+        <td align="center" style="padding:30px 15px;">
+            <!-- Container -->
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" class="container"
+                   style="max-width:520px; background-color:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.12); border:1px solid #e2e8f0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+
+                <!-- Header with Logo -->
+                <tr>
+                    <td align="center" class="header-padding" style="padding:24px 40px; background: linear-gradient(135deg, #006fee 0%, #0052cc 100%); text-align: center;">
+                        <!-- Logo with fallback -->
+                        <img src="https://revquix-asset.s3.us-east-1.amazonaws.com/revquix-white.png"
+                             alt="Revquix"
+                             style="height:36px; width:auto; display:block; margin:0 auto; border:0; outline:none;"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+
+                        <!-- Text fallback for logo -->
+                        <div style="display:none; color:#ffffff; font-size:24px; font-weight:800; letter-spacing:1px; text-align:center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                            REVQUIX
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Main Content -->
+                <tr>
+                    <td class="content-padding" style="padding:40px 40px 36px 40px; color:#1e293b;">
+
+                        <!-- Alert Header -->
+                        <div style="text-align:center; margin-bottom:28px;">
+                            <div style="font-size:48px; margin-bottom:12px; line-height:1;">⚠️</div>
+                            <h1 class="main-heading" style="margin:0 0 8px 0; color:#f59e0b; font-size:24px; font-weight:700; text-align:center; line-height:1.2; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                Two-Factor Authentication Disabled
+                            </h1>
+                            <p style="font-size:14px; color:#64748b; font-weight:500; margin:0; text-align:center;">
+                                Your account security has been reduced
+                            </p>
+                        </div>
+
+                        <p class="main-text" style="font-size:16px; line-height:1.6; text-align:center; margin:0 0 28px 0; color:#475569;">
+                            Hi <strong th:text="${user.login}">rohit-zip</strong>, two-factor authentication (2FA) has been disabled for your Revquix account. Your account is now less secure than before.
+                        </p>
+
+                        <!-- MFA Disabled Details -->
+                        <div style="background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%); border-radius:12px; padding:24px; margin:28px 0; border-left:4px solid #f59e0b;">
+                            <h3 style="color:#92400e; font-size:16px; font-weight:600; margin:0 0 16px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                📱 MFA Disabled Details
+                            </h3>
+
+                            <!-- Details Table -->
+                            <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" class="info-table" style="border-collapse: collapse; font-size:14px;">
+                                <tr>
+                                    <td style="padding:8px 0; color:#b45309; font-weight:600; width:35%; vertical-align:top;">
+                                        👤 Account:
+                                    </td>
+                                    <td style="padding:8px 0; color:#92400e;" th:text="${user.email}">
+                                        rohit-zip@example.com
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:8px 0; color:#b45309; font-weight:600; width:35%; vertical-align:top;">
+                                        🕐 Disabled On:
+                                    </td>
+                                    <td style="padding:8px 0; color:#92400e;" th:text="${mfa.disabledAt}">
+                                        2025-10-23 09:14:09 UTC
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:8px 0; color:#b45309; font-weight:600; width:35%; vertical-align:top;">
+                                        🔓 Previous Method:
+                                    </td>
+                                    <td style="padding:8px 0; color:#92400e;" th:text="${mfa.previousMethod}">
+                                        Authenticator App (TOTP)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:8px 0; color:#b45309; font-weight:600; width:35%; vertical-align:top;">
+                                        🖥️ Disabled From:
+                                    </td>
+                                    <td style="padding:8px 0; color:#92400e;" th:text="${mfa.disabledFrom}">
+                                        Web Browser
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:8px 0; color:#b45309; font-weight:600; width:35%; vertical-align:top;">
+                                        ❌ Status:
+                                    </td>
+                                    <td style="padding:8px 0; color:#92400e; font-weight:600;">
+                                        Disabled - Reduced Security
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- Security Impact -->
+                        <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius:12px; padding:20px; margin:28px 0; border-left:4px solid #006fee;">
+                            <h3 style="color:#0c4a6e; font-size:15px; font-weight:600; margin:0 0 12px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                🔒 Security Impact
+                            </h3>
+                            <ul style="color:#0c4a6e; font-size:13px; line-height:1.5; margin:0; padding-left:20px;">
+                                <li style="margin-bottom:6px;">Your account now relies only on password protection</li>
+                                <li style="margin-bottom:6px;">Increased risk of unauthorized access</li>
+                                <li style="margin-bottom:6px;">No additional verification required for logins</li>
+                                <li>We strongly recommend re-enabling 2FA for better security</li>
+                            </ul>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div style="margin:32px 0 28px 0;">
+                            <h3 style="color:#0f172a; font-size:16px; font-weight:600; text-align:center; margin:0 0 20px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                                🔧 Recommended Actions
+                            </h3>
+
+                            <div style="text-align:center;">
+                                <a href="https://revquix.com/security/enable-2fa" class="action-button" style="display:inline-block; background: linear-gradient(135deg, #006fee 0%, #0052cc 100%); color:#ffffff; text-decoration:none; font-weight:600; font-size:16px; padding:14px 28px; border-radius:8px; margin:0 8px 12px 8px; box-shadow:0 4px 14px rgba(0, 111, 238, 0.4);">
+                                    Re-enable 2FA
+                                </a>
+                                <a href="https://revquix.com/security/change-password" class="action-button" style="display:inline-block; background-color:#f8fafc; color:#374151; text-decoration:none; font-weight:600; font-size:16px; padding:14px 28px; border-radius:8px; margin:0 8px 12px 8px; border:2px solid #006fee;">
+                                    Change Password
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Important Notice */
+                        <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-radius:12px; padding:20px; margin:28px 0; border-left:4px solid #ef4444;">
+                            <p style="color:#dc2626; font-size:14px; line-height:1.5; margin:0; text-align:center;">
+                                <strong>⚠️ Security Alert:</strong> If you didn't disable 2FA yourself, your account may be compromised.
+                                Please change your password immediately and contact our security team.
+                            </p>
+                        </div>
+
+                    </td>
+                </tr>
+
+                <!-- Support Section -->
+                <tr>
+                    <td style="padding:24px 40px; background-color:#fafbfc; border-top:1px solid #e2e8f0;">
+                        <div style="text-align:center;">
+                            <p style="font-size:14px; margin:0 0 8px 0; color:#374151; font-weight:600;">
+                                Concerned About Your Account Security?
+                            </p>
+                            <p style="font-size:13px; margin:0; color:#64748b; line-height:1.5;">
+                                Contact our security team immediately<br>
+                                <a href="mailto:security@revquix.com" style="color:#006fee; text-decoration:none; font-weight:600;">security@revquix.com</a>
+                                or reach support at
+                                <a href="mailto:support@revquix.com" style="color:#006fee; text-decoration:none; font-weight:600;">support@revquix.com</a>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td align="center" class="footer-padding" style="padding:20px 40px; background-color:#f8fafc; color:#94a3b8; font-size:12px; line-line:1.5; text-align:center;">
+                        <p style="margin:0 0 4px 0;">
+                            This notification was sent because 2FA was disabled on your account.
+                        </p>
+                        <p style="margin:0; font-weight:500; color:#64748b;">
+                            &copy; 2025 Revquix. Protecting your digital experience.
+                        </p>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
