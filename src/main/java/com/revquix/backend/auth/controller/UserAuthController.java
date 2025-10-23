@@ -110,8 +110,8 @@ public class UserAuthController {
     @PostMapping("/toggle-mfa")
     @RateLimit(
             type = RateLimitType.IP_BASED,
-            requestsPerMinute = 1,
-            requestsPerHour = 1,
+            requestsPerMinute = 10,
+            requestsPerHour = 100,
             message = "You can toggle MFA only once per hour."
     )
     ResponseEntity<ModuleResponse> toggleMfa(@RequestBody MfaRequest mfaRequest) {

@@ -109,8 +109,8 @@ public class AuthController {
     )
     @RateLimit(
             type = RateLimitType.IP_BASED,
-            requestsPerMinute = 2,
-            requestsPerHour = 10,
+            requestsPerMinute = 20,
+            requestsPerHour = 1000,
             message = "Too many login attempts from this IP, please try again later."
     )
     ResponseEntity<AuthResponse> token(

@@ -45,4 +45,5 @@ public class ModelConstants {
     public static final String USER_ROLE_JOIN_TABLE = "user_role";
     public static final String OTP_ENTITY_TABLE = "otp_entity";
     public static final String REFRESH_TOKEN_TABLE = "refresh_token";
+    public static final String MFA = "mfa";
 }

@@ -78,8 +78,8 @@ public class JwtTokenGenerator {
         return AccessTokenResponse
                 .builder()
                 .accessToken(tokenValue)
-                .expiresIn(expiresAt.toEpochMilli())
-                .expiresOn(expiresAt.toEpochMilli() - now.toEpochMilli())
+                .expiresOn(expiresAt.toEpochMilli())
+                .expiresIn(expiresAt.toEpochMilli() - now.toEpochMilli())
                 .build();
     }
 

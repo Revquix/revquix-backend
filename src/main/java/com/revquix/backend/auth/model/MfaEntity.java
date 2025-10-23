@@ -25,43 +25,65 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.auth.payload.response;
+package com.revquix.backend.auth.model;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: AuthResponse
+  File: MfaEntity
  */
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.revquix.backend.application.constants.ModelConstants;
 import com.revquix.backend.application.utils.MaskingSerializer;
 import com.revquix.backend.application.utils.ModelPayload;
-import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.http.ResponseCookie;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
+
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AuthResponse extends ModelPayload<AuthResponse> {
+@Table(
+        name = ModelConstants.MFA,
+        schema = ModelConstants.AUTH_SCHEMA
+)
+@EntityListeners(AuditingEntityListener.class)
+public class MfaEntity extends ModelPayload<MfaEntity> {
 
-    private String mfaToken;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String mfaId;
 
-    private String accessToken;
-    private long expiresIn;
+    @Column(nullable = false, updatable = false, length = 700)
+    @JsonSerialize(using = MaskingSerializer.class)
+    private String token;
+
+    @Column(nullable = false, updatable = false)
     private String userId;
 
-    @Builder.Default
-    private String tokenType = "Bearer";
-    private long expiresOn;
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime expiresIn;
 
-    @JsonIgnore
-    @Schema(hidden = true)
-    private ResponseCookie refreshTokenCookie;
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime dateCreated;
+
+    @Column(nullable = false, updatable = false)
+    private String remoteAddress;
+
+    @Column(nullable = false, updatable = false)
+    private String os;
+
+    @Column(nullable = false, updatable = false)
+    private String browser;
 }

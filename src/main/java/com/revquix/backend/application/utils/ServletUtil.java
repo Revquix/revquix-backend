@@ -25,34 +25,45 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.application.constants;
+package com.revquix.backend.application.utils;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: ServiceConstants
+  File: ServletUtil
  */
 
-import lombok.experimental.UtilityClass;
+import com.revquix.backend.application.constants.ServiceConstants;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
-@UtilityClass
-public class ServiceConstants {
+@Component
+@RequiredArgsConstructor
+@Slf4j
+public class ServletUtil {
 
-    public static final String BREADCRUMB_ID = "breadcrumbId";
-    public static final String INTERNAL_ERROR = "Internal Error";
-    public static final String DATA_ERROR = "Data Error";
-    public static final String X_FORWARDED_FOR = "X-Forwarded-For";
-    public static final String REMOTE_ADDRESS = "remoteAddress";
-    public static final String REQUEST_URI = "requestUri";
-    public static final String HTTP_METHOD = "httpMethod";
-    public static final String PKCS12 = "PKCS12";
-    public static final String LOCAL = "local";
-    public static final String REVQUIX_ISSUER = "revquix";
-    public static final String REVQUIX_WEB_BROWSER = "Revquix-Web-Browser";
-    public static final String REVQUIX_WEB_OS = "Revquix-Web-OS";
-    public static final String DEFAULT_BROWSER = "springBrowser";
+    private final HttpServletRequest httpServletRequest;
 
-    public static final String DEFAULT_OS = "springOs";
-    public static final String MFA_TOKEN_TYPE = "mfa";
+    public String browser() {
+        log.info("{}::browser -> Fetching browser from request", getClass().getSimpleName());
+        String header = httpServletRequest.getHeader(ServiceConstants.REVQUIX_WEB_BROWSER);
+        if (header == null || header.isEmpty() || header.isBlank()) {
+            log.info("{}::browser -> Browser header is missing or empty", getClass().getSimpleName());
+            return ServiceConstants.DEFAULT_BROWSER;
+        }
+        return header;
+    }
+
+    public String os() {
+        log.info("{}::os -> Fetching os from request", getClass().getSimpleName());
+        String header = httpServletRequest.getHeader(ServiceConstants.REVQUIX_WEB_OS);
+        if (header == null || header.isEmpty() || header.isBlank()) {
+            log.info("{}::os -> OS header is missing or empty", getClass().getSimpleName());
+            return ServiceConstants.DEFAULT_OS;
+        }
+        return header;
+    }
 }

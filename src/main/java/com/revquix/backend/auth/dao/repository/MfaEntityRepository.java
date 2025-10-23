@@ -25,34 +25,17 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.application.constants;
+package com.revquix.backend.auth.dao.repository;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: ServiceConstants
+  File: MfaEntityRepository
  */
 
-import lombok.experimental.UtilityClass;
+import com.revquix.backend.auth.model.MfaEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@UtilityClass
-public class ServiceConstants {
-
-    public static final String BREADCRUMB_ID = "breadcrumbId";
-    public static final String INTERNAL_ERROR = "Internal Error";
-    public static final String DATA_ERROR = "Data Error";
-    public static final String X_FORWARDED_FOR = "X-Forwarded-For";
-    public static final String REMOTE_ADDRESS = "remoteAddress";
-    public static final String REQUEST_URI = "requestUri";
-    public static final String HTTP_METHOD = "httpMethod";
-    public static final String PKCS12 = "PKCS12";
-    public static final String LOCAL = "local";
-    public static final String REVQUIX_ISSUER = "revquix";
-    public static final String REVQUIX_WEB_BROWSER = "Revquix-Web-Browser";
-    public static final String REVQUIX_WEB_OS = "Revquix-Web-OS";
-    public static final String DEFAULT_BROWSER = "springBrowser";
-
-    public static final String DEFAULT_OS = "springOs";
-    public static final String MFA_TOKEN_TYPE = "mfa";
+public interface MfaEntityRepository extends JpaRepository<MfaEntity, String> {
 }
