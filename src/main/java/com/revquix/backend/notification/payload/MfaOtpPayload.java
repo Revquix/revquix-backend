@@ -25,30 +25,31 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.revquix.service.impl;
+package com.revquix.backend.notification.payload;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: DomainServiceImpl
+  File: MfaOtpPayload
  */
 
-import com.revquix.backend.auth.payload.response.AuthResponse;
-import com.revquix.backend.revquix.payload.request.AddMailDomainRequest;
-import com.revquix.backend.revquix.service.DomainService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 
-@Service
-@RequiredArgsConstructor
-@Slf4j
-public class DomainServiceImpl implements DomainService {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class MfaOtpPayload {
 
-    @Override
-    public ResponseEntity<AuthResponse> addDomain(AddMailDomainRequest addMailDomainRequest) {
-        return null;
-    }
+    private String otp;
+    private String email;
+    private String timestamp;
+    private String remoteAddress;
+    private String os;
+    private String browser;
+    private String location;
 }

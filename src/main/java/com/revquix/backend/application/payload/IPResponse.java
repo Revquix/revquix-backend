@@ -25,30 +25,37 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.revquix.service.impl;
+package com.revquix.backend.application.payload;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: DomainServiceImpl
+  File: IPResponse
  */
 
-import com.revquix.backend.auth.payload.response.AuthResponse;
-import com.revquix.backend.revquix.payload.request.AddMailDomainRequest;
-import com.revquix.backend.revquix.service.DomainService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.revquix.backend.application.utils.ModelPayload;
+import lombok.*;
 
-@Service
-@RequiredArgsConstructor
-@Slf4j
-public class DomainServiceImpl implements DomainService {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class IPResponse extends ModelPayload<IPResponse> {
 
-    @Override
-    public ResponseEntity<AuthResponse> addDomain(AddMailDomainRequest addMailDomainRequest) {
-        return null;
-    }
+    private String status;
+    private String country;
+    private String countryCode;
+    private String region;
+    private String regionName;
+    private String city;
+    private String zip;
+    private double lat;
+    private double lon;
+    private String timezone;
+    private String isp;
+    private String org;
 }

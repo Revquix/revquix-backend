@@ -73,7 +73,7 @@ public class MfaAuthResponseGenerator {
         MfaEntity mfaEntity = build(userIdentity, otp);
         MfaEntity mfaEntityResponse = mfaEntityRepository.save(mfaEntity);
         log.info("{}::generate -> Saved MFA Entity: {}", getClass().getSimpleName(), mfaEntityResponse.toJson());
-        mfaOtpProcessor.process(mfaEntityResponse);
+        mfaOtpProcessor.process(userIdentity.getEmail(), otp);
         return buildAuthResponse(mfaEntityResponse);
     }
 

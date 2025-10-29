@@ -59,6 +59,7 @@ public class MailProperties {
 
         private Registration registration;
         private ForgotPassword forgotPassword;
+        private Mfa mfa;
     }
 
     @Getter
@@ -84,5 +85,14 @@ public class MailProperties {
     public static class MailDomain {
         private boolean isEnabled = true;
         private List<String> allowedDomains;
+    }
+
+    @Getter
+    @Setter
+    public static class Mfa {
+        private String prefix;
+        private String subject;
+        private String template;
+        private String context;
     }
 }

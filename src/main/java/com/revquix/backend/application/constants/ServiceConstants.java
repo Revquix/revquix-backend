@@ -52,7 +52,7 @@ public class ServiceConstants {
     public static final String REVQUIX_WEB_BROWSER = "Revquix-Web-Browser";
     public static final String REVQUIX_WEB_OS = "Revquix-Web-OS";
     public static final String DEFAULT_BROWSER = "springBrowser";
-
     public static final String DEFAULT_OS = "springOs";
     public static final String MFA_TOKEN_TYPE = "mfa";
+    public static final String TEMPLATE_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss 'UTC'";
 }

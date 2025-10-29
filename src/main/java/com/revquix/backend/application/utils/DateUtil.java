@@ -25,30 +25,32 @@
  * <p>
  * For inquiries regarding licensing, please contact: support@Revquix.com.
  */
-package com.revquix.backend.revquix.service.impl;
+package com.revquix.backend.application.utils;
 
 /*
   Developer: Rohit Parihar
   Project: revquix-backend
   GitHub: github.com/rohit-zip
-  File: DomainServiceImpl
+  File: DateUtil
  */
 
-import com.revquix.backend.auth.payload.response.AuthResponse;
-import com.revquix.backend.revquix.payload.request.AddMailDomainRequest;
-import com.revquix.backend.revquix.service.DomainService;
-import lombok.RequiredArgsConstructor;
+import com.revquix.backend.application.constants.ServiceConstants;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
+@UtilityClass
 @Slf4j
-public class DomainServiceImpl implements DomainService {
+public class DateUtil {
 
-    @Override
-    public ResponseEntity<AuthResponse> addDomain(AddMailDomainRequest addMailDomainRequest) {
-        return null;
+    public String templateFormattedDate(LocalDateTime localDateTime) {
+        log.info("{}::templateFormattedDate -> Formatting LocalDateTime: {}", DateUtil.class.getSimpleName(), localDateTime);
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneOffset.UTC);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ServiceConstants.TEMPLATE_DATE_FORMAT);
+        return zonedDateTime.format(formatter);
     }
 }

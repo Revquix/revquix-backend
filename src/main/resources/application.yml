@@ -203,6 +203,11 @@ mail:
       subject: Revquix - Password Reset Request
       template: ForgotPasswordOtpMail
       context: otpPayload
+    mfa:
+      prefix: mfa
+      subject: Revquix - Your Multi-Factor Authentication Code
+      template: MfaOtpMail
+      context: mfaPayload
 
 management:
   endpoints:

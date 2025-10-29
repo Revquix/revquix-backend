@@ -115,7 +115,7 @@
                         </div>
 
                         <p class="main-text" style="font-size:16px; line-height:1.6; text-align:center; margin:0 0 28px 0; color:#475569;">
-                            Hi <strong>rohit-zip</strong>, we received a login request for your account. Please use the verification code below to complete your two-factor authentication.
+                            Hi, we received a login request for your account. Please use the verification code below to complete your two-factor authentication.
                         </p>
 
                         <!-- OTP Container -->
@@ -127,8 +127,8 @@
                             <![endif]-->
 
                             <div class="otp-box" style="display:inline-block; background: linear-gradient(135deg, #006fee 0%, #0052cc 100%); border-radius:12px; padding:20px 32px; box-shadow:0 4px 12px rgba(0, 111, 238, 0.3); mso-padding-alt: 20px 32px 20px 32px;">
-                                <span class="otp-text" style="color:#ffffff; font-size:32px; font-weight:800; letter-spacing:8px; font-family: 'Courier New', Consolas, monospace;" th:text="${mfaOtp.code}">
-                                    123456
+                                <span class="otp-text" style="color:#ffffff; font-size:32px; font-weight:800; letter-spacing:8px; font-family: 'Courier New', Consolas, monospace;" th:text="${mfaPayload.otp}">
+                                    1234
                                 </span>
                             </div>
 
@@ -151,15 +151,15 @@
                                     <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
                                         👤 Account:
                                     </td>
-                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${user.email}">
-                                        rohit-zip@example.com
+                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaPayload.email}">
+                                        rohit@revquix.com
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
                                         🕐 Request Time:
                                     </td>
-                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaOtp.requestTime}">
+                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaPayload.timestamp}">
                                         2025-10-23 12:38:02 UTC
                                     </td>
                                 </tr>
@@ -167,7 +167,7 @@
                                     <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
                                         🌐 IP Address:
                                     </td>
-                                    <td style="padding:8px 0; color:#0c4a6e; font-family: 'Courier New', monospace;" th:text="${mfaOtp.ipAddress}">
+                                    <td style="padding:8px 0; color:#0c4a6e; font-family: 'Courier New', monospace;" th:text="${mfaPayload.remoteAddress}">
                                         103.216.189.204
                                     </td>
                                 </tr>
@@ -175,7 +175,7 @@
                                     <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
                                         💻 Operating System:
                                     </td>
-                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaOtp.operatingSystem}">
+                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaPayload.os}">
                                         Windows 11
                                     </td>
                                 </tr>
@@ -183,7 +183,7 @@
                                     <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
                                         🌍 Browser:
                                     </td>
-                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaOtp.browser}">
+                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaPayload.browser}">
                                         Google Chrome 119.0
                                     </td>
                                 </tr>
@@ -191,7 +191,7 @@
                                     <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
                                         📍 Location:
                                     </td>
-                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaOtp.location}">
+                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaPayload.location}">
                                         Mumbai, India
                                     </td>
                                 </tr>
