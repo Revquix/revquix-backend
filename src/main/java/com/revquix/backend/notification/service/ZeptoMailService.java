@@ -83,10 +83,10 @@ public class ZeptoMailService {
                     maxDelay = 6000
             )
     )
-    public ZeptoMailResponse send(String prefix, String to, String subject, String body) {
+    public ZeptoMailResponse send(String prefix, String to, String subject, String body, String name) {
         try {
             MailProperties.ZeptoMail zeptoMail = mailProperties.getZeptoMail();
-            ZeptoMailRequest request = buildEmailRequest(prefix, to, subject, body);
+            ZeptoMailRequest request = buildEmailRequest(prefix, to, subject, body, name);
             ZeptoMailResponse response = webClient.post()
                     .uri(zeptoMail.getApiUrl())
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -119,9 +119,10 @@ public class ZeptoMailService {
         throw new InternalServerException(ErrorData.FAILED_TO_SEND_MAIL_API_ERROR, e);
     }
 
-    private ZeptoMailRequest buildEmailRequest(String prefix, String toAddress, String subject, String htmlBody) {
+    private ZeptoMailRequest buildEmailRequest(String prefix, String toAddress, String subject, String htmlBody, String name) {
         ZeptoMailRequest.From from = new ZeptoMailRequest.From(
-                String.format("%s@revquix.com", prefix)
+                String.format("%s@revquix.com", prefix),
+                name
         );
 
         ZeptoMailRequest.EmailAddress emailAddress = new ZeptoMailRequest.EmailAddress(toAddress);

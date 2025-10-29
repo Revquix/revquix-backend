@@ -141,57 +141,57 @@
 
                         <!-- Login Request Details -->
                         <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius:12px; padding:24px; margin:28px 0; border-left:4px solid #006fee;">
-                            <h3 style="color:#0c4a6e; font-size:16px; font-weight:600; margin:0 0 16px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                            <h3 style="color:#334155; font-size:16px; font-weight:600; margin:0 0 16px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
                                 🔍 Login Request Details
                             </h3>
 
                             <!-- Details Table -->
                             <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" class="info-table" style="border-collapse: collapse; font-size:14px;">
                                 <tr>
-                                    <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
+                                    <td style="padding:8px 0; color:#006fee; font-weight:600; width:30%; vertical-align:top;">
                                         👤 Account:
                                     </td>
-                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaPayload.email}">
+                                    <td style="padding:8px 0; color:#334155;" th:text="${mfaPayload.email}">
                                         rohit@revquix.com
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
+                                    <td style="padding:8px 0; color:#006fee; font-weight:600; width:30%; vertical-align:top;">
                                         🕐 Request Time:
                                     </td>
-                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaPayload.timestamp}">
+                                    <td style="padding:8px 0; color:#334155;" th:text="${mfaPayload.timestamp}">
                                         2025-10-23 12:38:02 UTC
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
+                                    <td style="padding:8px 0; color:#006fee; font-weight:600; width:30%; vertical-align:top;">
                                         🌐 IP Address:
                                     </td>
-                                    <td style="padding:8px 0; color:#0c4a6e; font-family: 'Courier New', monospace;" th:text="${mfaPayload.remoteAddress}">
+                                    <td style="padding:8px 0; color:#334155; font-family: 'Courier New', monospace;" th:text="${mfaPayload.remoteAddress}">
                                         103.216.189.204
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
+                                    <td style="padding:8px 0; color:#006fee; font-weight:600; width:30%; vertical-align:top;">
                                         💻 Operating System:
                                     </td>
-                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaPayload.os}">
+                                    <td style="padding:8px 0; color:#334155;" th:text="${mfaPayload.os}">
                                         Windows 11
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
+                                    <td style="padding:8px 0; color:#006fee; font-weight:600; width:30%; vertical-align:top;">
                                         🌍 Browser:
                                     </td>
-                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaPayload.browser}">
+                                    <td style="padding:8px 0; color:#334155;" th:text="${mfaPayload.browser}">
                                         Google Chrome 119.0
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="padding:8px 0; color:#0369a1; font-weight:600; width:30%; vertical-align:top;">
+                                    <td style="padding:8px 0; color:#006fee; font-weight:600; width:30%; vertical-align:top;">
                                         📍 Location:
                                     </td>
-                                    <td style="padding:8px 0; color:#0c4a6e;" th:text="${mfaPayload.location}">
+                                    <td style="padding:8px 0; color:#334155;" th:text="${mfaPayload.location}">
                                         Mumbai, India
                                     </td>
                                 </tr>

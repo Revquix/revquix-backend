@@ -69,6 +69,7 @@ public class MailProperties {
         private String subject;
         private String template;
         private String context;
+        private String name = "Team Revquix";
     }
 
     @Getter
@@ -78,6 +79,7 @@ public class MailProperties {
         private String subject;
         private String template;
         private String context;
+        private String name = "Team Revquix";
     }
 
     @Getter
@@ -94,5 +96,6 @@ public class MailProperties {
         private String subject;
         private String template;
         private String context;
+        private String name = "Revquix Security";
     }
 }

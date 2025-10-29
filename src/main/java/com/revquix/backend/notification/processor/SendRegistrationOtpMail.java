@@ -60,7 +60,8 @@ public class SendRegistrationOtpMail {
                 registration.getPrefix(),
                 registrationOtpPayload.getEmail(),
                 registration.getSubject(),
-                prepareContext(registrationOtpPayload)
+                prepareContext(registrationOtpPayload),
+                registration.getName()
         );
         log.info("{}::execute -> OTP mail sent successfully with response: {}", getClass().getSimpleName(), zeptoMailResponse.toJson());
     }

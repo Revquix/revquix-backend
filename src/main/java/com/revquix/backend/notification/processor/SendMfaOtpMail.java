@@ -66,13 +66,14 @@ public class SendMfaOtpMail {
 
     public void execute(MfaOtpPayload mfaOtpPayload) {
         log.info("{}::execute -> Sending MFA OTP mail to email: {}", getClass().getSimpleName(), mfaOtpPayload.getEmail());
-        MailProperties.Mfa registration = mailProperties.getZeptoMail().getMfa();
+        MailProperties.Mfa mfa = mailProperties.getZeptoMail().getMfa();
         build(mfaOtpPayload);
         ZeptoMailResponse zeptoMailResponse = zeptoMailService.send(
-                registration.getPrefix(),
+                mfa.getPrefix(),
                 mfaOtpPayload.getEmail(),
-                registration.getSubject(),
-                prepareContext(mfaOtpPayload)
+                mfa.getSubject(),
+                prepareContext(mfaOtpPayload),
+                mfa.getName()
         );
         log.info("{}::execute -> OTP mail sent successfully with response: {}", getClass().getSimpleName(), zeptoMailResponse.toJson());
     }

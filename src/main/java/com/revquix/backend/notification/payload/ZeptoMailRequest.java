@@ -62,6 +62,7 @@ public class ZeptoMailRequest extends ModelPayload<ZeptoMailRequest> {
     @AllArgsConstructor
     public static class From {
         private String address;
+        private String name;
     }
 
     @Getter

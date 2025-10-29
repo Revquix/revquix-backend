@@ -53,7 +53,8 @@ public class SendForgotPasswordOtpMail {
                 forgotPassword.getPrefix(),
                 forgotPasswordOtpPayload.getEmail(),
                 forgotPassword.getSubject(),
-                prepareContext(forgotPasswordOtpPayload)
+                prepareContext(forgotPasswordOtpPayload),
+                forgotPassword.getName()
         );
         log.info("{}::execute -> OTP mail sent successfully with response: {}", getClass().getSimpleName(), zeptoMailResponse.toJson());
     }
