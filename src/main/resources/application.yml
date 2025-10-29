@@ -182,6 +182,13 @@ logging:
     org.hibernate: WARN
 
 mail:
+  mail-domain:
+    enabled: true
+    allowed-domains:
+      - revquix.com
+      - gmail.com
+      - yahoo.com
+      - outlook.com
   zepto-mail:
     api-key: ${ZEPTO_MAIL_API_KEY}
     api-url: https://api.zeptomail.in/v1.1/email

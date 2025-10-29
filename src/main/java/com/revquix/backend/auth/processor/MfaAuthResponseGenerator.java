@@ -65,14 +65,15 @@ public class MfaAuthResponseGenerator {
     private final ServletUtil servletUtil;
     private final MfaEntityRepository mfaEntityRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MfaOtpProcessor mfaOtpProcessor;
 
     public AuthResponse generate(UserIdentity userIdentity) {
         log.info("{}::generate -> Generating MFA Auth Response for user: {}", getClass().getSimpleName(), userIdentity.getUserId());
         String otp = OtpGenerator.generate(authenticationProperties.getMfa().getOtpSize());
-        String encodedOtp = passwordEncoder.encode(otp);
-        MfaEntity mfaEntity = build(userIdentity, encodedOtp);
+        MfaEntity mfaEntity = build(userIdentity, otp);
         MfaEntity mfaEntityResponse = mfaEntityRepository.save(mfaEntity);
         log.info("{}::generate -> Saved MFA Entity: {}", getClass().getSimpleName(), mfaEntityResponse.toJson());
+        mfaOtpProcessor.process(mfaEntityResponse);
         return buildAuthResponse(mfaEntityResponse);
     }
 
@@ -110,7 +111,7 @@ public class MfaAuthResponseGenerator {
         MfaEntity mfaEntity = MfaEntity
                 .builder()
                 .token(mfaToken)
-                .otp(otp)
+                .otp(passwordEncoder.encode(otp))
                 .userId(userIdentity.getUserId())
                 .expiresIn(LocalDateTime.now().plusMinutes(expiryMinutes))
                 .remoteAddress(ipUtils.getIpv4())

@@ -47,6 +47,7 @@ import com.revquix.backend.auth.model.OtpEntity;
 import com.revquix.backend.auth.model.UserAuth;
 import com.revquix.backend.auth.payload.UserIdentity;
 import com.revquix.backend.auth.payload.request.ForgotPasswordRequest;
+import com.revquix.backend.auth.payload.request.VerifyMfaRequest;
 import com.revquix.backend.auth.payload.response.AuthResponse;
 import com.revquix.backend.auth.payload.response.LogoutResponse;
 import com.revquix.backend.auth.payload.response.ModuleResponse;
@@ -320,5 +321,10 @@ public class AuthServiceImpl implements AuthService {
             }
         });
         return ResponseEntity.ok(responseBuilder.build());
+    }
+
+    @Override
+    public ResponseEntity<AuthResponse> verifyMfa(VerifyMfaRequest verifyMfaRequest) {
+        return null;
     }
 }

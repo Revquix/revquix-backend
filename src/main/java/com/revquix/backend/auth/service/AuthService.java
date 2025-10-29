@@ -35,6 +35,7 @@ package com.revquix.backend.auth.service;
  */
 
 import com.revquix.backend.auth.payload.request.ForgotPasswordRequest;
+import com.revquix.backend.auth.payload.request.VerifyMfaRequest;
 import com.revquix.backend.auth.payload.response.AuthResponse;
 import com.revquix.backend.auth.payload.response.ModuleResponse;
 import com.revquix.backend.auth.payload.response.RegistrationResponse;
@@ -49,4 +50,5 @@ public interface AuthService {
     ResponseEntity<ModuleResponse> forgotPasswordOtp(String email);
     ResponseEntity<ModuleResponse> forgotPassword(ForgotPasswordRequest forgotPasswordRequest);
     ResponseEntity<RegistrationResponse> getRegistrationStatus(String email);
+    ResponseEntity<AuthResponse> verifyMfa(VerifyMfaRequest verifyMfaRequest);
 }

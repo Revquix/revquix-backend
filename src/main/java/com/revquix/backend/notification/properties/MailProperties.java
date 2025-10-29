@@ -39,6 +39,8 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Configuration
 @ConfigurationProperties(prefix = "mail")
 @Getter
@@ -46,6 +48,7 @@ import org.springframework.context.annotation.Configuration;
 public class MailProperties {
 
     private ZeptoMail zeptoMail;
+    private MailDomain mailDomain;
 
     @Getter
     @Setter
@@ -74,5 +77,12 @@ public class MailProperties {
         private String subject;
         private String template;
         private String context;
+    }
+
+    @Getter
+    @Setter
+    public static class MailDomain {
+        private boolean isEnabled = true;
+        private List<String> allowedDomains;
     }
 }
