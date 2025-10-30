@@ -35,14 +35,19 @@ package com.revquix.backend.auth.service.impl;
  */
 
 import com.revquix.backend.application.exception.ErrorData;
+import com.revquix.backend.application.exception.payload.AuthenticationException;
 import com.revquix.backend.application.exception.payload.BadRequestException;
+import com.revquix.backend.application.utils.IpUtils;
+import com.revquix.backend.auth.authentication.MfaAuthentication;
 import com.revquix.backend.auth.authentication.RefreshTokenAuthentication;
 import com.revquix.backend.auth.cache.UserAuthCache;
+import com.revquix.backend.auth.dao.repository.MfaEntityRepository;
 import com.revquix.backend.auth.dao.repository.OtpEntityRepository;
 import com.revquix.backend.auth.dao.repository.UserAuthRepository;
 import com.revquix.backend.auth.enums.OtpFor;
 import com.revquix.backend.auth.enums.OtpStatus;
 import com.revquix.backend.auth.guardrails.*;
+import com.revquix.backend.auth.model.MfaEntity;
 import com.revquix.backend.auth.model.OtpEntity;
 import com.revquix.backend.auth.model.UserAuth;
 import com.revquix.backend.auth.payload.UserIdentity;
@@ -95,6 +100,9 @@ public class AuthServiceImpl implements AuthService {
     private final RegistrationOtpProcessor registrationOtpProcessor;
     private final ForgotPasswordOtpProcessor forgotPasswordOtpProcessor;
     private final MfaAuthResponseGenerator mfaAuthResponseGenerator;
+    private final MfaEntityRepository mfaEntityRepository;
+    private final IpUtils ipUtils;
+    private final MfaAuthentication mfaAuthentication;
 
     @Override
     @Transactional
@@ -325,6 +333,15 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ResponseEntity<AuthResponse> verifyMfa(VerifyMfaRequest verifyMfaRequest) {
-        return null;
+        log.info("{}::verifyMfa -> Verifying MFA OTP", this.getClass().getSimpleName());
+        Authentication authentication = mfaAuthentication.authenticate(verifyMfaRequest);
+        UserIdentity userIdentity = (UserIdentity) authentication.getPrincipal();
+        instanceValidator.validate(userIdentity);
+        AuthResponse authResponse = authResponseGenerator.generate(userIdentity);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return ResponseEntity
+                .accepted()
+                .header(HttpHeaders.SET_COOKIE, authResponse.getRefreshTokenCookie().toString())
+                .body(authResponse);
     }
 }

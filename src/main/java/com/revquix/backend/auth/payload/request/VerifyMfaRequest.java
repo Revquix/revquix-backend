@@ -47,5 +47,4 @@ public class VerifyMfaRequest {
 
     private String token;
     private String otp;
-    private String userId;
 }

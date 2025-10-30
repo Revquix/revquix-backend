@@ -103,7 +103,12 @@ public enum ErrorData {
     USER_EMAIL_NOT_FOUND("DE-63", "User not found with the given email"),
     FORGOT_PASSWORD_OTP_EXPIRED("DE-64", "OTP has expired. Please request a new OTP to continue with forgot password"),
     INVALID_FORGOT_PASSWORD_OTP("DE-65", "The OTP you have entered is invalid. Please try again with the OTP sent on your Email"),
-    MFA_ALREADY_ENABLED("DE-66", "MFA is already enabled for this user"),;
+    MFA_ALREADY_ENABLED("DE-66", "MFA is already enabled for this user"),
+    INVALID_MFA_TOKEN("DE-67", "The MFA token you have entered is invalid. Please login again"),
+    INVALID_MFA_OTP("DE-68", "The MFA OTP you have entered is invalid. Please try again"),
+    MFA_NOT_ENABLED("DE-69", "MFA is not enabled for this user. Please login again"),
+    MFA_EXPIRED("DE-70", "The MFA has been expired. Please login again"),
+    INVALID_REMOTE_ADDRESS_MFA("DE-71", "Remote address does not match with the one present in MFA token, please login again");
 
     private final String code;
     private final String message;

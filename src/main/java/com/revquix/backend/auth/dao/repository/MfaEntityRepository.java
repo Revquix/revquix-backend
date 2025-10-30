@@ -37,5 +37,9 @@ package com.revquix.backend.auth.dao.repository;
 import com.revquix.backend.auth.model.MfaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface MfaEntityRepository extends JpaRepository<MfaEntity, String> {
+
+    Optional<MfaEntity> findByToken(String token);
 }
