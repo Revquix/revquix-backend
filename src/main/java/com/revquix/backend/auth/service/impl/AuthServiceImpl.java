@@ -78,6 +78,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -87,7 +88,6 @@ public class AuthServiceImpl implements AuthService {
     private final UserAuthRepository userAuthRepository;
     private final RegisterUserTransformer registerUserTransformer;
     private final UserAuthCache userAuthCache;
-    private final ApplicationEventPublisher applicationEventPublisher;
     private final OtpEntityRepository otpEntityRepository;
     private final AuthenticationManager authenticationManager;
     private final InstanceValidator instanceValidator;
@@ -100,9 +100,8 @@ public class AuthServiceImpl implements AuthService {
     private final RegistrationOtpProcessor registrationOtpProcessor;
     private final ForgotPasswordOtpProcessor forgotPasswordOtpProcessor;
     private final MfaAuthResponseGenerator mfaAuthResponseGenerator;
-    private final MfaEntityRepository mfaEntityRepository;
-    private final IpUtils ipUtils;
     private final MfaAuthentication mfaAuthentication;
+    private final PostLoginProcessor postLoginProcessor;
 
     @Override
     @Transactional
@@ -119,6 +118,7 @@ public class AuthServiceImpl implements AuthService {
             authResponse = mfaAuthResponseGenerator.generate(userIdentity);
         } else {
             authResponse = authResponseGenerator.generate(userIdentity);
+            postLoginProcessor.process(userIdentity);
         }
         SecurityContextHolder.getContext().setAuthentication(userAuthentication);
         return ResponseEntity
