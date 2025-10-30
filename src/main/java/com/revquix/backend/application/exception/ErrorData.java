@@ -108,7 +108,8 @@ public enum ErrorData {
     INVALID_MFA_OTP("DE-68", "The MFA OTP you have entered is invalid. Please try again"),
     MFA_NOT_ENABLED("DE-69", "MFA is not enabled for this user. Please login again"),
     MFA_EXPIRED("DE-70", "The MFA has been expired. Please login again"),
-    INVALID_REMOTE_ADDRESS_MFA("DE-71", "Remote address does not match with the one present in MFA token, please login again");
+    INVALID_REMOTE_ADDRESS_MFA("DE-71", "Remote address does not match with the one present in MFA token, please login again"),
+    INVALID_MAIL_DOMAIN("DE-72", "The email domain is not allowed. Please use an approved email domain to register or login.");
 
     private final String code;
     private final String message;

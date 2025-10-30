@@ -102,13 +102,15 @@ public class AuthServiceImpl implements AuthService {
     private final MfaAuthResponseGenerator mfaAuthResponseGenerator;
     private final MfaAuthentication mfaAuthentication;
     private final PostLoginProcessor postLoginProcessor;
+    private final EntrypointValidator entrypointValidator;
+    private final EmailValidator emailValidator;
 
     @Override
     @Transactional
     public ResponseEntity<AuthResponse> token(String entrypoint, String password) {
         log.info("{}::validate -> Validating token: {}", UsernameValidator.class.getSimpleName(), entrypoint);
         entrypoint = entrypoint.toLowerCase();
-        EntrypointValidator.validate(entrypoint);
+        entrypointValidator.validate(entrypoint);
         PasswordValidator.validate(password);
         Authentication userAuthentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(entrypoint, password));
         UserIdentity userIdentity = (UserIdentity) userAuthentication.getPrincipal();
@@ -132,7 +134,7 @@ public class AuthServiceImpl implements AuthService {
     public ResponseEntity<ModuleResponse> registerUser(String email, String password) {
         log.info("{}::registerUser -> Registering user with email: {}", this.getClass().getSimpleName(), email);
         email = email.toLowerCase();
-        EmailValidator.validate(email);
+        emailValidator.validate(email);
         PasswordValidator.validate(password);
         Optional<UserAuth> userAuthOptional = userAuthRepository.findByEmail(email);
         if (userAuthOptional.isPresent()) {
@@ -320,7 +322,7 @@ public class AuthServiceImpl implements AuthService {
     public ResponseEntity<RegistrationResponse> getRegistrationStatus(String email) {
         log.info("{}::getRegistrationStatus -> Get Registration Status", this.getClass().getSimpleName());
         email = email.toLowerCase();
-        EmailValidator.validate(email);
+        emailValidator.validate(email);
         Optional<UserAuth> userAuthOptional = userAuthRepository.findByEmail(email);
         RegistrationResponse.RegistrationResponseBuilder responseBuilder = RegistrationResponse.builder().email(email);
         userAuthOptional.ifPresent(userAuth -> {

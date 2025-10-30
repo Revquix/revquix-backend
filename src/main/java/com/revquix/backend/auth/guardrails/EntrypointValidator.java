@@ -36,21 +36,27 @@ package com.revquix.backend.auth.guardrails;
 
 import com.revquix.backend.application.exception.ErrorData;
 import com.revquix.backend.application.exception.payload.AuthenticationException;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
-@UtilityClass
+
+@Component
+@RequiredArgsConstructor
 @Slf4j
 public class EntrypointValidator {
 
+    private final EmailValidator emailValidator;
+
     public void validate(String entrypoint) {
-        log.info("{}::validate -> Validating entrypoint: {}", EntrypointValidator.class.getSimpleName(), entrypoint);
+        log.info("{}::validate -> Validating entrypoint: {}", getClass().getSimpleName(), entrypoint);
         if (entrypoint == null || entrypoint.isBlank()) {
             throw new AuthenticationException(ErrorData.ENTRYPOINT_MANDATORY);
         }
         String lowerCaseEntrypoint = entrypoint.toLowerCase();
         if (entrypoint.contains("@") && entrypoint.contains(".")) {
-            EmailValidator.validate(lowerCaseEntrypoint);
+            emailValidator.validate(lowerCaseEntrypoint);
         } else {
             UsernameValidator.validate(lowerCaseEntrypoint);
         }

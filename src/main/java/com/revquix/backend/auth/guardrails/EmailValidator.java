@@ -36,21 +36,27 @@ package com.revquix.backend.auth.guardrails;
 
 import com.revquix.backend.application.exception.ErrorData;
 import com.revquix.backend.application.exception.payload.BadRequestException;
+import com.revquix.backend.notification.properties.MailProperties;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
 
-@UtilityClass
+@Component
+@RequiredArgsConstructor
 @Slf4j
 public class EmailValidator {
+
+    private final MailProperties mailProperties;
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile(
             "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
             Pattern.CASE_INSENSITIVE
     );
 
-    public static void validate(String email) throws BadRequestException {
+    public void validate(String email) throws BadRequestException {
         log.info("{}::validate -> Validating email: {}", EmailValidator.class.getSimpleName(), email);
         if (email == null) {
             throw new BadRequestException(ErrorData.EMAIL_MANDATORY);
@@ -58,6 +64,18 @@ public class EmailValidator {
         boolean matches = EMAIL_PATTERN.matcher(email).matches();
         if (!matches) {
             throw new BadRequestException(ErrorData.EMAIL_NOT_VALID);
+        }
+        int atIndex = email.lastIndexOf("@");
+        String domain = email.substring(atIndex + 1);
+        MailProperties.MailDomain mailDomain = mailProperties.getMailDomain();
+        if (!mailDomain.isEnabled()) {
+            log.info("{}::validate -> Email domain validation is disabled. Skipping validation for email: {}", getClass().getSimpleName(), email);
+            return;
+        }
+        if (!mailDomain.getAllowedDomains().contains(domain)) {
+            throw new BadRequestException(
+                    ErrorData.INVALID_MAIL_DOMAIN,
+                    String.format("Email domain '%s' is not allowed.", domain));
         }
     }
 }
